@@ -486,6 +486,38 @@
     }
     .hbtn:hover { background: #f0edff; color: var(--accent2); }
     .hbtn-icon { font-size: 20px; }
+    /* Inline sale timer */
+    .inline-timer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(90deg, #ff5252, #ff7043);
+      border-radius: 50px;
+      padding: 8px 18px;
+      white-space: nowrap;
+    }
+    .it-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .it-box {
+      background: #fff;
+      color: #e53935;
+      font-size: 16px;
+      font-weight: 900;
+      border-radius: 6px;
+      padding: 3px 10px;
+      min-width: 36px;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .it-unit {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+    }
+
     .cart-btn {
       background: var(--primary);
       color: #fff !important;
@@ -552,15 +584,235 @@
 
     /* ── HERO SECTION ── */
     .hero {
-      padding: 28px 0 0;
+      padding: 12px 0 0;
       background: var(--card-bg);
-      border-bottom: 1px solid var(--border);
+    }
+    .hero > .container {
+      max-width: none;
+      padding: 0 100px;
     }
     .hero-grid {
       display: grid;
       grid-template-columns: 200px 1fr 200px;
-      gap: 12px;
-      align-items: start;
+      gap: 6px;
+      align-items: stretch;
+    }
+    .hero-center {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+    .hero-top-row {
+      display: flex;
+      flex-direction: row;
+      gap: 6px;
+      height: 220px;
+    }
+    .hero-top-row .hero-banner { flex: 1 1 0; min-width: 0; overflow: hidden; }
+    .hero-top-row .hero-banner-deals { flex: 1 1 0; min-width: 0; overflow: hidden; }
+
+    /* Hero mini product grid */
+    .hero-mini-products {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+    }
+    .hmp-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 6px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      position: relative;
+      transition: box-shadow .2s, transform .2s;
+      text-align: center;
+    }
+    .hmp-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,.1); transform: translateY(-2px); }
+    .hmp-img { font-size: 32px; line-height: 1; }
+    .hmp-name { font-size: 10px; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .hmp-price { font-size: 12px; font-weight: 800; color: var(--primary); }
+    .hmp-badge { font-size: 9px; font-weight: 700; background: var(--primary); color: #fff; padding: 2px 6px; border-radius: 4px; }
+    .hmp-new { background: #00b96b; }
+
+    /* Hero product boxes */
+    .hero-product-boxes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .hpb-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .hpb-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hpb-title { font-size: 13px; font-weight: 800; color: var(--text); }
+    .hpb-see-all { font-size: 11px; color: var(--primary); font-weight: 600; text-decoration: none; }
+    .hpb-list { display: flex; flex-direction: column; }
+    .hpb-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .hpb-item:last-child { border-bottom: none; }
+    .hpb-item:hover { background: var(--bg); }
+    .hpb-img { font-size: 28px; flex-shrink: 0; }
+    .hpb-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .hpb-name { font-size: 11px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .hpb-prices { display: flex; align-items: center; gap: 5px; }
+    .hpb-price { font-size: 12px; font-weight: 800; color: var(--primary); }
+    .hpb-old { font-size: 10px; color: #aaa; text-decoration: line-through; }
+    .hpb-badge { font-size: 9px; font-weight: 700; background: var(--primary); color: #fff; padding: 1px 5px; border-radius: 4px; }
+
+    /* You may also like bar */
+    .ymal-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px 14px;
+      overflow: hidden;
+    }
+    .ymal-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--primary);
+      white-space: nowrap;
+      background: rgba(255,60,95,.08);
+      border-radius: 20px;
+      padding: 4px 10px;
+      flex-shrink: 0;
+    }
+    .ymal-tags {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      flex: 1;
+    }
+    .ymal-tags::-webkit-scrollbar { display: none; }
+    .ymal-tag {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--text-light);
+      font-weight: 500;
+      white-space: nowrap;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      transition: background .15s, color .15s, border-color .15s;
+    }
+    .ymal-tag:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .ymal-refresh {
+      flex-shrink: 0;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      font-size: 18px;
+      color: #888;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform .4s ease, color .2s;
+      margin-left: 4px;
+    }
+    .ymal-refresh:hover { color: var(--primary); transform: rotate(180deg); }
+
+    /* Taobao-style showcase */
+    .ts-showcase {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .ts-group {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ts-group-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .ts-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .ts-badge {
+      font-size: 9px;
+      font-weight: 700;
+      background: #ff5252;
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      letter-spacing: .3px;
+    }
+    .ts-products {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .ts-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      border-radius: 8px;
+      padding: 8px 4px;
+      background: var(--bg);
+      transition: transform .15s;
+    }
+    .ts-item:hover { transform: translateY(-2px); }
+    .ts-img { font-size: 38px; line-height: 1; }
+    .ts-price-tag {
+      font-size: 11px;
+      font-weight: 800;
+      color: #fff;
+      background: #ff5252;
+      border-radius: 20px;
+      padding: 2px 8px;
+    }
+    .ts-item-rec { background: linear-gradient(135deg,#fff5f0,#fff0f0); }
+    .ts-rec-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #ff5252;
+      background: rgba(255,82,82,.12);
+      border-radius: 20px;
+      padding: 2px 8px;
     }
 
     /* Left sidebar categories */
@@ -593,27 +845,64 @@
     .cat-emoji { font-size: 18px; width: 24px; text-align: center; }
     .cat-count { margin-left: auto; font-size: 11px; color: var(--text-muted); }
 
-    /* Hero banner */
+    /* Hero banner — main banner column */
     .hero-banner {
       border-radius: var(--radius);
       overflow: hidden;
       position: relative;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
     }
+    .hero-banner-deals {
+      background: linear-gradient(135deg, #ff3c5f 0%, #ff6b35 100%);
+      border-radius: var(--radius);
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      overflow: hidden;
+    }
+    .hbd-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hbd-title { font-size: 13px; font-weight: 800; color: #fff; }
+    .hbd-link { font-size: 11px; color: rgba(255,255,255,.8); }
+    .hbd-link:hover { color: #fff; }
+    .hbd-promo {
+      font-size: 10px; color: rgba(255,255,255,.9);
+      line-height: 1.3; padding: 3px 8px;
+      background: rgba(255,255,255,.18); border-radius: 6px;
+    }
+    .hbd-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      flex: 1;
+    }
+    .hbd-item {
+      background: #fff; border-radius: 8px;
+      padding: 5px 4px; display: flex; flex-direction: column;
+      align-items: center; gap: 2px; cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .hbd-item:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+    .hbd-emoji { font-size: 22px; }
+    .hbd-name { font-size: 9px; color: #555; text-align: center; line-height: 1.2; }
+    .hbd-price { font-size: 11px; font-weight: 800; color: var(--primary); }
     .banner-slide {
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
-      height: 380px;
+      background: linear-gradient(135deg, #ff3c5f 0%, #ff6b35 100%);
+      flex: 1;
+      min-height: unset;
       position: relative;
       display: flex;
       align-items: center;
-      padding: 40px;
+      padding: 16px 20px;
       overflow: hidden;
     }
-    .banner-slide::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 70% 50%, rgba(255,60,95,.25) 0%, transparent 60%);
-    }
+    .banner-slide::before { display: none; }
     .banner-content { position: relative; z-index: 1; max-width: 420px; }
     .banner-badge {
       display: inline-flex;
@@ -628,15 +917,15 @@
       border-radius: 50px;
       letter-spacing: .5px;
       text-transform: uppercase;
-      margin-bottom: 16px;
+      margin-bottom: 5px;
     }
     .banner-title {
-      font-size: 42px;
+      font-size: 22px;
       font-weight: 900;
       color: #fff;
       line-height: 1.15;
-      letter-spacing: -1.5px;
-      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
     }
     .banner-title span {
       background: linear-gradient(90deg, var(--primary), var(--accent));
@@ -645,18 +934,18 @@
       -webkit-text-fill-color: transparent;
     }
     .banner-sub {
-      font-size: 15px;
+      font-size: 11px;
       color: rgba(255,255,255,.65);
-      margin-bottom: 28px;
-      line-height: 1.6;
+      margin-bottom: 10px;
+      line-height: 1.4;
     }
-    .banner-btns { display: flex; gap: 12px; }
+    .banner-btns { display: flex; gap: 8px; }
     .btn-primary {
       background: var(--primary);
       color: #fff;
-      padding: 12px 28px;
+      padding: 8px 18px;
       border-radius: 50px;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 700;
       border: none;
       transition: transform .2s, box-shadow .2s;
@@ -666,9 +955,9 @@
     .btn-outline {
       background: transparent;
       color: #fff;
-      padding: 12px 24px;
+      padding: 8px 16px;
       border-radius: 50px;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
       border: 1.5px solid rgba(255,255,255,.4);
       transition: background .2s;
@@ -682,26 +971,15 @@
       pointer-events: none;
       transform: rotate(-10deg);
     }
-    .banner-img-placeholder {
-      position: absolute;
-      right: 40px; top: 50%;
-      transform: translateY(-50%);
-      width: 280px; height: 280px;
-      background: linear-gradient(135deg, rgba(255,60,95,.3), rgba(123,47,247,.3));
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 100px;
-    }
+    .banner-img-placeholder { display: none; }
 
     /* Banner dots */
     .banner-dots {
       display: flex;
       justify-content: center;
       gap: 6px;
-      padding: 10px 0;
-      background: #fff;
+      padding: 6px 0;
+      background: rgba(0,0,0,.15);
     }
     .dot {
       width: 24px; height: 6px;
@@ -715,8 +993,75 @@
     .hero-side {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
+    /* Greeting card */
+    .tg-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    }
+    .tg-header {
+      background: linear-gradient(135deg, #ff6b35, #ff3c5f);
+      padding: 14px 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .tg-icon-wrap {
+      width: 44px; height: 44px;
+      background: rgba(255,255,255,.25);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+    .tg-header-text { display: flex; flex-direction: column; gap: 2px; }
+    .tg-greeting { font-size: 16px; font-weight: 900; color: #fff; }
+    .tg-tagline { font-size: 10px; color: rgba(255,255,255,.8); font-weight: 500; }
+    .tg-body { padding: 12px 14px 14px; }
+    .tg-promo-badge {
+      display: inline-block;
+      background: rgba(255,60,95,.1);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 6px;
+      padding: 4px 8px;
+      margin-bottom: 8px;
+    }
+    .tg-cta-text { font-size: 11px; color: #888; line-height: 1.4; margin-bottom: 12px; }
+    .tg-btns { display: flex; gap: 8px; }
+    .tg-btn-primary {
+      flex: 1;
+      background: var(--primary);
+      color: #fff;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 9px 0;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: background .2s, transform .15s;
+    }
+    .tg-btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .tg-btn-secondary {
+      flex: 1;
+      background: transparent;
+      color: var(--primary);
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 9px 0;
+      border-radius: 50px;
+      border: 1.5px solid var(--primary);
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .tg-btn-secondary:hover { background: rgba(255,60,95,.06); }
     .side-card {
       background: var(--card-bg);
       border-radius: var(--radius);
@@ -783,6 +1128,45 @@
       font-size: 48px;
       opacity: .2;
     }
+
+    /* All Products Grid */
+    .all-products-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 10px;
+    }
+    .ap-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 10px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      position: relative;
+      transition: box-shadow .2s, transform .2s;
+      text-align: center;
+    }
+    .ap-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.1); transform: translateY(-3px); }
+    .ap-img { font-size: 38px; line-height: 1; margin-bottom: 2px; }
+    .ap-name { font-size: 11px; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .ap-price { font-size: 13px; font-weight: 800; color: var(--primary); }
+    .ap-old { font-size: 10px; color: #bbb; text-decoration: line-through; }
+    .ap-badge {
+      position: absolute;
+      top: 6px; left: 6px;
+      font-size: 9px;
+      font-weight: 700;
+      background: var(--primary);
+      color: #fff;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+    .new-badge { background: #00b96b; }
+    @media (max-width: 1100px) { .all-products-grid { grid-template-columns: repeat(5, 1fr); } }
+    @media (max-width: 768px)  { .all-products-grid { grid-template-columns: repeat(3, 1fr); } }
 
     /* ── SECTION HEADERS ── */
     .section { padding: 32px 0; }
@@ -1283,7 +1667,7 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 1100px) {
-      .hero-grid { grid-template-columns: 200px 1fr; }
+      .hero-grid { grid-template-columns: 180px 1fr; }
       .hero-side { display: none; }
       .deals-grid { grid-template-columns: repeat(4, 1fr); }
       .products-grid { grid-template-columns: repeat(4, 1fr); }
@@ -1743,6 +2127,16 @@
           🛒 <span data-i18n="header.cart">Cart</span> <span class="cart-count" id="cartCountBadge">0</span>
         </button>
 
+        <!-- Inline Sale Timer -->
+        <div class="inline-timer">
+          <span class="it-label">🔥 It's about to end</span>
+          <div class="it-box" id="cd-hours">00</div>
+          <span class="it-unit">Hours</span>
+          <div class="it-box" id="cd-mins">00</div>
+          <span class="it-unit">Minutes</span>
+          <div class="it-box" id="cd-secs">00</div>
+          <span class="it-unit">Seconds</span>
+        </div>
 
       </div>
     </div>
@@ -1792,39 +2186,207 @@
             <a href="category.html?cat=Garden+%26+Plants" class="cat-item"><span class="cat-emoji">🌱</span><span data-i18n="cat.garden">Garden & Plants</span> <span class="cat-count">6.8k</span></a>
           </div>
 
-          <!-- Hero Banner -->
-          <div class="hero-banner">
-            <div class="banner-slide">
-              <div class="banner-visual">🛍️</div>
-              <div class="banner-content">
-                <div class="banner-badge" data-i18n="banner.badge">⚡ Mega Sale — Up to 90% Off</div>
-                <h1 class="banner-title" data-i18n-html="banner.title">Shop <span>Smarter,</span><br/>Save Bigger.</h1>
-                <p class="banner-sub" data-i18n="banner.sub">Join millions of shoppers getting the best deals through group buying, flash sales, and exclusive offers.</p>
-                <div class="banner-btns">
-                  <button class="btn-primary" data-i18n="banner.shopnow" onclick="showToast('🛍️', 'Welcome to NEXORA deals!')">Shop Now</button>
-                  <button class="btn-outline" data-i18n="banner.groupbuy" onclick="showToast('👥', 'Join a group buy!')">Join Group Buy</button>
+          <!-- Col 2: Center -->
+          <div class="hero-center">
+
+            <!-- Top two boxes side by side -->
+            <div class="hero-top-row">
+
+              <!-- Banner (left) -->
+              <div class="hero-banner">
+                <div class="banner-slide">
+                  <div class="banner-visual">🛍️</div>
+                  <div class="banner-content">
+                    <div class="banner-badge" data-i18n="banner.badge">⚡ Mega Sale — Up to 90% Off</div>
+                    <h1 class="banner-title" data-i18n-html="banner.title">Shop <span>Smarter,</span><br/>Save Bigger.</h1>
+                    <p class="banner-sub" data-i18n="banner.sub">Join millions of shoppers getting the best deals through group buying, flash sales, and exclusive offers.</p>
+                    <div class="banner-btns">
+                      <button class="btn-primary" data-i18n="banner.shopnow" onclick="showToast('🛍️', 'Welcome to NEXORA deals!')">Shop Now</button>
+                      <button class="btn-outline" data-i18n="banner.groupbuy" onclick="showToast('👥', 'Join a group buy!')">Join Group Buy</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="banner-dots">
+                  <div class="dot active"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
+                  <div class="dot"></div>
                 </div>
               </div>
-              <div class="banner-img-placeholder">🛍️</div>
+
+              <!-- Flash Picks (right) -->
+              <div class="hero-banner-deals">
+                <div class="hbd-header">
+                  <span class="hbd-title">⚡ Flash Picks</span>
+                  <a href="#" class="hbd-link">See all →</a>
+                </div>
+                <div class="hbd-promo">🎟️ Stackable vouchers · Use at checkout for extra savings</div>
+                <div class="hbd-grid">
+                  <div class="hbd-item" onclick="showToast('💻','Xiaomi Pad 6 Pro')">
+                    <div class="hbd-emoji">💻</div>
+                    <div class="hbd-name">Xiaomi Pad 6 Pro</div>
+                    <div class="hbd-price">৳39,999</div>
+                  </div>
+                  <div class="hbd-item" onclick="showToast('📱','Samsung A55 5G')">
+                    <div class="hbd-emoji">📱</div>
+                    <div class="hbd-name">Samsung A55 5G</div>
+                    <div class="hbd-price">৳28,999</div>
+                  </div>
+                  <div class="hbd-item" onclick="showToast('🎧','Sony WH-1000XM5')">
+                    <div class="hbd-emoji">🎧</div>
+                    <div class="hbd-name">Sony WH-1000XM5</div>
+                    <div class="hbd-price">৳14,499</div>
+                  </div>
+                  <div class="hbd-item" onclick="showToast('👟','Nike Air Max 270')">
+                    <div class="hbd-emoji">👟</div>
+                    <div class="hbd-name">Nike Air Max 270</div>
+                    <div class="hbd-price">৳8,499</div>
+                  </div>
+                </div>
+              </div>
+
             </div>
-            <div class="banner-dots">
-              <div class="dot active"></div>
-              <div class="dot"></div>
-              <div class="dot"></div>
-              <div class="dot"></div>
+
+            <!-- Taobao-style showcase BELOW the two boxes -->
+            <div class="ts-showcase">
+
+              <div class="ts-group">
+                <div class="ts-group-title"><span class="ts-dot" style="background:#00b96b"></span> National Subsidies</div>
+                <div class="ts-products">
+                  <div class="ts-item" onclick="showToast('📷','Sony A7 IV')">
+                    <div class="ts-img">📷</div>
+                    <div class="ts-price-tag">৳89,999</div>
+                  </div>
+                  <div class="ts-item" onclick="showToast('🪑','Wardrobe Set')">
+                    <div class="ts-img">🪑</div>
+                    <div class="ts-price-tag">৳45,999</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ts-group">
+                <div class="ts-group-title"><span class="ts-dot" style="background:#ff5252"></span> NEXORA Live <span class="ts-badge">HOT</span></div>
+                <div class="ts-products">
+                  <div class="ts-item ts-item-rec" onclick="showToast('👗','Fashion Deal')">
+                    <div class="ts-img">👗</div>
+                    <div class="ts-rec-label">Recommended</div>
+                  </div>
+                  <div class="ts-item ts-item-rec" onclick="showToast('⌚','Smart Watch')">
+                    <div class="ts-img">⌚</div>
+                    <div class="ts-rec-label">Recommended</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ts-group">
+                <div class="ts-group-title"><span class="ts-dot" style="background:#7b2ff7"></span> Mega Subsidies <span class="ts-badge" style="background:#7b2ff7">NEW</span></div>
+                <div class="ts-products">
+                  <div class="ts-item" onclick="showToast('💄','Beauty Set')">
+                    <div class="ts-img">💄</div>
+                    <div class="ts-price-tag">৳3,499</div>
+                  </div>
+                  <div class="ts-item" onclick="showToast('🛋️','Sofa Set')">
+                    <div class="ts-img">🛋️</div>
+                    <div class="ts-price-tag">৳74,999</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ts-group">
+                <div class="ts-group-title"><span class="ts-dot" style="background:#ff9f1c"></span> Flash Sale <span class="ts-badge" style="background:#ff9f1c">SUPER LOW</span></div>
+                <div class="ts-products">
+                  <div class="ts-item" onclick="showToast('🥤','Protein Whey')">
+                    <div class="ts-img">🥤</div>
+                    <div class="ts-price-tag">৳2,999</div>
+                  </div>
+                  <div class="ts-item" onclick="showToast('🌀','Ceiling Fan')">
+                    <div class="ts-img">🌀</div>
+                    <div class="ts-price-tag">৳5,499</div>
+                  </div>
+                </div>
+              </div>
+
             </div>
+
+            <!-- You may also like bar -->
+            <div class="ymal-bar">
+              <div class="ymal-label">❤️ You may also like</div>
+              <div class="ymal-tags">
+                <a href="category.html?cat=Sports" class="ymal-tag"><span>🏕️</span> Outdoor sports</a>
+                <a href="category.html?cat=Groceries" class="ymal-tag"><span>🍟</span> Craving snacks</a>
+                <a href="category.html?cat=Electronics" class="ymal-tag"><span>🖥️</span> Digital gadgets</a>
+                <a href="category.html?cat=Fashion" class="ymal-tag"><span>👔</span> Clothing</a>
+                <a href="category.html?cat=Home+%26+Living" class="ymal-tag"><span>🛋️</span> Home decor</a>
+                <a href="category.html?cat=Beauty" class="ymal-tag"><span>💊</span> Health care</a>
+                <a href="category.html?cat=Gaming" class="ymal-tag"><span>🎮</span> Gaming</a>
+                <a href="category.html?cat=Toys+%26+Kids" class="ymal-tag"><span>🧸</span> Kids & Toys</a>
+                <a href="category.html?cat=Books" class="ymal-tag"><span>📚</span> Books</a>
+              </div>
+              <button class="ymal-refresh" onclick="window.location.href='category.html'" title="See all products">↺</button>
+            </div>
+
+            <!-- Product mini grid -->
+            <div class="hero-mini-products">
+              <div class="hmp-card" onclick="showToast('📱','Samsung Galaxy A55')">
+                <div class="hmp-img">📱</div>
+                <div class="hmp-name">Samsung Galaxy A55</div>
+                <div class="hmp-price">৳28,999</div>
+                <span class="hmp-badge">-72%</span>
+              </div>
+              <div class="hmp-card" onclick="showToast('🎧','Sony WH-1000XM5')">
+                <div class="hmp-img">🎧</div>
+                <div class="hmp-name">Sony WH-1000XM5</div>
+                <div class="hmp-price">৳14,499</div>
+                <span class="hmp-badge">-65%</span>
+              </div>
+              <div class="hmp-card" onclick="showToast('👟','Nike Air Max 270')">
+                <div class="hmp-img">👟</div>
+                <div class="hmp-name">Nike Air Max 270</div>
+                <div class="hmp-price">৳8,499</div>
+                <span class="hmp-badge">-80%</span>
+              </div>
+              <div class="hmp-card" onclick="showToast('💻','MacBook Air M3')">
+                <div class="hmp-img">💻</div>
+                <div class="hmp-name">MacBook Air M3</div>
+                <div class="hmp-price">৳1,19,999</div>
+                <span class="hmp-badge hmp-new">NEW</span>
+              </div>
+              <div class="hmp-card" onclick="showToast('⌚','Apple Watch Ultra 2')">
+                <div class="hmp-img">⌚</div>
+                <div class="hmp-name">Apple Watch Ultra 2</div>
+                <div class="hmp-price">৳89,999</div>
+                <span class="hmp-badge hmp-new">NEW</span>
+              </div>
+              <div class="hmp-card" onclick="showToast('🎮','PlayStation 5')">
+                <div class="hmp-img">🎮</div>
+                <div class="hmp-name">PlayStation 5 Slim</div>
+                <div class="hmp-price">৳54,999</div>
+                <span class="hmp-badge hmp-new">NEW</span>
+              </div>
+            </div>
+
           </div>
 
           <!-- Right Sidebar -->
           <div class="hero-side">
-            <div class="side-card">
-              <div class="user-card">
-                <div class="user-avatar">👋</div>
-                <div class="user-greeting">Welcome to</div>
-                <div class="user-name">NEXORA Store</div>
-                <div class="user-btns">
-                  <a href="login.html" class="ubtn ubtn-primary">Sign In</a>
-                  <a href="register.html" class="ubtn ubtn-ghost">Register</a>
+
+            <!-- Greeting + login card -->
+            <div class="tg-card">
+              <!-- Gradient header -->
+              <div class="tg-header" id="sideGreeting" style="background:linear-gradient(135deg,#1a1a2e,#0f3460)">
+                <div class="tg-icon-wrap" id="sgIcon">🌙</div>
+                <div class="tg-header-text">
+                  <div class="tg-greeting" id="sgText">Good Night</div>
+                  <div class="tg-tagline">Shop smarter every day</div>
+                </div>
+              </div>
+              <!-- Body -->
+              <div class="tg-body">
+                <div class="tg-promo-badge">🎁 New member gift — up to 70% off</div>
+                <div class="tg-cta-text">Sign in for personalised deals &amp; exclusive offers</div>
+                <div class="tg-btns">
+                  <a href="login.html" class="tg-btn-primary">Sign In</a>
+                  <a href="register.html" class="tg-btn-secondary">Register</a>
                 </div>
               </div>
             </div>
@@ -1851,11 +2413,83 @@
           </div>
 
         </div>
+
+      </div>
+    </section>
+
+    <!-- ALL PRODUCTS -->
+    <section class="section" style="padding-top:10px;">
+      <div class="container">
+        <div class="products-grid">
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-72%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>📱</div><div class="product-body"><div class="product-name">Samsung Galaxy A55 5G 8GB RAM 256GB</div><div class="product-pricing"><span class="product-price">৳28,999</span><span class="product-price-old">৳99,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(4,821)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-65%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🎧</div><div class="product-body"><div class="product-name">Sony WH-1000XM5 Noise Cancelling Headphones</div><div class="product-pricing"><span class="product-price">৳14,499</span><span class="product-price-old">৳41,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(2,934)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge hot">-80%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>⌚</div><div class="product-body"><div class="product-name">Apple Watch SE 2nd Gen GPS 44mm Aluminium</div><div class="product-pricing"><span class="product-price">৳19,999</span><span class="product-price-old">৳99,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(7,102)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge new">NEW</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>💻</div><div class="product-body"><div class="product-name">Xiaomi Pad 6 Pro Tablet 11" 8GB+256GB WiFi</div><div class="product-pricing"><span class="product-price">৳39,999</span><span class="product-price-old">৳69,999</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(1,203)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-58%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🎮</div><div class="product-body"><div class="product-name">PlayStation 5 DualSense Wireless Controller</div><div class="product-pricing"><span class="product-price">৳6,499</span><span class="product-price-old">৳15,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(5,678)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-17%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>📷</div><div class="product-body"><div class="product-name">Sony A7 IV Full-Frame Mirrorless Camera</div><div class="product-pricing"><span class="product-price">৳2,49,999</span><span class="product-price-old">৳2,99,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(892)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge new">NEW</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>👟</div><div class="product-body"><div class="product-name">Nike Air Max 270 React Men's Running Shoe</div><div class="product-pricing"><span class="product-price">৳8,499</span><span class="product-price-old">৳14,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(3,241)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-50%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>👗</div><div class="product-body"><div class="product-name">Zara Summer Floral Dress Collection 2025</div><div class="product-pricing"><span class="product-price">৳3,999</span><span class="product-price-old">৳7,999</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(1,540)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-54%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>☕</div><div class="product-body"><div class="product-name">Nespresso Vertuo Plus Coffee Espresso Machine</div><div class="product-pricing"><span class="product-price">৳9,999</span><span class="product-price-old">৳22,000</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(1,890)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge hot">HOT</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🎒</div><div class="product-body"><div class="product-name">Samsonite Omni PC Hardside Luggage 28"</div><div class="product-pricing"><span class="product-price">৳12,999</span><span class="product-price-old">৳28,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(4,521)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-63%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🌸</div><div class="product-body"><div class="product-name">MAANGE 15-Piece Rose Gold Makeup Brush Set</div><div class="product-pricing"><span class="product-price">৳1,299</span><span class="product-price-old">৳3,500</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(8,102)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-70%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🪑</div><div class="product-body"><div class="product-name">Ergonomic Gaming Chair with Lumbar Support</div><div class="product-pricing"><span class="product-price">৳14,999</span><span class="product-price-old">৳49,999</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(2,345)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-56%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🏋️</div><div class="product-body"><div class="product-name">Adjustable Dumbbell Set 5–52.5 lbs Select Tech</div><div class="product-pricing"><span class="product-price">৳18,499</span><span class="product-price-old">৳42,000</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(6,789)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge new">NEW</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>📖</div><div class="product-body"><div class="product-name">Kindle Paperwhite 6.8" Signature Edition 32GB</div><div class="product-pricing"><span class="product-price">৳14,999</span><span class="product-price-old">৳24,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(11,234)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge hot">HOT</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🌡️</div><div class="product-body"><div class="product-name">Xiaomi Smart Air Purifier 4 Pro HEPA 500m³/h</div><div class="product-pricing"><span class="product-price">৳11,999</span><span class="product-price-old">৳28,999</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(3,102)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-54%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🎨</div><div class="product-body"><div class="product-name">Wacom Intuos Pro Medium Graphics Tablet</div><div class="product-pricing"><span class="product-price">৳22,999</span><span class="product-price-old">৳49,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(987)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-42%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🛋️</div><div class="product-body"><div class="product-name">Premium L-Shape Sofa Set with Ottoman</div><div class="product-pricing"><span class="product-price">৳74,999</span><span class="product-price-old">৳1,29,999</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(432)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-50%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>💄</div><div class="product-body"><div class="product-name">Beauty Essentials Skincare & Makeup Kit</div><div class="product-pricing"><span class="product-price">৳3,499</span><span class="product-price-old">৳6,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(2,109)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-57%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>📚</div><div class="product-body"><div class="product-name">Bestseller Book Bundle — 10 Books Pack</div><div class="product-pricing"><span class="product-price">৳1,299</span><span class="product-price-old">৳2,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(5,320)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-50%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🧸</div><div class="product-body"><div class="product-name">Kids STEM Learning Toy Set Ages 4–10</div><div class="product-pricing"><span class="product-price">৳2,499</span><span class="product-price-old">৳4,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(3,678)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-50%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>⚽</div><div class="product-body"><div class="product-name">Adidas Pro Match Football Size 5</div><div class="product-pricing"><span class="product-price">৳1,999</span><span class="product-price-old">৳3,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(1,234)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-22%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🖥️</div><div class="product-body"><div class="product-name">Samsung 4K UHD Monitor 32" 144Hz</div><div class="product-pricing"><span class="product-price">৳34,999</span><span class="product-price-old">৳44,999</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(876)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-40%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🌱</div><div class="product-body"><div class="product-name">Indoor Plant Bundle — 5 Low-Maintenance Plants</div><div class="product-pricing"><span class="product-price">৳899</span><span class="product-price-old">৳1,499</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(654)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-44%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🚗</div><div class="product-body"><div class="product-name">Car Dash Cam 4K Night Vision WiFi GPS</div><div class="product-pricing"><span class="product-price">৳4,999</span><span class="product-price-old">৳8,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(2,341)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-46%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🍳</div><div class="product-body"><div class="product-name">Instant Pot Duo 7-in-1 Electric Pressure Cooker 8qt</div><div class="product-pricing"><span class="product-price">৳7,499</span><span class="product-price-old">৳13,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(15,432)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-35%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🎸</div><div class="product-body"><div class="product-name">Yamaha F310 Acoustic Guitar Full Size</div><div class="product-pricing"><span class="product-price">৳9,999</span><span class="product-price-old">৳15,499</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(1,876)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge hot">HOT</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🧴</div><div class="product-body"><div class="product-name">Dyson Airwrap Complete Styler Multi-Tool</div><div class="product-pricing"><span class="product-price">৳29,999</span><span class="product-price-old">৳74,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(9,023)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-48%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>💊</div><div class="product-body"><div class="product-name">Vitamin C + Zinc Immune Support 180 Tablets</div><div class="product-pricing"><span class="product-price">৳799</span><span class="product-price-old">৳1,499</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(7,432)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-60%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🐾</div><div class="product-body"><div class="product-name">Smart Automatic Pet Feeder WiFi App Control</div><div class="product-pricing"><span class="product-price">৳3,999</span><span class="product-price-old">৳9,999</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(1,203)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge new">NEW</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>✈️</div><div class="product-body"><div class="product-name">DJI Mini 4 Pro Drone 4K/60fps HDR Video</div><div class="product-pricing"><span class="product-price">৳69,999</span><span class="product-price-old">৳1,49,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(3,456)</span></div></div></div>
+
+          <div class="product-card"><div class="product-img"><span class="product-badge">-38%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🎵</div><div class="product-body"><div class="product-name">JBL Charge 5 Portable Bluetooth Speaker</div><div class="product-pricing"><span class="product-price">৳9,499</span><span class="product-price-old">৳14,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(8,901)</span></div></div></div>
+
+        </div>
       </div>
     </section>
 
     <!-- FEATURES BAR -->
-    <div class="features-bar" style="margin-top:24px;">
+    <div class="features-bar" style="margin-top:16px;">
       <div class="features-inner">
         <div class="feature-item">
           <span class="feature-icon">🚚</span>
@@ -1894,587 +2528,6 @@
         </div>
       </div>
     </div>
-
-    <!-- FLASH DEALS -->
-    <section class="section">
-      <div class="container">
-        <div class="flash-header">
-          <div class="flash-title-group">
-            <span class="flash-lightning">⚡</span>
-            <div>
-              <div class="flash-title" data-i18n="flash.title">⚡ Flash Deals</div>
-              <div class="flash-subtitle" data-i18n="flash.subtitle">Hurry up! Limited quantities available</div>
-            </div>
-          </div>
-          <div class="flash-timer">
-            <span class="timer-label" data-i18n="flash.ends">Ends in:</span>
-            <span class="timer-box" id="hours">08</span>
-            <span class="timer-colon">:</span>
-            <span class="timer-box" id="minutes">34</span>
-            <span class="timer-colon">:</span>
-            <span class="timer-box" id="seconds">21</span>
-          </div>
-          <a href="#" class="see-all" style="color:rgba(255,255,255,.85);margin-left:auto;">See All →</a>
-        </div>
-
-        <div class="deals-grid">
-          <!-- Deal 1 -->
-          <div class="product-card">
-            <div class="product-img">
-              <span class="product-badge">-72%</span>
-              <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
-              📱
-            </div>
-            <div class="product-body">
-              <div class="product-name">Samsung Galaxy A55 5G 8GB RAM 256GB Storage</div>
-              <div class="product-pricing">
-                <span class="product-price">৳28,999</span>
-                <span class="product-price-old">৳99,999</span>
-              </div>
-              <div class="deal-progress-wrap">
-                <div class="deal-label">
-                  <span class="sold">213 sold</span>
-                  <span>300 total</span>
-                </div>
-                <div class="deal-bar"><div class="deal-fill" style="width:71%"></div></div>
-              </div>
-              <div class="product-rating">
-                <span class="stars">★★★★★</span>
-                <span>(4,821)</span>
-              </div>
-              <button class="add-cart-btn solid" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-          </div>
-
-          <!-- Deal 2 -->
-          <div class="product-card">
-            <div class="product-img">
-              <span class="product-badge">-65%</span>
-              <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
-              🎧
-            </div>
-            <div class="product-body">
-              <div class="product-name">Sony WH-1000XM5 Noise Cancelling Headphones</div>
-              <div class="product-pricing">
-                <span class="product-price">৳14,499</span>
-                <span class="product-price-old">৳41,999</span>
-              </div>
-              <div class="deal-progress-wrap">
-                <div class="deal-label">
-                  <span class="sold">489 sold</span>
-                  <span>600 total</span>
-                </div>
-                <div class="deal-bar"><div class="deal-fill" style="width:81%"></div></div>
-              </div>
-              <div class="product-rating">
-                <span class="stars">★★★★★</span>
-                <span>(2,934)</span>
-              </div>
-              <button class="add-cart-btn solid" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-          </div>
-
-          <!-- Deal 3 -->
-          <div class="product-card">
-            <div class="product-img">
-              <span class="product-badge hot">-80%</span>
-              <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
-              ⌚
-            </div>
-            <div class="product-body">
-              <div class="product-name">Apple Watch SE 2nd Gen GPS 44mm Aluminium</div>
-              <div class="product-pricing">
-                <span class="product-price">৳19,999</span>
-                <span class="product-price-old">৳99,999</span>
-              </div>
-              <div class="deal-progress-wrap">
-                <div class="deal-label">
-                  <span class="sold">97 sold</span>
-                  <span>100 total</span>
-                </div>
-                <div class="deal-bar"><div class="deal-fill" style="width:97%"></div></div>
-              </div>
-              <div class="product-rating">
-                <span class="stars">★★★★★</span>
-                <span>(7,102)</span>
-              </div>
-              <button class="add-cart-btn solid" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-          </div>
-
-          <!-- Deal 4 -->
-          <div class="product-card">
-            <div class="product-img">
-              <span class="product-badge new">NEW</span>
-              <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
-              💻
-            </div>
-            <div class="product-body">
-              <div class="product-name">Xiaomi Pad 6 Pro Tablet 11" 8GB+256GB WiFi</div>
-              <div class="product-pricing">
-                <span class="product-price">৳39,999</span>
-                <span class="product-price-old">৳69,999</span>
-              </div>
-              <div class="deal-progress-wrap">
-                <div class="deal-label">
-                  <span class="sold">156 sold</span>
-                  <span>400 total</span>
-                </div>
-                <div class="deal-bar"><div class="deal-fill" style="width:39%"></div></div>
-              </div>
-              <div class="product-rating">
-                <span class="stars">★★★★☆</span>
-                <span>(1,203)</span>
-              </div>
-              <button class="add-cart-btn solid" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-          </div>
-
-          <!-- Deal 5 -->
-          <div class="product-card">
-            <div class="product-img">
-              <span class="product-badge">-58%</span>
-              <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
-              🎮
-            </div>
-            <div class="product-body">
-              <div class="product-name">PlayStation 5 DualSense Wireless Controller</div>
-              <div class="product-pricing">
-                <span class="product-price">৳6,499</span>
-                <span class="product-price-old">৳15,999</span>
-              </div>
-              <div class="deal-progress-wrap">
-                <div class="deal-label">
-                  <span class="sold">344 sold</span>
-                  <span>500 total</span>
-                </div>
-                <div class="deal-bar"><div class="deal-fill" style="width:68%"></div></div>
-              </div>
-              <div class="product-rating">
-                <span class="stars">★★★★★</span>
-                <span>(5,678)</span>
-              </div>
-              <button class="add-cart-btn solid" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- BANNER STRIP -->
-    <div class="container">
-      <div class="banner-strip">
-        <div class="strip-card strip-card-1">
-          <div class="strip-label">Limited Offer</div>
-          <div class="strip-title">Electronics Mega Sale</div>
-          <div class="strip-sub">Up to 80% off on top brands</div>
-          <a href="#" class="strip-btn" onclick="showToast('⚡','Electronics sale loading!')">Shop Now →</a>
-          <span class="strip-icon">📱</span>
-        </div>
-        <div class="strip-card strip-card-2">
-          <div class="strip-label">New Season</div>
-          <div class="strip-title">Fashion Forward</div>
-          <div class="strip-sub">Thousands of new arrivals daily</div>
-          <a href="#" class="strip-btn" onclick="showToast('👗','Fashion collection loading!')">Explore →</a>
-          <span class="strip-icon">👗</span>
-        </div>
-        <div class="strip-card strip-card-3">
-          <div class="strip-label">Daily Essentials</div>
-          <div class="strip-title">Fresh Groceries</div>
-          <div class="strip-sub">Delivered in under 2 hours</div>
-          <a href="#" class="strip-btn" onclick="showToast('🛒','Grocery section loading!')">Order Now →</a>
-          <span class="strip-icon">🛒</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- SHOP BY CATEGORY -->
-    <section class="section">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-title-group">
-            <div class="section-dot"></div>
-            <div>
-              <div class="section-title">Shop by Category</div>
-              <div class="section-subtitle">Browse all departments</div>
-            </div>
-          </div>
-          <a href="#" class="see-all">View All →</a>
-        </div>
-        <div class="cats-grid">
-          <div class="cat-card" onclick="showToast('📱','Electronics')">
-            <span class="cat-icon">📱</span>
-            <div class="cat-name">Electronics</div>
-          </div>
-          <div class="cat-card" onclick="showToast('👗','Fashion')">
-            <span class="cat-icon">👗</span>
-            <div class="cat-name">Fashion</div>
-          </div>
-          <div class="cat-card" onclick="showToast('🏠','Home & Living')">
-            <span class="cat-icon">🏠</span>
-            <div class="cat-name">Home</div>
-          </div>
-          <div class="cat-card" onclick="showToast('💄','Beauty')">
-            <span class="cat-icon">💄</span>
-            <div class="cat-name">Beauty</div>
-          </div>
-          <div class="cat-card" onclick="showToast('⚽','Sports')">
-            <span class="cat-icon">⚽</span>
-            <div class="cat-name">Sports</div>
-          </div>
-          <div class="cat-card" onclick="showToast('🛒','Grocery')">
-            <span class="cat-icon">🛒</span>
-            <div class="cat-name">Grocery</div>
-          </div>
-          <div class="cat-card" onclick="showToast('🧸','Toys')">
-            <span class="cat-icon">🧸</span>
-            <div class="cat-name">Toys & Kids</div>
-          </div>
-          <div class="cat-card" onclick="showToast('📚','Books')">
-            <span class="cat-icon">📚</span>
-            <div class="cat-name">Books</div>
-          </div>
-          <div class="cat-card" onclick="showToast('🎮','Gaming')">
-            <span class="cat-icon">🎮</span>
-            <div class="cat-name">Gaming</div>
-          </div>
-          <div class="cat-card" onclick="showToast('🚗','Automotive')">
-            <span class="cat-icon">🚗</span>
-            <div class="cat-name">Automotive</div>
-          </div>
-          <div class="cat-card" onclick="showToast('🐾','Pet Supplies')">
-            <span class="cat-icon">🐾</span>
-            <div class="cat-name">Pet Supplies</div>
-          </div>
-          <div class="cat-card" onclick="showToast('🌱','Garden')">
-            <span class="cat-icon">🌱</span>
-            <div class="cat-name">Garden</div>
-          </div>
-          <div class="cat-card" onclick="showToast('💊','Health')">
-            <span class="cat-icon">💊</span>
-            <div class="cat-name">Health</div>
-          </div>
-          <div class="cat-card" onclick="showToast('🎵','Music')">
-            <span class="cat-icon">🎵</span>
-            <div class="cat-name">Music</div>
-          </div>
-          <div class="cat-card" onclick="showToast('📷','Cameras')">
-            <span class="cat-icon">📷</span>
-            <div class="cat-name">Cameras</div>
-          </div>
-          <div class="cat-card" onclick="showToast('✈️','Travel')">
-            <span class="cat-icon">✈️</span>
-            <div class="cat-name">Travel</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- GROUP BUY -->
-    <section class="section" style="background:#fff;padding:32px 0;">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-title-group">
-            <div class="section-dot" style="background:linear-gradient(180deg,var(--accent2),#9b5de5)"></div>
-            <div>
-              <div class="section-title" data-i18n="groupbuy.title">Group Buy 👥</div>
-              <div class="section-subtitle">Team up with others & unlock bigger discounts</div>
-            </div>
-          </div>
-          <a href="#" class="see-all" style="color:var(--accent2)">See All Groups →</a>
-        </div>
-        <div class="group-buy-grid">
-
-          <div class="group-card">
-            <div class="group-card-header">
-              <div>
-                <div class="group-label">Group Buy Active</div>
-                <div class="group-slots" style="font-size:15px;font-weight:800;color:#fff;">2 slots left!</div>
-              </div>
-              <div class="group-members">
-                <div class="member-avatar">👩</div>
-                <div class="member-avatar">👨</div>
-                <div class="member-avatar">👦</div>
-                <div class="member-avatar" style="background:rgba(255,255,255,.15);font-size:10px;font-weight:700;color:#fff;">+12</div>
-              </div>
-            </div>
-            <div class="group-card-body">
-              <div class="group-img">🖥️</div>
-              <div class="group-name">LG 27" 4K UHD Monitor IPS HDR600 USB-C</div>
-              <div class="group-pricing">
-                <span class="group-price">৳28,500</span>
-                <span class="group-price-old">৳68,000</span>
-              </div>
-              <button class="add-cart-btn group-buy" onclick="showToast('👥','Joined group buy!')">Join Group — Save 58%</button>
-            </div>
-          </div>
-
-          <div class="group-card">
-            <div class="group-card-header">
-              <div>
-                <div class="group-label">Group Buy Active</div>
-                <div class="group-slots" style="font-size:15px;font-weight:800;color:#fff;">5 slots left!</div>
-              </div>
-              <div class="group-members">
-                <div class="member-avatar">👩</div>
-                <div class="member-avatar">👨</div>
-                <div class="member-avatar">+8</div>
-              </div>
-            </div>
-            <div class="group-card-body">
-              <div class="group-img">🧴</div>
-              <div class="group-name">Dyson Airwrap Complete Styling Set Multi</div>
-              <div class="group-pricing">
-                <span class="group-price">৳29,999</span>
-                <span class="group-price-old">৳74,999</span>
-              </div>
-              <button class="add-cart-btn group-buy" onclick="showToast('👥','Joined group buy!')">Join Group — Save 60%</button>
-            </div>
-          </div>
-
-          <div class="group-card">
-            <div class="group-card-header" style="background:linear-gradient(135deg,#b45309,#f59e0b)">
-              <div>
-                <div class="group-label">Starting New Group</div>
-                <div class="group-slots" style="font-size:15px;font-weight:800;color:#fff;">Be the first!</div>
-              </div>
-              <div class="group-members">
-                <div class="member-avatar">👩</div>
-              </div>
-            </div>
-            <div class="group-card-body">
-              <div class="group-img">🧸</div>
-              <div class="group-name">LEGO Technic Bugatti Chiron 42083 Building Kit</div>
-              <div class="group-pricing">
-                <span class="group-price" style="color:var(--accent)">৳12,499</span>
-                <span class="group-price-old">৳34,999</span>
-              </div>
-              <button class="add-cart-btn" style="background:var(--accent);color:#fff;" onclick="showToast('👥','Group started!')">Start Group — Save 64%</button>
-            </div>
-          </div>
-
-          <div class="group-card">
-            <div class="group-card-header">
-              <div>
-                <div class="group-label">Group Buy Active</div>
-                <div class="group-slots" style="font-size:15px;font-weight:800;color:#fff;">1 slot left!</div>
-              </div>
-              <div class="group-members">
-                <div class="member-avatar">👩</div>
-                <div class="member-avatar">👨</div>
-                <div class="member-avatar">👩</div>
-                <div class="member-avatar">+19</div>
-              </div>
-            </div>
-            <div class="group-card-body">
-              <div class="group-img">✈️</div>
-              <div class="group-name">DJI Mini 4 Pro Drone 4K/60fps HDR Video Camera</div>
-              <div class="group-pricing">
-                <span class="group-price">৳69,999</span>
-                <span class="group-price-old">৳149,999</span>
-              </div>
-              <button class="add-cart-btn group-buy" onclick="showToast('👥','Last slot! Joined!')">Last Slot — Save 53%</button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- RECOMMENDED PRODUCTS -->
-    <section class="section">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-title-group">
-            <div class="section-dot"></div>
-            <div>
-              <div class="section-title" data-i18n="recommended.title">Recommended for You</div>
-              <div class="section-subtitle">Personalized picks based on your interests</div>
-            </div>
-          </div>
-          <a href="#" class="see-all">See More →</a>
-        </div>
-        <div class="products-grid">
-
-          <div class="product-card">
-            <div class="product-img">
-              <span class="product-badge new">NEW</span>
-              <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
-              👟
-            </div>
-            <div class="product-body">
-              <div class="product-name">Nike Air Max 270 React Men's Running Shoe</div>
-              <div class="product-pricing">
-                <span class="product-price">৳8,499</span>
-                <span class="product-price-old">৳14,999</span>
-                <span class="product-discount">-43%</span>
-              </div>
-              <div class="product-rating"><span class="stars">★★★★★</span> <span>(3,241)</span></div>
-              <button class="add-cart-btn solid" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-          </div>
-
-          <div class="product-card">
-            <div class="product-img">
-              <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
-              ☕
-            </div>
-            <div class="product-body">
-              <div class="product-name">Nespresso Vertuo Plus Coffee Espresso Machine</div>
-              <div class="product-pricing">
-                <span class="product-price">৳9,999</span>
-                <span class="product-price-old">৳22,000</span>
-                <span class="product-discount">-54%</span>
-              </div>
-              <div class="product-rating"><span class="stars">★★★★☆</span> <span>(1,890)</span></div>
-              <button class="add-cart-btn solid" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-          </div>
-
-          <div class="product-card">
-            <div class="product-img">
-              <span class="product-badge hot">HOT</span>
-              <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
-              🎒
-            </div>
-            <div class="product-body">
-              <div class="product-name">Samsonite Omni PC Hardside Expandable Luggage 28"</div>
-              <div class="product-pricing">
-                <span class="product-price">৳12,999</span>
-                <span class="product-price-old">৳28,999</span>
-                <span class="product-discount">-55%</span>
-              </div>
-              <div class="product-rating"><span class="stars">★★★★★</span> <span>(4,521)</span></div>
-              <button class="add-cart-btn solid" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-          </div>
-
-          <div class="product-card">
-            <div class="product-img">
-              <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
-              🌸
-            </div>
-            <div class="product-body">
-              <div class="product-name">MAANGE 15-Piece Rose Gold Professional Makeup Brush Set</div>
-              <div class="product-pricing">
-                <span class="product-price">৳1,299</span>
-                <span class="product-price-old">৳3,500</span>
-                <span class="product-discount">-63%</span>
-              </div>
-              <div class="product-rating"><span class="stars">★★★★★</span> <span>(8,102)</span></div>
-              <button class="add-cart-btn solid" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-          </div>
-
-          <div class="product-card">
-            <div class="product-img">
-              <span class="product-badge">-70%</span>
-              <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
-              🪑
-            </div>
-            <div class="product-body">
-              <div class="product-name">Ergonomic Gaming Chair with Lumbar Support & Footrest</div>
-              <div class="product-pricing">
-                <span class="product-price">৳14,999</span>
-                <span class="product-price-old">₳49,999</span>
-                <span class="product-discount">-70%</span>
-              </div>
-              <div class="product-rating"><span class="stars">★★★★☆</span> <span>(2,345)</span></div>
-              <button class="add-cart-btn solid" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-          </div>
-
-          <div class="product-card">
-            <div class="product-img">
-              <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
-              🏋️
-            </div>
-            <div class="product-body">
-              <div class="product-name">Adjustable Dumbbell Set 5-52.5 lbs Select Tech</div>
-              <div class="product-pricing">
-                <span class="product-price">৳18,499</span>
-                <span class="product-price-old">৳42,000</span>
-                <span class="product-discount">-56%</span>
-              </div>
-              <div class="product-rating"><span class="stars">★★★★★</span> <span>(6,789)</span></div>
-              <button class="add-cart-btn solid" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-          </div>
-
-          <div class="product-card">
-            <div class="product-img">
-              <span class="product-badge new">NEW</span>
-              <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
-              📖
-            </div>
-            <div class="product-body">
-              <div class="product-name">Kindle Paperwhite 6.8" Signature Edition 32GB</div>
-              <div class="product-pricing">
-                <span class="product-price">৳14,999</span>
-                <span class="product-price-old">৳24,999</span>
-                <span class="product-discount">-40%</span>
-              </div>
-              <div class="product-rating"><span class="stars">★★★★★</span> <span>(11,234)</span></div>
-              <button class="add-cart-btn solid" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-          </div>
-
-          <div class="product-card">
-            <div class="product-img">
-              <span class="product-badge hot">HOT</span>
-              <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
-              🌡️
-            </div>
-            <div class="product-body">
-              <div class="product-name">Xiaomi Smart Air Purifier 4 Pro HEPA 500m³/h</div>
-              <div class="product-pricing">
-                <span class="product-price">৳11,999</span>
-                <span class="product-price-old">৳28,999</span>
-                <span class="product-discount">-58%</span>
-              </div>
-              <div class="product-rating"><span class="stars">★★★★☆</span> <span>(3,102)</span></div>
-              <button class="add-cart-btn solid" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-          </div>
-
-          <div class="product-card">
-            <div class="product-img">
-              <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
-              🎨
-            </div>
-            <div class="product-body">
-              <div class="product-name">Wacom Intuos Pro Medium Graphics Drawing Tablet</div>
-              <div class="product-pricing">
-                <span class="product-price">৳22,999</span>
-                <span class="product-price-old">৳49,999</span>
-                <span class="product-discount">-54%</span>
-              </div>
-              <div class="product-rating"><span class="stars">★★★★★</span> <span>(987)</span></div>
-              <button class="add-cart-btn solid" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-          </div>
-
-          <div class="product-card">
-            <div class="product-img">
-              <span class="product-badge">-45%</span>
-              <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
-              🍳
-            </div>
-            <div class="product-body">
-              <div class="product-name">Instant Pot Duo 7-in-1 Electric Pressure Cooker 8qt</div>
-              <div class="product-pricing">
-                <span class="product-price">৳7,499</span>
-                <span class="product-price-old">৳13,999</span>
-                <span class="product-discount">-46%</span>
-              </div>
-              <div class="product-rating"><span class="stars">★★★★★</span> <span>(15,432)</span></div>
-              <button class="add-cart-btn solid" onclick="addToCart(this)">Add to Cart</button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
 
   </main>
 
@@ -3113,6 +3166,45 @@
     });
 
     // ════════════════════════════════
+    // TIME GREETING
+    // ════════════════════════════════
+    (function() {
+      const h = new Date().getHours();
+      let icon, text, bg;
+      if (h >= 5 && h < 12)       { icon = '☀️';  text = 'Good Morning';   bg = 'linear-gradient(135deg,#ff9f1c,#ff6b35)'; }
+      else if (h >= 12 && h < 17) { icon = '🌤️'; text = 'Good Afternoon';  bg = 'linear-gradient(135deg,#ff6b35,#ff3c5f)'; }
+      else if (h >= 17 && h < 21) { icon = '🌇'; text = 'Good Evening';    bg = 'linear-gradient(135deg,#7b2ff7,#ff3c5f)'; }
+      else                         { icon = '🌙'; text = 'Good Night';      bg = 'linear-gradient(135deg,#1a1a2e,#0f3460)'; }
+      const hdr = document.getElementById('sideGreeting');
+      const ic  = document.getElementById('sgIcon');
+      const tx  = document.getElementById('sgText');
+      if (hdr) hdr.style.background = bg;
+      if (ic)  ic.textContent = icon;
+      if (tx)  tx.textContent = text;
+    })();
+
+    // COUNTDOWN TIMER
+    // ════════════════════════════════
+    (function() {
+      function updateCountdown() {
+        const now = new Date();
+        const end = new Date();
+        end.setHours(23, 59, 59, 999);
+        const diff = Math.max(0, end - now);
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        const hEl = document.getElementById('cd-hours');
+        const mEl = document.getElementById('cd-mins');
+        const sEl = document.getElementById('cd-secs');
+        if (hEl) hEl.textContent = String(h).padStart(2, '0');
+        if (mEl) mEl.textContent = String(m).padStart(2, '0');
+        if (sEl) sEl.textContent = String(s).padStart(2, '0');
+      }
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    })();
+
     // TOAST
     // ════════════════════════════════
     function showToast(icon, msg) {
