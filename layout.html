@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>NEXORA — Shop Smarter</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#ff4400; --red2:#cc3300; --orange:#ff7700; --green:#07b43c;
+  --dark:#333;   --text:#3c3c3c; --muted:#999;    --border:#e8e8e8;
+  --bg:#f0f0f0;  --white:#fff;   --wrap:1200px;
+}
+html{font-size:13px}
+body{font-family:'Inter',Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+a:hover{color:var(--red)}
+ul{list-style:none}
+button{cursor:pointer;font-family:inherit;font-size:12px}
+input{font-family:inherit}
+
+/* ── TOPBAR ── */
+.topbar{background:#fff;border-bottom:1px solid #eee;font-size:11px;color:var(--muted);padding:4px 0}
+.top-inner{max-width:var(--wrap);margin:0 auto;padding:0 10px;display:flex;justify-content:space-between;align-items:center}
+.top-l,.top-r{display:flex;gap:12px;align-items:center}
+.top-inner a{color:var(--muted)}
+.top-inner a:hover{color:var(--red)}
+.top-hi{color:var(--red)!important;font-weight:600}
+.top-sep{color:#ddd}
+
+/* ── HEADER ── */
+.header{background:#fff;padding:10px 0;border-bottom:1px solid #eee}
+.hdr-inner{max-width:var(--wrap);margin:0 auto;padding:0 10px;display:flex;align-items:center;gap:16px}
+.logo{flex-shrink:0;display:flex;align-items:center;gap:8px;min-width:130px}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--red),#ff6633);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:#fff}
+.logo-name{font-size:19px;font-weight:900;color:var(--red);letter-spacing:-1px;line-height:1}
+.logo-sub{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+
+/* Search */
+.search-wrap{flex:1;display:flex;flex-direction:column;gap:5px}
+.search-bar{display:flex;border:2px solid var(--red);border-radius:4px;overflow:hidden;height:34px}
+.search-cat{padding:0 10px;border:none;border-right:1px solid #eee;font-size:12px;background:#fafafa;outline:none;color:var(--text);min-width:100px;cursor:pointer}
+.search-input{flex:1;padding:0 12px;border:none;outline:none;font-size:13px}
+.search-btn{padding:0 18px;background:var(--red);color:#fff;border:none;font-size:13px;font-weight:700;white-space:nowrap}
+.search-btn:hover{background:var(--red2)}
+.search-tags{display:flex;gap:10px;flex-wrap:wrap}
+.search-tags a{font-size:11px;color:var(--muted)}
+.search-tags a:hover{color:var(--red)}
+.search-tags .h1{color:var(--red);font-weight:600}
+.search-tags .h2{color:var(--orange);font-weight:600}
+
+/* Header right */
+.hdr-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.hdr-icon{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--muted);padding:4px 8px;border-radius:4px;background:none;border:none;transition:color .15s}
+.hdr-icon:hover{color:var(--red)}
+.hdr-icon .ico{font-size:18px}
+.cart-btn-sm{display:flex;align-items:center;gap:6px;background:var(--red);color:#fff;border:none;padding:7px 14px;border-radius:4px;font-size:12px;font-weight:700}
+.cart-btn-sm:hover{background:var(--red2)}
+.cart-n{background:#fff;color:var(--red);width:16px;height:16px;border-radius:50%;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}
+
+/* ── NAV ── */
+.navbar{background:#fff;border-bottom:2px solid var(--red)}
+.nav-inner{max-width:var(--wrap);margin:0 auto;padding:0 10px;display:flex;align-items:center;overflow-x:auto;gap:0}
+.nav-tab{display:flex;align-items:center;gap:4px;padding:8px 12px;font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-2px;transition:color .15s,border-color .15s}
+.nav-tab:hover,.nav-tab.on{color:var(--red);border-bottom-color:var(--red)}
+.nav-tab .ti{font-size:14px}
+.nav-tab.sp{color:var(--red);font-weight:700}
+.nav-tab.gd{color:var(--orange);font-weight:700}
+.nav-sep2{width:1px;height:12px;background:#eee;flex-shrink:0;margin:0 2px}
+
+/* ── HERO 3-COL ── */
+.hero{max-width:var(--wrap);margin:8px auto;padding:0 10px;display:grid;grid-template-columns:1fr 1fr 195px;gap:8px;align-items:stretch}
+
+/* LEFT: Big red banner */
+.hero-banner{background:linear-gradient(135deg,#e20000 0%,#c41414 55%,#9b0000 100%);border-radius:4px;position:relative;overflow:hidden;padding:22px 22px 36px;display:flex;flex-direction:column;justify-content:center;min-height:200px}
+.hero-banner .ban-deco{position:absolute;right:-10px;bottom:-18px;font-size:110px;opacity:.12;transform:rotate(-12deg);user-select:none;pointer-events:none}
+.ban-tag-sm{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);color:#ffd000;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;margin-bottom:10px;border:1px solid rgba(255,208,0,.3);width:fit-content}
+.ban-h{font-size:22px;font-weight:900;color:#fff;line-height:1.25;letter-spacing:-.3px;margin-bottom:6px}
+.ban-h span{color:#ffd000}
+.ban-p{font-size:11px;color:rgba(255,255,255,.7);margin-bottom:14px;line-height:1.6}
+.ban-actions{display:flex;gap:7px}
+.ban-btn{padding:6px 14px;border:none;border-radius:4px;font-size:11.5px;font-weight:700;cursor:pointer;transition:background .15s}
+.ban-btn.pri{background:#fff;color:var(--red)}
+.ban-btn.pri:hover{background:#f5f5f5}
+.ban-btn.sec{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.4)}
+.ban-btn.sec:hover{background:rgba(255,255,255,.25)}
+.ban-dots-sm{position:absolute;bottom:10px;left:22px;display:flex;gap:4px}
+.bd{width:16px;height:4px;border-radius:2px;background:rgba(255,255,255,.3);cursor:pointer;transition:background .2s,width .2s}
+.bd.on{background:rgba(255,255,255,.9)}
+
+/* CENTER: 4-product promo panel */
+.promo-4panel{background:linear-gradient(160deg,#d40000 0%,#e53000 100%);border-radius:4px;overflow:hidden;display:flex;flex-direction:column}
+.p4-header{color:rgba(255,255,255,.88);font-size:11px;font-weight:600;padding:9px 12px 7px;border-bottom:1px solid rgba(255,255,255,.15);letter-spacing:.1px}
+.p4-items{display:grid;grid-template-columns:repeat(4,1fr);flex:1}
+.p4-item{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:10px 6px 14px;gap:6px;cursor:pointer;border-right:1px solid rgba(255,255,255,.12);transition:background .15s}
+.p4-item:last-child{border-right:none}
+.p4-item:hover{background:rgba(255,255,255,.1)}
+.p4-em{font-size:50px;line-height:1;transition:transform .22s}
+.p4-item:hover .p4-em{transform:scale(1.1)}
+.p4-name{font-size:10px;color:rgba(255,255,255,.75);text-align:center;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.p4-price{font-size:14px;font-weight:900;color:#fff;background:rgba(0,0,0,.22);padding:2px 8px;border-radius:4px}
+
+/* RIGHT: Login panel */
+.hero-login{background:#fff;border:1px solid var(--border);border-radius:4px;padding:12px;display:flex;flex-direction:column;gap:0}
+.hl-greet{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.hl-av{font-size:26px}
+.hl-hi{font-size:12px;font-weight:700;color:var(--text)}
+.hl-sub{font-size:10px;color:var(--muted)}
+.hl-desc{font-size:11px;color:var(--text);line-height:1.45;margin-bottom:9px}
+.hl-login-btn{background:var(--orange);color:#fff;border:none;border-radius:4px;padding:8px;font-size:13px;font-weight:700;width:100%;cursor:pointer;margin-bottom:10px;transition:background .15s}
+.hl-login-btn:hover{background:#cc5500}
+.hl-icons{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;border-top:1px solid #f5f5f5;padding-top:9px;margin-bottom:10px}
+.hl-icon{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9.5px;color:var(--muted);text-align:center;padding:4px 2px;cursor:pointer;transition:color .15s}
+.hl-icon .hi-ico{font-size:18px}
+.hl-icon:hover{color:var(--red)}
+.hl-picks{border-top:1px solid #f5f5f5;padding-top:8px;display:flex;flex-direction:column;gap:7px}
+.hlp-item{display:flex;align-items:center;gap:7px;cursor:pointer;padding:3px;border-radius:4px;transition:background .15s}
+.hlp-item:hover{background:#fff5f2}
+.hlp-em{width:36px;height:36px;background:#f5f5f5;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.hlp-tag{font-size:9px;font-weight:700;color:var(--red);text-transform:uppercase;margin-bottom:1px}
+.hlp-name{font-size:10.5px;color:var(--text);font-weight:500;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:95px}
+.hlp-price{font-size:12px;font-weight:800;color:var(--red);margin-top:1px}
+
+/* 4 deal-sections row — full width, below hero */
+.four-sections{max-width:var(--wrap);margin:8px auto;padding:0 10px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.fs-box{background:#fff;border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.fs-hd{padding:8px 10px 6px;display:flex;align-items:center;gap:5px;border-bottom:1px solid #f8f8f8}
+.fs-label{font-size:12px;font-weight:800}
+.fs-badge{font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;color:#fff}
+.fs-more{margin-left:auto;font-size:10px;color:var(--muted)}
+.fs-more:hover{color:var(--red)}
+.fs-items{display:grid;grid-template-columns:1fr 1fr}
+.fsi{display:flex;flex-direction:column;align-items:center;padding:8px 6px 10px;gap:4px;cursor:pointer;border-right:1px solid #f8f8f8;transition:background .12s}
+.fsi:nth-child(even){border-right:none}
+.fsi:hover{background:#fff8f5}
+.fsi-em{font-size:42px;line-height:1;transition:transform .2s}
+.fsi:hover .fsi-em{transform:scale(1.07)}
+.fsi-name{font-size:10px;color:var(--muted);text-align:center;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.fsi-price{font-size:13px;font-weight:800;color:var(--red)}
+
+/* ── FEATURE STRIP ── */
+.feat-strip{background:#fff;border-top:2px solid var(--red);border-bottom:1px solid var(--border);padding:8px 0;margin-top:8px}
+.feat-inner{max-width:var(--wrap);margin:0 auto;padding:0 10px;display:flex;justify-content:space-around;align-items:center}
+.feat-item{display:flex;align-items:center;gap:7px}
+.feat-item .fi{font-size:20px}
+.feat-t{font-size:11.5px;font-weight:700}
+.feat-s{font-size:10px;color:var(--muted)}
+.feat-div{width:1px;height:24px;background:#eee}
+
+/* ── ICON MENU ── */
+.icon-menu-wrap{max-width:var(--wrap);margin:10px auto;padding:0 10px}
+.icon-menu{background:#fff;border:1px solid var(--border);border-radius:4px;padding:12px 16px;display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none}
+.icon-menu::-webkit-scrollbar{display:none}
+.icon-item{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:64px;cursor:pointer;text-decoration:none;transition:transform .18s}
+.icon-item:hover{transform:translateY(-2px)}
+.icon-circle{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 2px 8px rgba(0,0,0,.12);transition:box-shadow .18s}
+.icon-item:hover .icon-circle{box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.icon-label{font-size:10.5px;font-weight:600;color:var(--text);text-align:center;white-space:nowrap}
+.icon-item:hover .icon-label{color:var(--red)}
+.icon-sep{width:1px;height:36px;background:#f0f0f0;flex-shrink:0;margin:0 4px}
+
+/* ── PROMO ZONE ── */
+.section-wrap{max-width:var(--wrap);margin:0 auto;padding:0 10px}
+
+/* Flash Sale */
+.flash-wrap{background:#fff;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:10px}
+.flash-hd{display:flex;align-items:center;gap:12px;padding:10px 14px;background:linear-gradient(135deg,#ff4400,#cc2200);flex-wrap:wrap}
+.flash-title{font-size:15px;font-weight:900;color:#fff;letter-spacing:-.3px}
+.flash-title em{color:#ffd000;font-style:normal}
+.flash-timer-wrap{display:flex;align-items:center;gap:4px}
+.fl-lbl{font-size:11px;color:rgba(255,255,255,.75)}
+.fl-b{background:rgba(0,0,0,.4);color:#fff;font-size:14px;font-weight:800;padding:2px 6px;border-radius:4px;min-width:28px;text-align:center;font-variant-numeric:tabular-nums}
+.fl-c{color:rgba(255,255,255,.6);font-size:14px;font-weight:700}
+.flash-all-link{margin-left:auto;font-size:11px;color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.3);padding:3px 10px;border-radius:20px}
+.flash-all-link:hover{color:#fff;border-color:rgba(255,255,255,.7)}
+
+.flash-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:0;padding:0}
+.fl-card{display:flex;flex-direction:column;align-items:center;padding:12px 8px 10px;text-align:center;border-right:1px solid #f5f5f5;cursor:pointer;transition:background .15s;position:relative}
+.fl-card:last-child{border-right:none}
+.fl-card:hover{background:#fff8f5}
+.fl-disc-tag{position:absolute;top:8px;left:8px;background:var(--red);color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:3px}
+.fl-em{font-size:54px;line-height:1;transition:transform .2s;border-radius:4px}
+.fl-card:hover .fl-em{transform:scale(1.06)}
+.fl-name{font-size:11px;color:#555;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;font-weight:500}
+.fl-price{font-size:15px;font-weight:800;color:var(--red)}
+.fl-old{font-size:10px;color:var(--muted);text-decoration:line-through;margin-bottom:6px}
+.fl-bar{width:100%;background:#f0f0f0;border-radius:20px;height:4px;overflow:hidden;margin-bottom:4px}
+.fl-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--orange));border-radius:20px}
+.fl-sold{font-size:9.5px;color:var(--muted);margin-bottom:7px}
+.fl-buy{padding:4px 12px;background:var(--red);color:#fff;border:none;border-radius:3px;font-size:11px;font-weight:700;width:100%;transition:background .15s}
+.fl-buy:hover{background:var(--red2)}
+
+/* Daily Deals */
+.daily-wrap{background:#fff;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:10px}
+.sec-hd-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #f5f5f5}
+.shb-left{display:flex;align-items:center;gap:8px}
+.shb-icon{font-size:16px}
+.shb-title{font-size:14px;font-weight:800;color:var(--text)}
+.shb-sub{font-size:11px;color:var(--muted)}
+.shb-right{display:flex;align-items:center;gap:8px}
+.shb-more{font-size:11px;color:var(--muted)}
+.shb-more:hover{color:var(--red)}
+
+.daily-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.dd-card{border-right:1px solid #f5f5f5;cursor:pointer;transition:background .15s;overflow:hidden}
+.dd-card:last-child{border-right:none}
+.dd-card:hover{background:#fff8f5}
+.dd-img{height:150px;display:flex;align-items:center;justify-content:center;font-size:68px;position:relative}
+.dd-timer-tag{position:absolute;top:7px;left:7px;background:rgba(0,0,0,.65);color:#fff;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:20px;display:flex;align-items:center;gap:3px}
+.dd-dot{width:4px;height:4px;background:var(--green);border-radius:50%;animation:blink 1.2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.dd-em{transition:transform .22s}
+.dd-card:hover .dd-em{transform:scale(1.08)}
+.dd-body{padding:10px 12px}
+.dd-brand{font-size:10px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px}
+.dd-name{font-size:12px;font-weight:600;line-height:1.4;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:34px}
+.dd-price-row{display:flex;align-items:baseline;gap:6px;margin-bottom:3px}
+.dd-price{font-size:16px;font-weight:800;color:var(--red)}
+.dd-old{font-size:11px;color:var(--muted);text-decoration:line-through}
+.dd-save{font-size:10px;font-weight:700;color:var(--green);background:#edfff5;padding:1px 5px;border-radius:3px}
+.dd-sold{font-size:10.5px;color:var(--muted);margin-bottom:8px}
+.dd-btn{width:100%;padding:6px;background:#fff;color:var(--red);border:1px solid var(--red);border-radius:3px;font-size:11px;font-weight:700;transition:background .15s,color .15s}
+.dd-btn:hover{background:var(--red);color:#fff}
+
+/* Coupons */
+.coupon-wrap{background:#fff;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:10px}
+.coupon-grid{display:grid;grid-template-columns:repeat(3,1fr);padding:12px;gap:10px}
+.cpn{background:#fff;border-radius:6px;display:flex;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.08);transition:box-shadow .18s,transform .18s;position:relative}
+.cpn:hover{box-shadow:0 4px 14px rgba(0,0,0,.13);transform:translateY(-2px)}
+.cpn::after{content:'';position:absolute;left:72px;top:0;bottom:0;border-left:1.5px dashed #eee}
+.cpn-l{width:76px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 6px;position:relative}
+.cpn-l::after{content:'';position:absolute;right:-7px;top:50%;transform:translateY(-50%);width:13px;height:13px;background:var(--bg);border-radius:50%;border:1px solid #eee;z-index:1}
+.cpn-amt{font-size:20px;font-weight:900;color:#fff;line-height:1;text-align:center}
+.cpn-amt small{font-size:11px}
+.cpn-type{font-size:9.5px;color:rgba(255,255,255,.8);font-weight:700;margin-top:2px}
+.cpn-r{flex:1;padding:10px 12px 10px 16px}
+.cpn-cat{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px}
+.cpn-desc{font-size:11.5px;font-weight:600;color:var(--text);margin-bottom:3px;line-height:1.35}
+.cpn-min{font-size:10px;color:var(--muted);margin-bottom:8px}
+.cpn-foot{display:flex;align-items:center;justify-content:space-between}
+.cpn-exp{font-size:9.5px;color:var(--muted)}
+.cpn-btn{padding:4px 12px;border-radius:20px;font-size:10.5px;font-weight:700;cursor:pointer;border:1.5px solid;transition:all .18s}
+.cpn-btn.idle{background:#fff;color:var(--orange);border-color:var(--orange)}
+.cpn-btn.idle:hover{background:var(--orange);color:#fff}
+.cpn-btn.done{background:var(--green);color:#fff;border-color:var(--green);cursor:default}
+.cpn[data-t="red"]    .cpn-l{background:linear-gradient(135deg,#ee1c25,#ff6060)}
+.cpn[data-t="purple"] .cpn-l{background:linear-gradient(135deg,#7b2ff7,#a855f7)}
+.cpn[data-t="blue"]   .cpn-l{background:linear-gradient(135deg,#1a73e8,#42a5f5)}
+.cpn[data-t="green"]  .cpn-l{background:linear-gradient(135deg,#00897b,#26c6da)}
+.cpn[data-t="orange"] .cpn-l{background:linear-gradient(135deg,#e65100,#ff9800)}
+.cpn[data-t="pink"]   .cpn-l{background:linear-gradient(135deg,#ad1457,#f06292)}
+.cpn[data-t="red"]    .cpn-cat{color:#ee1c25}
+.cpn[data-t="purple"] .cpn-cat{color:#7b2ff7}
+.cpn[data-t="blue"]   .cpn-cat{color:#1a73e8}
+.cpn[data-t="green"]  .cpn-cat{color:#00897b}
+.cpn[data-t="orange"] .cpn-cat{color:#e65100}
+.cpn[data-t="pink"]   .cpn-cat{color:#ad1457}
+
+/* New Arrivals */
+.arrival-wrap{background:#fff;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:10px}
+.arr-filter-row{display:flex;gap:6px;flex-wrap:wrap}
+.arr-f{padding:3px 10px;border:1px solid var(--border);border-radius:20px;font-size:11px;font-weight:600;color:var(--muted);background:#fff;cursor:pointer;transition:all .15s}
+.arr-f.on,.arr-f:hover{border-color:var(--red);color:var(--red);background:#fff5f2}
+.arrival-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.arr-card{border-right:1px solid #f5f5f5;cursor:pointer;transition:background .15s;overflow:hidden}
+.arr-card:nth-child(4n){border-right:none}
+.arr-card:hover{background:#fff8f5}
+.arr-img{display:flex;align-items:center;justify-content:center;font-size:60px;position:relative}
+.arr-badge{position:absolute;top:6px;left:6px;font-size:9px;font-weight:800;padding:1px 6px;border-radius:3px}
+.arr-badge.new{background:#07b43c;color:#fff}
+.arr-badge.hot{background:var(--red);color:#fff}
+.arr-badge.sale{background:var(--orange);color:#fff}
+.arr-em{transition:transform .22s}
+.arr-card:hover .arr-em{transform:scale(1.08)}
+.arr-body{padding:8px 10px}
+.arr-brand{font-size:9.5px;font-weight:700;color:var(--red);text-transform:uppercase;margin-bottom:2px}
+.arr-name{font-size:11.5px;font-weight:600;line-height:1.4;margin-bottom:5px;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:32px}
+.arr-row{display:flex;align-items:baseline;gap:5px;margin-bottom:2px}
+.arr-price{font-size:14px;font-weight:800;color:var(--red)}
+.arr-old{font-size:10px;color:var(--muted);text-decoration:line-through}
+.arr-sold{font-size:10px;color:var(--muted)}
+
+/* ── PRODUCT RECOMMENDATION SECTION ── */
+.rec-wrap{max-width:var(--wrap);margin:10px auto;padding:0 10px}
+.rec-hd-bar{background:#fff;border:1px solid var(--border);border-radius:4px 4px 0 0;border-bottom:2px solid var(--red);padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+.rec-hd-left{display:flex;align-items:center;gap:10px}
+.rec-icon{font-size:16px}
+.rec-title{font-size:14px;font-weight:800}
+.rec-tabs{display:flex;gap:4px}
+.rtab{padding:4px 12px;border:1px solid var(--border);border-radius:20px;font-size:11px;font-weight:600;color:var(--muted);background:#fff;cursor:pointer;transition:all .15s}
+.rtab.on,.rtab:hover{border-color:var(--red);color:var(--red);background:#fff5f2}
+
+/* 6-column CSS Grid */
+.rec-grid{
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  background:#fff;
+  border:1px solid var(--border);
+  border-top:none;
+  border-radius:0 0 4px 4px;
+  overflow:hidden;
+}
+
+/* Product card */
+.p-card{border-right:1px solid #f5f5f5;border-bottom:1px solid #f5f5f5;cursor:pointer;position:relative;overflow:hidden;transition:background .15s,box-shadow .2s}
+.p-card:hover{background:#fff8f5;box-shadow:0 4px 16px rgba(0,0,0,.1);z-index:1}
+.p-card:nth-child(6n){border-right:none}
+
+/* Product image */
+.pc-img{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.pc-em{font-size:64px;line-height:1;transition:transform .25s;display:block;text-align:center}
+.p-card:hover .pc-em{transform:scale(1.1) rotate(-3deg)}
+.pc-bdg{position:absolute;top:6px;left:6px;font-size:9px;font-weight:800;padding:1px 6px;border-radius:3px}
+.bdg-sale{background:var(--red);color:#fff}
+.bdg-hot{background:var(--orange);color:#fff}
+.bdg-new{background:var(--green);color:#fff}
+.pc-wish{position:absolute;top:6px;right:6px;background:rgba(255,255,255,.82);border:none;border-radius:50%;width:24px;height:24px;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .15s,color .15s}
+.p-card:hover .pc-wish{opacity:1}
+.pc-wish:hover{color:var(--red)}
+
+/* Card body */
+.pc-body{padding:8px 10px 10px}
+.pc-brand{font-size:9.5px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
+.pc-name{font-size:11.5px;font-weight:500;line-height:1.4;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:32px;color:var(--text)}
+.pc-stars{font-size:10.5px;color:#f5a000;margin-bottom:5px}
+.pc-stars span{color:var(--muted);font-size:10px;margin-left:2px}
+.pc-price-row{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap;margin-bottom:2px}
+.pc-price{font-size:15px;font-weight:800;color:var(--red)}
+.pc-old{font-size:10.5px;color:var(--muted);text-decoration:line-through}
+.pc-disc{font-size:9.5px;font-weight:700;color:var(--orange);background:#fff8f0;padding:1px 4px;border-radius:3px}
+.pc-sold-txt{font-size:10px;color:var(--muted);margin-bottom:7px}
+
+/* Add to Cart — slides up on hover */
+.pc-cart{overflow:hidden;max-height:0;transition:max-height .25s ease}
+.p-card:hover .pc-cart{max-height:32px}
+.pc-cart-btn{width:100%;padding:5px;background:var(--red);color:#fff;border:none;border-radius:3px;font-size:11px;font-weight:700;margin-top:3px;transition:background .15s}
+.pc-cart-btn:hover{background:var(--red2)}
+.pc-cart-btn.added{background:var(--green)}
+
+/* ── FOOTER ── */
+.footer{background:#fff;border-top:3px solid var(--red);margin-top:14px;padding:20px 0 0}
+.footer-inner{max-width:var(--wrap);margin:0 auto;padding:0 10px}
+.foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:24px;margin-bottom:20px}
+.foot-logo{font-size:18px;font-weight:900;color:var(--red);letter-spacing:-1px;margin-bottom:7px}
+.foot-desc{font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:10px}
+.foot-socs{display:flex;gap:6px}
+.foot-soc{width:26px;height:26px;background:#f5f5f5;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;transition:background .15s}
+.foot-soc:hover{background:var(--red);color:#fff}
+.foot-col h4{font-size:11px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px;padding-bottom:5px;border-bottom:1px solid #f0f0f0}
+.foot-col a{display:block;font-size:11px;color:var(--muted);margin-bottom:6px;transition:color .15s}
+.foot-col a:hover{color:var(--red)}
+.foot-bottom{border-top:1px solid #f0f0f0;padding:10px 0;display:flex;justify-content:space-between;align-items:center;font-size:10.5px;color:#bbb}
+.foot-blinks{display:flex;gap:12px}
+.foot-blinks a{color:#bbb}
+.foot-blinks a:hover{color:var(--muted)}
+
+/* ── TOAST ── */
+#toast-box{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px}
+.toast{background:var(--dark);color:#fff;padding:9px 14px;border-radius:8px;font-size:12px;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(0,0,0,.18);animation:tIn .28s ease;min-width:210px;border-left:3px solid var(--red)}
+.toast.ok{border-left-color:var(--green)}
+@keyframes tIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* Responsive */
+@media(max-width:1100px){.rec-grid{grid-template-columns:repeat(5,1fr)}.flash-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:900px) {.hero{grid-template-columns:1fr}.hero-login{display:none}.rec-grid{grid-template-columns:repeat(4,1fr)}.daily-grid,.arrival-grid{grid-template-columns:repeat(2,1fr)}.coupon-grid{grid-template-columns:repeat(2,1fr)}.four-sections{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px) {.hero{grid-template-columns:1fr}.promo-4panel{display:none}.rec-grid{grid-template-columns:repeat(2,1fr)}.flash-grid{grid-template-columns:repeat(3,1fr)}.four-sections{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<!-- ─── TOPBAR ─────────────────────────── -->
+<div class="topbar">
+  <div class="top-inner">
+    <div class="top-l">
+      <a href="#">Bangladesh</a>
+      <span class="top-sep">|</span>
+      <a href="login.html" class="top-hi">Dear customer, please log in</a>
+      <a href="login.html">Free registration</a>
+      <span class="top-sep">|</span>
+      <a href="#">Web accessibility</a>
+      <a href="#">Switch to Enterprise Edition</a>
+      <a href="#">Choose a theme</a>
+      <a href="#">Language</a>
+    </div>
+  </div>
+</div>
+
+<!-- ─── HEADER ─────────────────────────── -->
+<header class="header">
+  <div class="hdr-inner">
+    <a href="layout.html" class="logo">
+      <div class="logo-icon">N</div>
+      <div>
+        <div class="logo-name">NEXORA</div>
+        <div class="logo-sub">Shop Smarter</div>
+      </div>
+    </a>
+    <div class="search-wrap">
+      <div class="search-bar">
+        <select class="search-cat">
+          <option>All</option><option>Electronics</option><option>Fashion</option>
+          <option>Home</option><option>Beauty</option><option>Sports</option>
+          <option>Grocery</option><option>Automotive</option><option>Kids</option>
+        </select>
+        <input class="search-input" type="text" placeholder="Search products, brands and more…"/>
+        <button class="search-btn">Search</button>
+      </div>
+      <div class="search-tags">
+        <a href="#" class="h1">🔥 iPhone 15</a>
+        <a href="#" class="h2">Nike Air Max</a>
+        <a href="#">Sony Headphones</a>
+        <a href="#">Flash Sale</a>
+        <a href="#">Instant Pot</a>
+        <a href="#">LEGO</a>
+        <a href="#">Dyson</a>
+      </div>
+    </div>
+    <div class="hdr-right">
+      <button class="hdr-icon"><span class="ico">♡</span><span>Wishlist</span></button>
+      <button class="hdr-icon"><span class="ico">📦</span><span>Orders</span></button>
+      <button class="cart-btn-sm" id="cartBtn">🛒 Cart <span class="cart-n" id="cartCount">0</span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ─── NAVBAR ─────────────────────────── -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-tab sp on"><span class="ti">🔥</span> Today's Deals</a>
+    <div class="nav-sep2"></div>
+    <a href="category.html?cat=Electronics"     class="nav-tab"><span class="ti">📱</span> Electronics</a>
+    <a href="category.html?cat=Fashion"         class="nav-tab"><span class="ti">👗</span> Fashion</a>
+    <a href="category.html?cat=Home+%26+Living" class="nav-tab"><span class="ti">🏠</span> Home & Living</a>
+    <a href="category.html?cat=Beauty"          class="nav-tab"><span class="ti">💄</span> Beauty</a>
+    <a href="category.html?cat=Sports"          class="nav-tab"><span class="ti">⚽</span> Sports</a>
+    <a href="category.html?cat=Groceries"       class="nav-tab"><span class="ti">🛒</span> Grocery</a>
+    <a href="category.html?cat=Toys+%26+Kids"   class="nav-tab"><span class="ti">🧸</span> Kids</a>
+    <a href="category.html?cat=Books"           class="nav-tab"><span class="ti">📚</span> Books</a>
+    <a href="category.html?cat=Automotive"      class="nav-tab"><span class="ti">🚗</span> Automotive</a>
+    <div class="nav-sep2"></div>
+    <a href="category.html?cat=Gaming" class="nav-tab gd"><span class="ti">👥</span> Group Buy</a>
+  </div>
+</nav>
+
+<!-- ─── HERO 3-COLUMN ──────────────────── -->
+<div class="hero">
+
+  <!-- LEFT: Banner -->
+  <div class="hero-banner">
+    <div class="ban-tag-sm">🎉 MEGA SALE — Up to 90% Off</div>
+    <h1 class="ban-h">Flash Deals <span>Peak Day!</span><br>Shop &amp; Save Big.</h1>
+    <p class="ban-p">Stackable coupons · Free shipping from ৳0<br>Group buy subsidies every hour</p>
+    <div class="ban-actions">
+      <button class="ban-btn pri" onclick="location.href='category.html'">Shop Now</button>
+      <button class="ban-btn sec" onclick="location.href='category.html?cat=Gaming'">Group Buy 👥</button>
+    </div>
+    <div class="ban-deco">🛍️</div>
+    <div class="ban-dots-sm">
+      <div class="bd on"></div><div class="bd"></div><div class="bd"></div><div class="bd"></div>
+    </div>
+  </div>
+
+  <!-- CENTER: 4-product promo panel -->
+  <div class="promo-4panel">
+    <div class="p4-header">✨ Ten thousand vouchers · Stackable coupons + free shipping available</div>
+    <div class="p4-items" id="promo4Items"></div>
+  </div>
+
+  <!-- RIGHT: Login -->
+  <div class="hero-login">
+    <div class="hl-greet">
+      <span class="hl-av" id="greetAv">👋</span>
+      <div>
+        <div class="hl-hi" id="greetTxt">Hello!</div>
+        <div class="hl-sub">Register and open a store</div>
+      </div>
+    </div>
+    <div class="hl-desc">Log in to NEXORA for even more exclusive deals</div>
+    <button class="hl-login-btn" onclick="location.href='login.html'">Log in now</button>
+    <div class="hl-icons">
+      <a href="#" class="hl-icon"><span class="hi-ico">📦</span><span>Purchases</span></a>
+      <a href="#" class="hl-icon"><span class="hi-ico">★</span><span>Favorites</span></a>
+      <a href="#" class="hl-icon"><span class="hi-ico">🏪</span><span>My Store</span></a>
+      <a href="#" class="hl-icon"><span class="hi-ico">🕐</span><span>History</span></a>
+    </div>
+    <div class="hl-picks" id="hlPicks"></div>
+  </div>
+
+</div><!-- /hero -->
+
+<!-- ─── 4 DEAL SECTIONS ─────────────────── -->
+<div class="four-sections" id="fourSections"></div>
+
+<!-- ─── FEATURE STRIP ──────────────────── -->
+<div class="feat-strip">
+  <div class="feat-inner">
+    <div class="feat-item"><span class="fi">🚚</span><div><div class="feat-t">Free Delivery</div><div class="feat-s">On orders over ৳500</div></div></div>
+    <div class="feat-div"></div>
+    <div class="feat-item"><span class="fi">🔄</span><div><div class="feat-t">Easy Returns</div><div class="feat-s">7-day return policy</div></div></div>
+    <div class="feat-div"></div>
+    <div class="feat-item"><span class="fi">🛡️</span><div><div class="feat-t">Buyer Protection</div><div class="feat-s">100% guarantee</div></div></div>
+    <div class="feat-div"></div>
+    <div class="feat-item"><span class="fi">🔒</span><div><div class="feat-t">Secure Payment</div><div class="feat-s">Multiple options</div></div></div>
+    <div class="feat-div"></div>
+    <div class="feat-item"><span class="fi">🎧</span><div><div class="feat-t">24/7 Support</div><div class="feat-s">Always here</div></div></div>
+  </div>
+</div>
+
+<!-- ─── ICON MENU ──────────────────────── -->
+<div class="icon-menu-wrap">
+  <div class="icon-menu" id="iconMenu"></div>
+</div>
+
+<!-- ─── PROMO ZONE ─────────────────────── -->
+<div class="section-wrap">
+
+  <!-- Flash Sale -->
+  <div class="flash-wrap" id="flash">
+    <div class="flash-hd">
+      <span class="flash-title">⚡ Flash <em>Sale</em></span>
+      <div class="flash-timer-wrap">
+        <span class="fl-lbl">Ends in</span>
+        <div class="fl-b" id="fh">01</div><span class="fl-c">:</span>
+        <div class="fl-b" id="fm">47</div><span class="fl-c">:</span>
+        <div class="fl-b" id="fs">33</div>
+      </div>
+      <a href="category.html" class="flash-all-link">See all →</a>
+    </div>
+    <div class="flash-grid" id="flashGrid"></div>
+  </div>
+
+  <!-- Daily Deals -->
+  <div class="daily-wrap">
+    <div class="sec-hd-bar">
+      <div class="shb-left"><span class="shb-icon">🎯</span><span class="shb-title">Daily Deals</span><span class="shb-sub"> — refreshed every midnight</span></div>
+      <div class="shb-right"><a href="category.html" class="shb-more">View all →</a></div>
+    </div>
+    <div class="daily-grid" id="dailyGrid"></div>
+  </div>
+
+  <!-- Coupons -->
+  <div class="coupon-wrap">
+    <div class="sec-hd-bar">
+      <div class="shb-left"><span class="shb-icon">🎟️</span><span class="shb-title">Collect Coupons</span><span class="shb-sub"> — tap to grab, use at checkout</span></div>
+      <div class="shb-right"><a href="#" class="shb-more">All coupons →</a></div>
+    </div>
+    <div class="coupon-grid" id="couponGrid"></div>
+  </div>
+
+  <!-- New Arrivals -->
+  <div class="arrival-wrap">
+    <div class="sec-hd-bar">
+      <div class="shb-left"><span class="shb-icon">✨</span><span class="shb-title">New Arrivals</span><span class="shb-sub"> — added in the last 48 hours</span></div>
+      <div class="shb-right">
+        <div class="arr-filter-row">
+          <button class="arr-f on" onclick="setArrF(this)">All</button>
+          <button class="arr-f" onclick="setArrF(this)">Electronics</button>
+          <button class="arr-f" onclick="setArrF(this)">Fashion</button>
+          <button class="arr-f" onclick="setArrF(this)">Home</button>
+          <button class="arr-f" onclick="setArrF(this)">Beauty</button>
+        </div>
+        <a href="category.html" class="shb-more" style="margin-left:8px">View all →</a>
+      </div>
+    </div>
+    <div class="arrival-grid" id="arrivalGrid"></div>
+  </div>
+
+</div><!-- /section-wrap -->
+
+<!-- ─── RECOMMENDATIONS ─────────────────── -->
+<div class="rec-wrap">
+  <div class="rec-hd-bar">
+    <div class="rec-hd-left">
+      <span class="rec-icon">⭐</span>
+      <span class="rec-title">Recommended For You</span>
+    </div>
+    <div class="rec-tabs">
+      <button class="rtab on"  onclick="setRecTab(this,'all')">All</button>
+      <button class="rtab" onclick="setRecTab(this,'Electronics')">Electronics</button>
+      <button class="rtab" onclick="setRecTab(this,'Fashion')">Fashion</button>
+      <button class="rtab" onclick="setRecTab(this,'Home')">Home</button>
+      <button class="rtab" onclick="setRecTab(this,'Beauty')">Beauty</button>
+      <button class="rtab" onclick="setRecTab(this,'Sports')">Sports</button>
+      <button class="rtab" onclick="setRecTab(this,'Kids')">Kids</button>
+    </div>
+  </div>
+  <div class="rec-grid" id="recGrid"></div>
+</div>
+
+<!-- ─── FOOTER ─────────────────────────── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="foot-top">
+      <div>
+        <div class="foot-logo">NEXORA</div>
+        <div class="foot-desc">Your trusted marketplace for millions of products at unbeatable prices. Shop smarter, save bigger every day.</div>
+        <div class="foot-socs">
+          <div class="foot-soc">f</div><div class="foot-soc">in</div>
+          <div class="foot-soc">▶</div><div class="foot-soc">✕</div>
+        </div>
+      </div>
+      <div class="foot-col"><h4>About</h4><a href="#">About NEXORA</a><a href="#">Careers</a><a href="#">Press</a><a href="#">Blog</a></div>
+      <div class="foot-col"><h4>Support</h4><a href="#">Help Center</a><a href="#">Returns</a><a href="#">Track Order</a><a href="#">Contact</a></div>
+      <div class="foot-col"><h4>Sell</h4><a href="#">Sell on NEXORA</a><a href="#">Seller Center</a><a href="#">Advertise</a><a href="#">Affiliate</a></div>
+      <div class="foot-col"><h4>Explore</h4><a href="#">Flash Deals</a><a href="#">New Arrivals</a><a href="#">Group Buy</a><a href="#">Coupons</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 NEXORA Ltd. All rights reserved.</span>
+      <div class="foot-blinks"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a><a href="#">Sitemap</a></div>
+    </div>
+  </div>
+</footer>
+
+<div id="toast-box"></div>
+
+<script>
+/* ════ DATA ════════════════════════════════════════════ */
+const PRODUCTS = [
+  {id:1, cat:"Electronics",brand:"Samsung",  name:"Samsung Galaxy A55 5G 8GB/256GB",          emoji:"📱",bg:"linear-gradient(135deg,#dbeafe,#eff6ff)",price:99999, sale:28999, sold:4821, soldPct:82,rating:4.8,reviews:4821, badge:"sale",time:null,        tags:["flash","featured"]},
+  {id:2, cat:"Electronics",brand:"Sony",     name:"Sony WH-1000XM5 Noise-Cancelling Headphones",emoji:"🎧",bg:"linear-gradient(135deg,#dbeafe,#eff6ff)",price:41999, sale:14499, sold:2341, soldPct:67,rating:4.7,reviews:2341, badge:"hot", time:"Ends in 3h",tags:["flash","daily","featured"]},
+  {id:3, cat:"Electronics",brand:"Apple",    name:"iPhone 15 Pro Max 256GB Natural Titanium",  emoji:"📱",bg:"linear-gradient(135deg,#dbeafe,#eff6ff)",price:179999,sale:139999,sold:9102, soldPct:44,rating:4.9,reviews:9102, badge:"new", time:null,        tags:["new","featured"]},
+  {id:4, cat:"Electronics",brand:"Apple",    name:"AirPods Pro 3rd Gen Active Noise Cancel",   emoji:"🎧",bg:"linear-gradient(135deg,#dbeafe,#eff6ff)",price:39999, sale:24999, sold:12450,soldPct:71,rating:4.9,reviews:12450,badge:"new", time:null,        tags:["new","flash","featured"]},
+  {id:5, cat:"Electronics",brand:"Xiaomi",   name:"Xiaomi Pad 6 Pro 11\" Tablet 8GB+256GB",   emoji:"💻",bg:"linear-gradient(135deg,#dbeafe,#eff6ff)",price:69999, sale:39999, sold:987,  soldPct:55,rating:4.8,reviews:987,  badge:"sale",time:null,        tags:["flash","featured"]},
+  {id:6, cat:"Electronics",brand:"JBL",      name:"JBL Charge 5 Bluetooth Speaker 20H",        emoji:"🔊",bg:"linear-gradient(135deg,#dbeafe,#eff6ff)",price:18000, sale:9499,  sold:7230, soldPct:88,rating:4.7,reviews:7230, badge:"hot", time:null,        tags:["flash","featured"]},
+  {id:7, cat:"Electronics",brand:"Garmin",   name:"Garmin Forerunner 265 GPS Smartwatch AMOLED",emoji:"⌚",bg:"linear-gradient(135deg,#dbeafe,#eff6ff)",price:54999, sale:32999, sold:1432, soldPct:38,rating:4.7,reviews:1432, badge:"new", time:null,        tags:["new","featured"]},
+  {id:8, cat:"Fashion",    brand:"Nike",     name:"Nike Air Max 270 React Men's Running Shoes", emoji:"👟",bg:"linear-gradient(135deg,#fce7f3,#fff0f3)",price:14999, sale:8499,  sold:3201, soldPct:60,rating:4.5,reviews:3201, badge:"sale",time:"Ends tonight",tags:["daily","featured"]},
+  {id:9, cat:"Fashion",    brand:"Levi's",   name:"Levi's 501 Original Fit Jeans Dark Wash",   emoji:"👖",bg:"linear-gradient(135deg,#fce7f3,#fff0f3)",price:7999,  sale:3999,  sold:6821, soldPct:75,rating:4.4,reviews:6821, badge:"sale",time:"Ends in 6h", tags:["daily","featured"]},
+  {id:10,cat:"Fashion",    brand:"Adidas",   name:"Adidas Ultraboost 23 Premium Running Shoes", emoji:"👟",bg:"linear-gradient(135deg,#fce7f3,#fff0f3)",price:19999, sale:10999, sold:4512, soldPct:65,rating:4.6,reviews:4512, badge:"new", time:null,        tags:["new","featured"]},
+  {id:11,cat:"Fashion",    brand:"Ray-Ban",  name:"Ray-Ban Aviator Classic Gold Frame",         emoji:"🕶️",bg:"linear-gradient(135deg,#fce7f3,#fff0f3)",price:14999, sale:7499,  sold:3410, soldPct:50,rating:4.7,reviews:3410, badge:"hot", time:"Ends in 9h", tags:["daily","featured"]},
+  {id:12,cat:"Fashion",    brand:"Puma",     name:"Puma Men's Dry Cell Quick-Dry T-Shirt",      emoji:"👕",bg:"linear-gradient(135deg,#fce7f3,#fff0f3)",price:2999,  sale:1299,  sold:5230, soldPct:73,rating:4.3,reviews:5230, badge:"sale",time:null,        tags:["flash","featured"]},
+  {id:13,cat:"Home",       brand:"Instant Pot",name:"Instant Pot Duo 7-in-1 Pressure Cooker 8qt",emoji:"🍳",bg:"linear-gradient(135deg,#d1fae5,#ecfdf5)",price:13999, sale:7499,  sold:12450,soldPct:78,rating:4.8,reviews:12450,badge:"hot", time:"Ends in 2h", tags:["daily","flash","featured"]},
+  {id:14,cat:"Home",       brand:"Dyson",    name:"Dyson V15 Detect Absolute Cordless Vacuum",  emoji:"🧹",bg:"linear-gradient(135deg,#d1fae5,#ecfdf5)",price:79000, sale:44999, sold:2103, soldPct:43,rating:4.8,reviews:2103, badge:"new", time:null,        tags:["new","featured"]},
+  {id:15,cat:"Home",       brand:"Philips",  name:"Philips Air Fryer XXL 7.3L Digital 2000W",   emoji:"🍟",bg:"linear-gradient(135deg,#d1fae5,#ecfdf5)",price:24999, sale:12999, sold:5821, soldPct:68,rating:4.6,reviews:5821, badge:"sale",time:"Ends in 12h",tags:["daily","featured"]},
+  {id:16,cat:"Home",       brand:"Nespresso",name:"Nespresso Vertuo Plus Coffee Machine",         emoji:"☕",bg:"linear-gradient(135deg,#d1fae5,#ecfdf5)",price:22000, sale:9999,  sold:1455, soldPct:55,rating:4.6,reviews:1455, badge:"sale",time:null,        tags:["flash","featured"]},
+  {id:17,cat:"Beauty",     brand:"The Ordinary",name:"Niacinamide 10% + Zinc 1% 30ml Serum",    emoji:"🧴",bg:"linear-gradient(135deg,#fdf2f8,#fdf4ff)",price:1899,  sale:899,   sold:15230,soldPct:92,rating:4.7,reviews:15230,badge:"hot", time:null,        tags:["flash","featured"]},
+  {id:18,cat:"Beauty",     brand:"L'Oréal",  name:"L'Oréal Revitalift Hyaluronic Acid Serum",   emoji:"✨",bg:"linear-gradient(135deg,#fdf2f8,#fdf4ff)",price:5500,  sale:2499,  sold:6821, soldPct:71,rating:4.6,reviews:6821, badge:"sale",time:null,        tags:["featured"]},
+  {id:19,cat:"Beauty",     brand:"MAANGE",   name:"MAANGE 15-Pc Rose Gold Makeup Brush Set",     emoji:"🌸",bg:"linear-gradient(135deg,#fdf2f8,#fdf4ff)",price:3500,  sale:1299,  sold:5621, soldPct:83,rating:4.7,reviews:5621, badge:"hot", time:null,        tags:["flash","featured"]},
+  {id:20,cat:"Beauty",     brand:"Neutrogena",name:"Neutrogena Hydro Boost Water Gel 50ml",      emoji:"💧",bg:"linear-gradient(135deg,#fdf2f8,#fdf4ff)",price:3999,  sale:1799,  sold:8910, soldPct:77,rating:4.5,reviews:8910, badge:"new", time:null,        tags:["new","featured"]},
+  {id:21,cat:"Sports",     brand:"Bowflex",  name:"Bowflex Adjustable Dumbbell Set 5-52.5 lbs", emoji:"🏋️",bg:"linear-gradient(135deg,#fff7ed,#fffbeb)",price:42000, sale:18499, sold:4321, soldPct:56,rating:4.8,reviews:4321, badge:"hot", time:"Ends in 5h", tags:["daily","featured"]},
+  {id:22,cat:"Sports",     brand:"Liforme",  name:"Yoga Mat 6mm Premium TPE Non-Slip",           emoji:"🧘",bg:"linear-gradient(135deg,#fff7ed,#fffbeb)",price:4500,  sale:1999,  sold:3201, soldPct:60,rating:4.6,reviews:3201, badge:"sale",time:null,        tags:["flash","featured"]},
+  {id:23,cat:"Sports",     brand:"Fitbit",   name:"Fitbit Charge 6 Fitness Tracker GPS",         emoji:"⌚",bg:"linear-gradient(135deg,#fff7ed,#fffbeb)",price:26999, sale:14999, sold:5821, soldPct:44,rating:4.5,reviews:5821, badge:"new", time:null,        tags:["new","featured"]},
+  {id:24,cat:"Grocery",    brand:"Nescafe",  name:"Nescafe Gold Blend Instant Coffee 200g",       emoji:"☕",bg:"linear-gradient(135deg,#f0fdf4,#f7fee7)",price:2199,  sale:1199,  sold:12100,soldPct:85,rating:4.7,reviews:12100,badge:"hot", time:"Ends tonight",tags:["daily","flash","featured"]},
+  {id:25,cat:"Grocery",    brand:"Twinings", name:"Twinings English Breakfast Tea 100 Bags",      emoji:"🍵",bg:"linear-gradient(135deg,#f0fdf4,#f7fee7)",price:1499,  sale:799,   sold:8210, soldPct:72,rating:4.6,reviews:8210, badge:"sale",time:null,        tags:["flash","featured"]},
+  {id:26,cat:"Grocery",    brand:"Tropicana",name:"Tropicana Orange Juice No Pulp 1.8L",          emoji:"🍊",bg:"linear-gradient(135deg,#f0fdf4,#f7fee7)",price:899,   sale:499,   sold:6102, soldPct:60,rating:4.5,reviews:6102, badge:"sale",time:null,        tags:["featured"]},
+  {id:27,cat:"Automotive", brand:"Vantrue",  name:"Vantrue E2 4K Dual Dash Cam Front & Inside",  emoji:"📸",bg:"linear-gradient(135deg,#ede9fe,#f5f3ff)",price:16999, sale:8999,  sold:2103, soldPct:48,rating:4.6,reviews:2103, badge:"new", time:null,        tags:["new","featured"]},
+  {id:28,cat:"Automotive", brand:"Baseus",   name:"Baseus Car Vacuum 15000PA Wireless",           emoji:"🚗",bg:"linear-gradient(135deg,#ede9fe,#f5f3ff)",price:4999,  sale:2499,  sold:3821, soldPct:66,rating:4.5,reviews:3821, badge:"sale",time:"Ends in 8h", tags:["daily","featured"]},
+  {id:29,cat:"Kids",       brand:"LEGO",     name:"LEGO Technic Bugatti Chiron 1000+ Pieces",     emoji:"🧱",bg:"linear-gradient(135deg,#fefce8,#fffde7)",price:24999, sale:12999, sold:5821, soldPct:79,rating:4.9,reviews:5821, badge:"hot", time:"Ends in 4h", tags:["daily","flash","featured"]},
+  {id:30,cat:"Kids",       brand:"Hot Wheels",name:"Hot Wheels 50-Car Gift Pack + Launcher",      emoji:"🏎️",bg:"linear-gradient(135deg,#fefce8,#fffde7)",price:4999,  sale:2499,  sold:8210, soldPct:82,rating:4.7,reviews:8210, badge:"sale",time:null,        tags:["flash","featured"]},
+  {id:31,cat:"Kids",       brand:"Barbie",   name:"Barbie Dreamhouse 2024 with 3 Floors",         emoji:"🏠",bg:"linear-gradient(135deg,#fefce8,#fffde7)",price:16999, sale:8999,  sold:4102, soldPct:60,rating:4.6,reviews:4102, badge:"new", time:null,        tags:["new","featured"]},
+];
+
+const COUPONS=[
+  {theme:"red",    amount:"৳200",type:"OFF", cat:"Electronics",   desc:"৳200 off Electronics orders",    min:"Min. ৳2,000",     exp:"Jun 30"},
+  {theme:"purple", amount:"20%", type:"OFF", cat:"Fashion",        desc:"20% off Fashion & Shoes",         min:"No minimum",      exp:"Jun 25"},
+  {theme:"blue",   amount:"FREE",type:"SHIP",cat:"All Categories", desc:"Free delivery on any order",      min:"One-time only",   exp:"Jul 1"},
+  {theme:"green",  amount:"৳500",type:"OFF", cat:"Home & Kitchen", desc:"৳500 off Home & Kitchen",        min:"Min. ৳5,000",     exp:"Jun 28"},
+  {theme:"orange", amount:"30%", type:"OFF", cat:"Beauty & Care",  desc:"30% off Beauty products",         min:"Min. ৳800",       exp:"Jun 22"},
+  {theme:"pink",   amount:"৳100",type:"OFF", cat:"Books & Gaming", desc:"৳100 off Books & Games",         min:"Min. ৳400",       exp:"Jul 5"},
+];
+
+const ICON_MENU=[
+  {label:"Electronics",emoji:"📱",grad:"linear-gradient(135deg,#667eea,#764ba2)",link:"category.html?cat=Electronics"},
+  {label:"Fashion",    emoji:"👗",grad:"linear-gradient(135deg,#f093fb,#f5576c)",link:"category.html?cat=Fashion"},
+  {label:"Home",       emoji:"🏠",grad:"linear-gradient(135deg,#4facfe,#00f2fe)",link:"category.html?cat=Home+%26+Living"},
+  {label:"Beauty",     emoji:"💄",grad:"linear-gradient(135deg,#fa709a,#fee140)",link:"category.html?cat=Beauty"},
+  {label:"Sports",     emoji:"⚽",grad:"linear-gradient(135deg,#43e97b,#38f9d7)",link:"category.html?cat=Sports"},
+  {label:"Grocery",    emoji:"🛒",grad:"linear-gradient(135deg,#84fab0,#8fd3f4)",link:"category.html?cat=Groceries"},
+  {label:"Automotive", emoji:"🚗",grad:"linear-gradient(135deg,#30cfd0,#667eea)",link:"category.html?cat=Automotive"},
+  {label:"Kids",       emoji:"🧸",grad:"linear-gradient(135deg,#ffecd2,#fcb69f)",link:"category.html?cat=Toys+%26+Kids"},
+  {label:"Books",      emoji:"📚",grad:"linear-gradient(135deg,#a18cd1,#fbc2eb)",link:"category.html?cat=Books"},
+  {label:"Gaming",     emoji:"🎮",grad:"linear-gradient(135deg,#434343,#000000)",link:"category.html?cat=Gaming"},
+  {label:"Pet Supplies",emoji:"🐾",grad:"linear-gradient(135deg,#00b09b,#96c93d)",link:"category.html?cat=Pet+Supplies"},
+  {label:"Flash Sale", emoji:"⚡",grad:"linear-gradient(135deg,#f7971e,#ffd200)",link:"#flash"},
+];
+
+/* ════ HELPERS ════════════════════════════════════════ */
+let cart = JSON.parse(localStorage.getItem('nexora_cart')||'[]');
+function saveCart(){localStorage.setItem('nexora_cart',JSON.stringify(cart))}
+function syncBadge(){document.getElementById('cartCount').textContent=cart.reduce((s,i)=>s+i.qty,0)}
+function fmtN(n){return n>=1000?(n/1000).toFixed(1)+'k':String(n)}
+function renderStars(r){const f=Math.floor(r);return '<span style="color:#f5a000">'+'★'.repeat(f)+'</span><span style="color:#ddd">'+'☆'.repeat(5-f)+'</span>'}
+function disc(p){return Math.round((p.price-p.sale)/p.price*100)}
+function badgeCls(b){return b==='new'?'bdg-new':b==='hot'?'bdg-hot':'bdg-sale'}
+function badgeTxt(p){const d=disc(p);return p.badge==='new'?'JUST IN':p.badge==='hot'?'🔥 HOT':`-${d}%`}
+
+function addToCart(id, btn){
+  const p=PRODUCTS.find(x=>x.id===id); if(!p)return;
+  const ex=cart.find(i=>i.id===id);
+  if(ex) ex.qty++; else cart.push({id:p.id,name:p.name,emoji:p.emoji,price:p.sale,qty:1});
+  saveCart(); syncBadge();
+  if(btn){const o=btn.textContent;btn.textContent='✓ Added!';btn.classList.add('added');setTimeout(()=>{btn.textContent=o;btn.classList.remove('added')},1700)}
+  toast('🛒',`"${p.name.slice(0,28)}…" added`,'ok');
+}
+function toggleWish(btn,e){if(e)e.stopPropagation();const on=btn.textContent==='♥';btn.textContent=on?'♡':'♥';btn.style.color=on?'':'var(--red)';toast(on?'💔':'❤️',on?'Removed from wishlist':'Added to wishlist!',on?'':'ok')}
+function toast(icon,msg,type=''){
+  const box=document.getElementById('toast-box');
+  const el=document.createElement('div');el.className='toast'+(type?' '+type:'');
+  el.innerHTML=`<span>${icon}</span>${msg}`;box.appendChild(el);
+  setTimeout(()=>{el.style.opacity='0';el.style.transition='.3s';setTimeout(()=>el.remove(),320)},2700);
+}
+syncBadge();
+
+/* ════ CENTER: 4-PRODUCT PROMO PANEL ════════════════ */
+document.getElementById('promo4Items').innerHTML = PRODUCTS.filter(p=>p.tags.includes('flash')).slice(0,4).map(p=>`
+  <div class="p4-item" onclick="addToCart(${p.id})">
+    <div class="p4-em">${p.emoji}</div>
+    <div class="p4-name">${p.brand}</div>
+    <div class="p4-price">৳${p.sale.toLocaleString()}</div>
+  </div>`).join('');
+
+/* ════ LOGIN SIDEBAR PICKS ══════════════════════════ */
+document.getElementById('hlPicks').innerHTML = PRODUCTS.filter(p=>p.tags.includes('new')).slice(0,2).map(p=>`
+  <div class="hlp-item" onclick="location.href='category.html?cat=${encodeURIComponent(p.cat)}'">
+    <div class="hlp-em">${p.emoji}</div>
+    <div style="flex:1;min-width:0">
+      <div class="hlp-tag">${p.badge==='new'?'NEW ARRIVAL':'TODAY\'S PICK'}</div>
+      <div class="hlp-name">${p.name}</div>
+      <div class="hlp-price">৳${p.sale.toLocaleString()}</div>
+    </div>
+  </div>`).join('');
+
+/* ════ 4 DEAL SECTIONS (below hero) ═════════════════ */
+const FOUR_SECS=[
+  {label:'National Subsidies', badge:'🟢', badgeBg:'#07b43c', tags:['featured'], cat:'Electronics', extra:''},
+  {label:'Flash Sale',         badge:'⚡',  badgeBg:'#ff4400', tags:['flash'],    cat:'',           extra:'Super Price'},
+  {label:'Billion Discounts',  badge:'🔥',  badgeBg:'#ff7700', tags:['daily'],    cat:'',           extra:'New User'},
+  {label:'Group Buy Deals',    badge:'👥',  badgeBg:'#7b2ff7', tags:['featured'], cat:'Fashion',    extra:''},
+];
+document.getElementById('fourSections').innerHTML = FOUR_SECS.map(sec=>{
+  const items=PRODUCTS.filter(p=>sec.cat?p.cat===sec.cat:p.tags.some(t=>sec.tags.includes(t))).slice(0,2);
+  return `<div class="fs-box">
+    <div class="fs-hd">
+      <span class="fs-label">${sec.badge} ${sec.label}</span>
+      ${sec.extra?`<span class="fs-badge" style="background:${sec.badgeBg}">${sec.extra}</span>`:''}
+      <a href="category.html" class="fs-more">more ›</a>
+    </div>
+    <div class="fs-items">
+      ${items.map(p=>`<div class="fsi" onclick="addToCart(${p.id})">
+        <div class="fsi-em">${p.emoji}</div>
+        <div class="fsi-name">${p.brand}</div>
+        <div class="fsi-price">৳${p.sale.toLocaleString()}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}).join('');
+
+/* ════ ICON MENU ═════════════════════════════════════ */
+document.getElementById('iconMenu').innerHTML = ICON_MENU.map((item,i)=>
+  `${i===8?'<div class="icon-sep"></div>':''}
+   <a href="${item.link}" class="icon-item">
+     <div class="icon-circle" style="background:${item.grad}">${item.emoji}</div>
+     <span class="icon-label">${item.label}</span>
+   </a>`).join('');
+
+
+/* ════ DYNAMIC GREETING ══════════════════════════════ */
+(function(){
+  const h=new Date().getHours();
+  const g=h<12?['🌅','Good morning!']:h<17?['☀️','Good afternoon!']:h<21?['🌆','Good evening!']:['🌙','Good night!'];
+  document.getElementById('greetAv').textContent=g[0];
+  document.getElementById('greetTxt').textContent=g[1];
+})();
+
+/* ════ FLASH SALE ════════════════════════════════════ */
+document.getElementById('flashGrid').innerHTML = PRODUCTS.filter(p=>p.tags.includes('flash')).slice(0,6).map(p=>`
+  <div class="fl-card">
+    <div class="fl-disc-tag">-${disc(p)}%</div>
+    <div class="fl-em" style="background:${p.bg};width:100%;padding:14px 0;border-radius:4px;margin-bottom:5px;display:flex;align-items:center;justify-content:center">${p.emoji}</div>
+    <div class="fl-name">${p.brand} — ${p.name.slice(0,22)}</div>
+    <div class="fl-price">৳${p.sale.toLocaleString()}</div>
+    <div class="fl-old">৳${p.price.toLocaleString()}</div>
+    <div class="fl-bar"><div class="fl-fill" style="width:${p.soldPct}%"></div></div>
+    <div class="fl-sold">${p.soldPct}% sold</div>
+    <button class="fl-buy" onclick="addToCart(${p.id},this)">Buy Now</button>
+  </div>`).join('');
+
+/* ════ DAILY DEALS ═══════════════════════════════════ */
+document.getElementById('dailyGrid').innerHTML = PRODUCTS.filter(p=>p.tags.includes('daily')).slice(0,4).map(p=>`
+  <div class="dd-card">
+    <div class="dd-img" style="background:${p.bg}">
+      <span class="dd-em">${p.emoji}</span>
+      <div class="dd-timer-tag"><span class="dd-dot"></span>${p.time||'Limited time'}</div>
+    </div>
+    <div class="dd-body">
+      <div class="dd-brand">${p.brand}</div>
+      <div class="dd-name">${p.name}</div>
+      <div class="dd-price-row">
+        <span class="dd-price">৳${p.sale.toLocaleString()}</span>
+        <span class="dd-old">৳${p.price.toLocaleString()}</span>
+        <span class="dd-save">Save ৳${(p.price-p.sale).toLocaleString()}</span>
+      </div>
+      <div class="dd-sold">${fmtN(p.sold)} sold</div>
+      <button class="dd-btn" onclick="addToCart(${p.id},this)">🛒 Add to Cart</button>
+    </div>
+  </div>`).join('');
+
+/* ════ COUPONS ════════════════════════════════════════ */
+document.getElementById('couponGrid').innerHTML = COUPONS.map(c=>`
+  <div class="cpn" data-t="${c.theme}">
+    <div class="cpn-l"><div class="cpn-amt">${c.amount}</div><div class="cpn-type">${c.type}</div></div>
+    <div class="cpn-r">
+      <div class="cpn-cat">${c.cat}</div>
+      <div class="cpn-desc">${c.desc}</div>
+      <div class="cpn-min">${c.min}</div>
+      <div class="cpn-foot">
+        <span class="cpn-exp">Expires ${c.exp}</span>
+        <button class="cpn-btn idle" onclick="collectCoupon(this)">Collect</button>
+      </div>
+    </div>
+  </div>`).join('');
+function collectCoupon(btn){if(btn.classList.contains('done'))return;btn.classList.replace('idle','done');btn.textContent='✓ Collected';toast('🎟️','Coupon saved — use at checkout!','ok')}
+
+/* ════ NEW ARRIVALS ══════════════════════════════════ */
+function renderArrivals(cat){
+  let prods=PRODUCTS.filter(p=>p.badge==='new');
+  if(cat&&cat!=='All') prods=prods.filter(p=>p.cat.toLowerCase().includes(cat.toLowerCase()));
+  if(!prods.length) prods=PRODUCTS.filter(p=>p.badge==='new').slice(0,8);
+  document.getElementById('arrivalGrid').innerHTML=prods.slice(0,8).map(p=>`
+    <div class="arr-card">
+      <div class="arr-img" style="background:${p.bg};height:140px">
+        <span class="arr-em">${p.emoji}</span>
+        <span class="arr-badge ${p.badge==='new'?'new':p.badge==='hot'?'hot':'sale'}">${p.badge==='new'?'JUST IN':p.badge==='hot'?'🔥 HOT':`-${disc(p)}%`}</span>
+      </div>
+      <div class="arr-body">
+        <div class="arr-brand">${p.brand}</div>
+        <div class="arr-name">${p.name}</div>
+        <div class="arr-row"><span class="arr-price">৳${p.sale.toLocaleString()}</span><span class="arr-old">৳${p.price.toLocaleString()}</span></div>
+        <div class="arr-sold">${fmtN(p.sold)} sold</div>
+      </div>
+    </div>`).join('');
+}
+function setArrF(btn){document.querySelectorAll('.arr-f').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderArrivals(btn.textContent.trim())}
+renderArrivals('All');
+
+/* ════ RECOMMENDATIONS — CSS GRID 6-col ═════════════ */
+function buildCard(p){
+  const d=disc(p);
+  return `<div class="p-card">
+    <div class="pc-img" style="background:${p.bg}">
+      <span class="pc-em">${p.emoji}</span>
+      <span class="pc-bdg ${badgeCls(p.badge)}">${badgeTxt(p)}</span>
+      <button class="pc-wish" onclick="toggleWish(this,event)">♡</button>
+    </div>
+    <div class="pc-body">
+      <div class="pc-brand">${p.brand}</div>
+      <div class="pc-name">${p.name}</div>
+      <div class="pc-stars">${renderStars(p.rating)}<span>(${fmtN(p.reviews)})</span></div>
+      <div class="pc-price-row">
+        <span class="pc-price">৳${p.sale.toLocaleString()}</span>
+        <span class="pc-old">৳${p.price.toLocaleString()}</span>
+        <span class="pc-disc">-${d}%</span>
+      </div>
+      <div class="pc-sold-txt">${fmtN(p.sold)} sold</div>
+      <div class="pc-cart"><button class="pc-cart-btn" onclick="addToCart(${p.id},this);event.stopPropagation()">🛒 Add to Cart</button></div>
+    </div>
+  </div>`;
+}
+function renderRec(cat){
+  const prods=cat==='all'?PRODUCTS:PRODUCTS.filter(p=>p.cat===cat);
+  document.getElementById('recGrid').innerHTML=prods.map(buildCard).join('');
+}
+function setRecTab(btn,cat){document.querySelectorAll('.rtab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderRec(cat)}
+renderRec('all');
+
+/* ════ COUNTDOWN ══════════════════════════════════════ */
+let secs=1*3600+47*60+33;
+setInterval(()=>{
+  if(secs<=0)return;secs--;
+  document.getElementById('fh').textContent=String(Math.floor(secs/3600)).padStart(2,'0');
+  document.getElementById('fm').textContent=String(Math.floor((secs%3600)/60)).padStart(2,'0');
+  document.getElementById('fs').textContent=String(secs%60).padStart(2,'0');
+},1000);
+
+/* ════ BANNER DOTS ════════════════════════════════════ */
+document.querySelectorAll('.bd').forEach(d=>d.addEventListener('click',function(){
+  document.querySelectorAll('.bd').forEach(x=>x.classList.remove('on'));this.classList.add('on');
+}));
+</script>
+</body>
+</html>

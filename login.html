@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — NEXORA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #ff3c5f;
+      --primary-dark: #d6294a;
+      --primary-light: #ff6b85;
+      --accent: #ff9f1c;
+      --accent2: #7b2ff7;
+      --dark: #1a1a2e;
+      --text: #1e1e2e;
+      --text-muted: #6b7280;
+      --bg: #f8f8fc;
+      --border: #e5e7eb;
+      --success: #10b981;
+      --radius-sm: 8px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; font-family: inherit; border: none; }
+
+    /* ── HEADER ── */
+    .header {
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(0,0,0,.06);
+      padding: 14px 24px;
+      flex-shrink: 0;
+    }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo-icon {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--accent2));
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .logo-text {
+      font-size: 24px; font-weight: 900; letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--primary), var(--accent2));
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .logo-tagline { font-size: 10px; font-weight: 500; color: var(--text-muted); letter-spacing: .5px; text-transform: uppercase; }
+    .header-right { font-size: 13px; color: var(--text-muted); }
+    .header-right a { color: var(--primary); font-weight: 600; }
+    .header-right a:hover { text-decoration: underline; }
+
+    /* ── LAYOUT ── */
+    .page-body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 520px;
+      min-height: calc(100vh - 70px);
+    }
+
+    /* ── LEFT PANEL ── */
+    .left-panel {
+      background: linear-gradient(135deg, var(--dark) 0%, #0f3460 60%, #1a1a2e 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .left-panel::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 30% 70%, rgba(255,60,95,.2) 0%, transparent 55%),
+                  radial-gradient(circle at 80% 20%, rgba(123,47,247,.2) 0%, transparent 50%);
+    }
+    .left-content { position: relative; z-index: 1; max-width: 420px; }
+    .lc-hidden { display: none !important; }
+
+    .left-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,60,95,.2); border: 1px solid rgba(255,60,95,.35);
+      color: #ff6b85; font-size: 11px; font-weight: 700; padding: 5px 14px;
+      border-radius: 50px; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 24px;
+    }
+    .left-title { font-size: 40px; font-weight: 900; color: #fff; line-height: 1.15; letter-spacing: -1.5px; margin-bottom: 16px; }
+    .left-title span {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .left-desc { font-size: 15px; color: rgba(255,255,255,.6); line-height: 1.7; margin-bottom: 36px; }
+
+    .perks { display: flex; flex-direction: column; gap: 16px; }
+    .perk { display: flex; align-items: center; gap: 14px; }
+    .perk-icon {
+      width: 42px; height: 42px;
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .perk-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+    .perk-sub { font-size: 12px; color: rgba(255,255,255,.5); }
+
+    .left-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
+    .stat-card {
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px; padding: 16px; text-align: center;
+    }
+    .stat-num { font-size: 26px; font-weight: 900; }
+    .stat-num span {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-label { font-size: 11px; color: rgba(255,255,255,.5); margin-top: 2px; }
+
+    .verify-steps { display: flex; flex-direction: column; gap: 12px; }
+    .vstep {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 10px; padding: 12px 16px;
+    }
+    .vstep-num {
+      width: 26px; height: 26px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800; color: #fff; flex-shrink: 0;
+    }
+    .vstep-text { font-size: 13px; color: rgba(255,255,255,.75); }
+
+    .left-bg-text {
+      position: absolute; bottom: -30px; right: -30px;
+      font-size: 220px; opacity: .04; pointer-events: none;
+      transform: rotate(-15deg); line-height: 1;
+    }
+
+    /* ── RIGHT PANEL ── */
+    .right-panel {
+      background: #fff;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 44px 48px;
+      overflow-y: auto;
+    }
+
+    /* ── PROGRESS BAR ── */
+    .prog-wrap { margin-bottom: 28px; }
+    .prog-row { display: flex; align-items: center; }
+    .prog-step { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .prog-circle {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--bg); border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: var(--text-muted);
+      transition: all .3s;
+    }
+    .prog-step.active .prog-circle { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .prog-step.done .prog-circle { background: var(--success); border-color: var(--success); color: #fff; }
+    .prog-lbl { font-size: 10px; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+    .prog-step.active .prog-lbl { color: var(--primary); }
+    .prog-step.done .prog-lbl { color: var(--success); }
+    .prog-line { flex: 1; height: 2px; background: var(--border); margin: 0 8px; margin-bottom: 14px; transition: background .3s; }
+    .prog-line.done { background: var(--success); }
+
+    /* ── SCREEN ── */
+    .screen { animation: fadeSlide .3s ease; }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateX(14px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .hidden { display: none !important; }
+
+    /* ── FORM ELEMENTS ── */
+    .form-header { margin-bottom: 26px; }
+    .form-title { font-size: 26px; font-weight: 900; letter-spacing: -.8px; margin-bottom: 5px; }
+    .form-title span {
+      background: linear-gradient(135deg, var(--primary), var(--accent2));
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .form-subtitle { font-size: 13px; color: var(--text-muted); }
+    .form-subtitle a { color: var(--primary); font-weight: 600; }
+    .form-subtitle a:hover { text-decoration: underline; }
+
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 600; color: var(--text-muted);
+      background: none; border: none; padding: 0; margin-bottom: 18px;
+      transition: color .2s;
+    }
+    .back-btn:hover { color: var(--text); }
+
+    .form-group { margin-bottom: 16px; position: relative; }
+    .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+    .input-wrap { position: relative; }
+    .input-icon {
+      position: absolute; left: 13px; top: 50%;
+      transform: translateY(-50%); font-size: 15px; color: #bbb; pointer-events: none;
+    }
+    .form-input {
+      width: 100%; padding: 12px 42px 12px 40px;
+      border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+      font-size: 14px; font-family: 'Inter', sans-serif;
+      color: var(--text); background: #fff; outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .form-input::placeholder { color: #c0c0c0; }
+    .form-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(255,60,95,.1); }
+    .form-input.is-error { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,.1); }
+    .form-input.is-ok { border-color: var(--success); }
+    .err-msg { font-size: 11px; color: #ef4444; margin-top: 4px; display: none; }
+    .err-msg.show { display: block; }
+
+    .toggle-pass {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; font-size: 15px; color: #bbb; padding: 2px; transition: color .2s;
+    }
+    .toggle-pass:hover { color: var(--text); }
+
+    /* Password strength */
+    .pw-bars { display: flex; gap: 4px; margin-top: 7px; }
+    .pw-bar { flex: 1; height: 4px; background: var(--border); border-radius: 2px; transition: background .25s; }
+    .pw-bar.s1 { background: #ef4444; }
+    .pw-bar.s2 { background: #f97316; }
+    .pw-bar.s3 { background: var(--accent); }
+    .pw-bar.s4 { background: var(--success); }
+    .pw-lbl { font-size: 11px; font-weight: 600; margin-top: 4px; }
+
+    /* Checkbox */
+    .chk-label { display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; }
+    .chk-label input[type="checkbox"] { display: none; }
+    .chk-box {
+      width: 18px; height: 18px; border: 1.5px solid var(--border); border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s; flex-shrink: 0;
+    }
+    .chk-label input:checked ~ .chk-box { background: var(--primary); border-color: var(--primary); }
+    .chk-box::after { content: "✓"; font-size: 11px; color: #fff; font-weight: 700; opacity: 0; transition: opacity .15s; }
+    .chk-label input:checked ~ .chk-box::after { opacity: 1; }
+
+    .form-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .forgot-link { font-size: 13px; color: var(--primary); font-weight: 600; }
+    .forgot-link:hover { text-decoration: underline; }
+
+    /* Social */
+    .social-btns { display: flex; gap: 10px; margin-bottom: 22px; }
+    .social-btn {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+      padding: 10px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600;
+      border: 1.5px solid var(--border); background: #fff; color: var(--text);
+      transition: border-color .2s, transform .15s;
+    }
+    .social-btn:hover { border-color: #aaa; transform: translateY(-1px); }
+
+    /* Divider */
+    .divider { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+    .divider-line { flex: 1; height: 1px; background: var(--border); }
+    .divider-text { font-size: 12px; color: var(--text-muted); font-weight: 500; white-space: nowrap; }
+
+    /* Tab switcher */
+    .tab-sw { display: flex; background: var(--bg); border-radius: var(--radius-sm); padding: 4px; margin-bottom: 22px; gap: 4px; }
+    .tab-btn {
+      flex: 1; padding: 9px; border-radius: 6px; font-size: 13px; font-weight: 600;
+      background: transparent; color: var(--text-muted); border: none; transition: all .2s;
+    }
+    .tab-btn.active { background: #fff; color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+
+    /* Submit button */
+    .btn-primary {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg, var(--primary), #ff6b35);
+      color: #fff; border: none; border-radius: var(--radius-sm);
+      font-size: 15px; font-weight: 700; letter-spacing: .2px;
+      position: relative; overflow: hidden;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 16px rgba(255,60,95,.35);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,60,95,.45); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { opacity: .7; cursor: not-allowed; transform: none; }
+    .btn-text { display: block; }
+    .btn-spinner {
+      display: none; width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,.4); border-top-color: #fff;
+      border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* 6-digit OTP */
+    .otp-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 8px; margin-bottom: 18px; }
+    .otp-box {
+      text-align: center; font-size: 24px; font-weight: 800;
+      padding: 14px 4px; border: 2px solid var(--border); border-radius: 10px;
+      background: var(--bg); color: var(--text); outline: none;
+      transition: border-color .2s, box-shadow .2s, transform .15s;
+    }
+    .otp-box:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(255,60,95,.12); background: #fff; transform: scale(1.06); }
+    .otp-box.filled { border-color: var(--success); background: #f0fdf4; color: var(--success); }
+
+    /* OTP screen extras */
+    .otp-screen-icon {
+      width: 68px; height: 68px; border-radius: 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 34px; margin-bottom: 16px;
+    }
+    .otp-screen-icon.email { background: #fef3f2; }
+    .otp-screen-icon.phone { background: #f0fdf4; }
+    .otp-sent-to { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.7; }
+    .otp-sent-to strong { color: var(--text); font-weight: 700; }
+
+    /* ── OTP Code Preview Card ── */
+    .code-card {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 22px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    }
+    .code-card-header {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .code-card-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .code-card-from { font-size: 11px; color: var(--text-muted); margin-left: 4px; }
+    .code-card-from strong { color: var(--text); }
+    .code-card-body { padding: 20px 20px 16px; text-align: center; }
+    .code-card-label { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; font-weight: 500; }
+    .code-card-digits {
+      font-size: 40px;
+      font-weight: 900;
+      letter-spacing: 12px;
+      color: var(--primary);
+      cursor: pointer;
+      padding: 6px 0;
+      transition: opacity .2s, transform .2s;
+      display: inline-block;
+    }
+    .code-card-digits:hover { opacity: .75; transform: scale(1.04); }
+    .code-card-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+    .code-card-autofill {
+      display: inline-flex; align-items: center; gap: 5px;
+      margin-top: 10px;
+      font-size: 12px; font-weight: 700; color: #fff;
+      background: var(--success); border: none; border-radius: 6px;
+      padding: 6px 14px; transition: background .2s;
+    }
+    .code-card-autofill:hover { background: #059669; }
+
+    /* OTP box error shake */
+    .otp-box.is-error { border-color: #ef4444 !important; animation: shake .35s ease; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-5px); }
+      60%      { transform: translateX(5px); }
+      80%      { transform: translateX(-3px); }
+    }
+
+    .resend-row { text-align: center; font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+    .resend-row a { color: var(--primary); font-weight: 700; }
+    .resend-row a:hover { text-decoration: underline; }
+
+    .expire-note { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 14px; }
+    .expire-note strong { color: var(--text); }
+
+    /* Register link */
+    .reg-link { text-align: center; margin-top: 18px; font-size: 13px; color: var(--text-muted); }
+    .reg-link a { color: var(--primary); font-weight: 700; }
+    .reg-link a:hover { text-decoration: underline; }
+
+    /* Trust row */
+    .trust-row { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border); }
+    .trust-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-muted); }
+
+    /* Toast */
+    .toast-box { position: fixed; top: 22px; right: 22px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+    .toast {
+      background: var(--dark); color: #fff; padding: 13px 18px; border-radius: 12px;
+      font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.25); animation: toastIn .3s ease; min-width: 260px;
+    }
+    .toast.success { background: #064e3b; border-left: 4px solid var(--success); }
+    .toast.error   { background: #7f1d1d; border-left: 4px solid #ef4444; }
+    @keyframes toastIn { from { opacity:0; transform: translateY(-20px); } to { opacity:1; transform: translateY(0); } }
+
+    /* Optional hint under phone tab */
+    .otp-hint { font-size: 12px; color: var(--text-muted); line-height: 1.6; margin-bottom: 18px; }
+
+    @media (max-width: 900px) {
+      .page-body { grid-template-columns: 1fr; }
+      .left-panel { display: none; }
+      .right-panel { padding: 36px 24px; }
+    }
+    @media (max-width: 480px) {
+      .social-btns { flex-direction: column; }
+      .otp-grid { gap: 6px; }
+      .otp-box { font-size: 20px; padding: 12px 2px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════
+     HEADER
+════════════════════════════════════ -->
+<header class="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">⚡</div>
+      <div>
+        <div class="logo-text">NEXORA</div>
+        <div class="logo-tagline">Shop Smarter</div>
+      </div>
+    </a>
+    <div class="header-right" id="headerRight">
+      New to NEXORA? <a href="#" onclick="gotoRegister();return false;">Create an account →</a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════
+     PAGE BODY
+════════════════════════════════════ -->
+<div class="page-body">
+
+  <!-- ── LEFT PANEL ── -->
+  <div class="left-panel">
+    <div class="left-bg-text">⚡</div>
+
+    <!-- Sign In left -->
+    <div class="left-content" id="lc-signin">
+      <div class="left-badge">⚡ Welcome Back</div>
+      <h1 class="left-title">Your deals are<br/><span>waiting for you.</span></h1>
+      <p class="left-desc">Sign in to access exclusive member prices, track your orders, manage your wishlist, and unlock group buying discounts.</p>
+      <div class="perks">
+        <div class="perk"><div class="perk-icon">⚡</div><div class="perk-text"><div class="perk-title">Flash Deal Access</div><div class="perk-sub">Members get 30-min early access to sales</div></div></div>
+        <div class="perk"><div class="perk-icon">👥</div><div class="perk-text"><div class="perk-title">Group Buy Discounts</div><div class="perk-sub">Save up to 70% by shopping with others</div></div></div>
+        <div class="perk"><div class="perk-icon">📦</div><div class="perk-text"><div class="perk-title">Order Tracking</div><div class="perk-sub">Real-time updates on all your packages</div></div></div>
+        <div class="perk"><div class="perk-icon">🎁</div><div class="perk-text"><div class="perk-title">Loyalty Rewards</div><div class="perk-sub">Earn NEXORA coins on every purchase</div></div></div>
+      </div>
+    </div>
+
+    <!-- Register left -->
+    <div class="left-content lc-hidden" id="lc-register">
+      <div class="left-badge">🚀 Join NEXORA</div>
+      <h1 class="left-title">Join millions of<br/><span>smart shoppers.</span></h1>
+      <p class="left-desc">Create your free account and unlock exclusive deals, group buying power, and member-only rewards — completely free.</p>
+      <div class="left-stats">
+        <div class="stat-card"><div class="stat-num"><span>12M+</span></div><div class="stat-label">Happy Customers</div></div>
+        <div class="stat-card"><div class="stat-num"><span>70%</span></div><div class="stat-label">Max Group Savings</div></div>
+        <div class="stat-card"><div class="stat-num"><span>1M+</span></div><div class="stat-label">Products Listed</div></div>
+        <div class="stat-card"><div class="stat-num"><span>Free</span></div><div class="stat-label">Always Free to Join</div></div>
+      </div>
+    </div>
+
+    <!-- OTP left -->
+    <div class="left-content lc-hidden" id="lc-otp">
+      <div class="left-badge">🔐 Almost There</div>
+      <h1 class="left-title">Verify your<br/><span>identity.</span></h1>
+      <p class="left-desc">We sent a 6-digit code. Enter it below to securely access your NEXORA account.</p>
+      <div class="verify-steps">
+        <div class="vstep">
+          <div class="vstep-num" style="background:var(--success);">✓</div>
+          <div class="vstep-text">Account details submitted</div>
+        </div>
+        <div class="vstep">
+          <div class="vstep-num" style="background:var(--primary);">2</div>
+          <div class="vstep-text">Verify your code</div>
+        </div>
+        <div class="vstep" style="opacity:.45;">
+          <div class="vstep-num" style="background:rgba(255,255,255,.15);">3</div>
+          <div class="vstep-text">Access your account</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── RIGHT PANEL ── -->
+  <div class="right-panel">
+
+    <!-- ══════════════════════════
+         SCREEN 1 — SIGN IN
+    ══════════════════════════ -->
+    <div class="screen" id="scr-signin">
+
+      <div class="form-header">
+        <h2 class="form-title">Sign in to <span>NEXORA</span></h2>
+        <p class="form-subtitle">Don't have an account? <a href="#" onclick="gotoRegister();return false;">Register free</a></p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tab-sw">
+        <button class="tab-btn active" id="tabEmail" onclick="switchTab('email')">📧 Email / Password</button>
+        <button class="tab-btn" id="tabPhone" onclick="switchTab('phone')">📱 Phone OTP</button>
+      </div>
+
+      <!-- EMAIL TAB -->
+      <div id="emailTab">
+        <div class="social-btns">
+          <button class="social-btn" onclick="socialLogin('Google')"><span>🌐</span> Google</button>
+          <button class="social-btn" onclick="socialLogin('Facebook')"><span>📘</span> Facebook</button>
+          <button class="social-btn" onclick="socialLogin('Apple')"><span>🍎</span> Apple</button>
+        </div>
+        <div class="divider"><div class="divider-line"></div><div class="divider-text">or sign in with email</div><div class="divider-line"></div></div>
+        <form onsubmit="handleEmailLogin(event)" novalidate>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <div class="input-wrap">
+              <span class="input-icon">✉</span>
+              <input class="form-input" type="email" id="loginEmail" placeholder="your@email.com" autocomplete="email" />
+            </div>
+            <div class="err-msg" id="loginEmailErr">Please enter a valid email address.</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔒</span>
+              <input class="form-input" type="password" id="loginPass" placeholder="Enter your password" autocomplete="current-password" />
+              <button type="button" class="toggle-pass" onclick="togglePass('loginPass',this)">👁</button>
+            </div>
+            <div class="err-msg" id="loginPassErr">Password must be at least 6 characters.</div>
+          </div>
+          <div class="form-row">
+            <label class="chk-label"><input type="checkbox" /><span class="chk-box"></span> Keep me signed in</label>
+            <a href="#" class="forgot-link" onclick="showForgot();return false;">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn-primary" id="loginBtn">
+            <span class="btn-text">Sign In to NEXORA</span>
+            <div class="btn-spinner" id="loginSpinner"></div>
+          </button>
+        </form>
+      </div>
+
+      <!-- PHONE TAB -->
+      <div id="phoneTab" class="hidden">
+        <div class="form-group">
+          <label class="form-label">Mobile Number</label>
+          <div class="input-wrap">
+            <span class="input-icon">📱</span>
+            <input class="form-input" type="tel" id="phoneInput" placeholder="+880 1XXXXXXXXX" />
+          </div>
+          <div class="err-msg" id="phoneErr">Please enter a valid phone number.</div>
+        </div>
+        <p class="otp-hint">A 6-digit verification code will be sent to your mobile number via SMS to confirm your identity.</p>
+        <button class="btn-primary" id="sendOtpBtn" onclick="sendPhoneOTP()">
+          <span class="btn-text">Send OTP Code →</span>
+          <div class="btn-spinner" id="sendOtpSpinner"></div>
+        </button>
+      </div>
+
+      <div class="reg-link">
+        New to NEXORA? <a href="#" onclick="gotoRegister();return false;">Create your free account →</a>
+      </div>
+      <div class="trust-row">
+        <div class="trust-item"><span>🔒</span> SSL Secured</div>
+        <div class="trust-item"><span>🛡️</span> Buyer Protected</div>
+        <div class="trust-item"><span>✅</span> Verified Platform</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SCREEN 2 — CREATE ACCOUNT
+    ══════════════════════════ -->
+    <div class="screen hidden" id="scr-register">
+
+      <!-- Progress -->
+      <div class="prog-wrap">
+        <div class="prog-row">
+          <div class="prog-step active" id="pr1"><div class="prog-circle">1</div><div class="prog-lbl">Create Account</div></div>
+          <div class="prog-line" id="pl1"></div>
+          <div class="prog-step" id="pr2"><div class="prog-circle">2</div><div class="prog-lbl">Verify Email</div></div>
+          <div class="prog-line" id="pl2"></div>
+          <div class="prog-step" id="pr3"><div class="prog-circle">✓</div><div class="prog-lbl">All Done!</div></div>
+        </div>
+      </div>
+
+      <button class="back-btn" onclick="gotoSignin()">← Back to Sign In</button>
+
+      <div class="form-header">
+        <h2 class="form-title">Create your <span>free account</span></h2>
+        <p class="form-subtitle">Already a member? <a href="#" onclick="gotoSignin();return false;">Sign in here</a></p>
+      </div>
+
+      <form onsubmit="handleRegister(event)" novalidate>
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <div class="input-wrap">
+            <span class="input-icon">👤</span>
+            <input class="form-input" type="text" id="regName" placeholder="Your full name" />
+          </div>
+          <div class="err-msg" id="regNameErr">Please enter your full name (at least 2 characters).</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <div class="input-wrap">
+            <span class="input-icon">✉</span>
+            <input class="form-input" type="email" id="regEmail" placeholder="your@email.com" />
+          </div>
+          <div class="err-msg" id="regEmailErr">Please enter a valid email address.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number <span style="font-weight:400;color:var(--text-muted);">(optional)</span></label>
+          <div class="input-wrap">
+            <span class="input-icon">📱</span>
+            <input class="form-input" type="tel" id="regPhone" placeholder="+880 1XXXXXXXXX" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input class="form-input" type="password" id="regPass" placeholder="Create a strong password" oninput="checkStrength(this.value)" />
+            <button type="button" class="toggle-pass" onclick="togglePass('regPass',this)">👁</button>
+          </div>
+          <div class="pw-bars"><div class="pw-bar" id="pb1"></div><div class="pw-bar" id="pb2"></div><div class="pw-bar" id="pb3"></div><div class="pw-bar" id="pb4"></div></div>
+          <div class="pw-lbl" id="pwLbl"></div>
+          <div class="err-msg" id="regPassErr">Password must be at least 8 characters.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input class="form-input" type="password" id="regConfirm" placeholder="Repeat your password" oninput="checkMatch()" />
+            <button type="button" class="toggle-pass" onclick="togglePass('regConfirm',this)">👁</button>
+          </div>
+          <div class="err-msg" id="regConfirmErr">Passwords do not match.</div>
+        </div>
+        <div class="form-group">
+          <label class="chk-label">
+            <input type="checkbox" id="termsChk" />
+            <span class="chk-box"></span>
+            <span>I agree to the <a href="#" style="color:var(--primary);font-weight:600;" onclick="return false;">Terms of Service</a> and <a href="#" style="color:var(--primary);font-weight:600;" onclick="return false;">Privacy Policy</a></span>
+          </label>
+          <div class="err-msg" id="termsErr">You must agree to continue.</div>
+        </div>
+        <button type="submit" class="btn-primary" id="regBtn">
+          <span class="btn-text">Create Account &amp; Verify Email →</span>
+          <div class="btn-spinner" id="regSpinner"></div>
+        </button>
+      </form>
+
+      <div class="reg-link" style="margin-top:14px;">
+        Already have an account? <a href="#" onclick="gotoSignin();return false;">Sign in →</a>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════
+         SCREEN 3 — OTP VERIFY
+    ══════════════════════════ -->
+    <div class="screen hidden" id="scr-otp">
+
+      <!-- Progress (only register flow) -->
+      <div class="prog-wrap hidden" id="otpProg">
+        <div class="prog-row">
+          <div class="prog-step done"><div class="prog-circle">✓</div><div class="prog-lbl">Create Account</div></div>
+          <div class="prog-line done"></div>
+          <div class="prog-step active" id="pr-o2"><div class="prog-circle">2</div><div class="prog-lbl">Verify Email</div></div>
+          <div class="prog-line" id="pl-o2"></div>
+          <div class="prog-step" id="pr-o3"><div class="prog-circle">✓</div><div class="prog-lbl">All Done!</div></div>
+        </div>
+      </div>
+
+      <button class="back-btn" id="otpBackBtn" onclick="otpBack()">← Back</button>
+
+      <div id="otpIcon" class="otp-screen-icon email">📧</div>
+      <h2 class="form-title" id="otpTitle">Check your email</h2>
+      <p class="otp-sent-to" id="otpMsg">We sent a 6-digit code to <strong id="otpTarget"></strong>. Use the code below:</p>
+
+      <!-- ── Email / SMS preview card ── -->
+      <div class="code-card" id="codeCard">
+        <div class="code-card-header">
+          <div class="code-card-dot" style="background:#ef4444;"></div>
+          <div class="code-card-dot" style="background:#f59e0b;"></div>
+          <div class="code-card-dot" style="background:#10b981;"></div>
+          <div class="code-card-from">
+            From: <strong id="codeCardFrom">noreply@nexora.com</strong>
+            &nbsp;→&nbsp; <strong id="codeCardTo"></strong>
+          </div>
+        </div>
+        <div class="code-card-body">
+          <div class="code-card-label">🔐 Your NEXORA Verification Code</div>
+          <div class="code-card-digits" id="codeDisplay" onclick="autoFillCode()" title="Click to auto-fill">------</div>
+          <div class="code-card-hint">Code valid for <strong id="cardExpire">10:00</strong> &nbsp;·&nbsp; Do not share with anyone</div>
+          <button class="code-card-autofill" onclick="autoFillCode()">⚡ Auto-fill &amp; Verify</button>
+        </div>
+      </div>
+
+      <!-- 6-digit boxes -->
+      <div class="otp-grid">
+        <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="v1" oninput="otpInput(this,'v2')" onkeydown="otpDel(event,'v1','v2')" />
+        <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="v2" oninput="otpInput(this,'v3')" onkeydown="otpDel(event,'v1','v3')" />
+        <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="v3" oninput="otpInput(this,'v4')" onkeydown="otpDel(event,'v2','v4')" />
+        <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="v4" oninput="otpInput(this,'v5')" onkeydown="otpDel(event,'v3','v5')" />
+        <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="v5" oninput="otpInput(this,'v6')" onkeydown="otpDel(event,'v4','v6')" />
+        <input class="otp-box" type="text" inputmode="numeric" maxlength="1" id="v6" oninput="otpInput(this,null)" onkeydown="otpDel(event,'v5',null)" />
+      </div>
+
+      <div class="resend-row">
+        Didn't receive it? <a href="#" onclick="resendCode();return false;">Resend code</a>
+        <span id="resendLabel" style="color:var(--text-muted);"></span>
+      </div>
+
+      <button class="btn-primary" id="verifyBtn" onclick="doVerify()">
+        <span class="btn-text" id="verifyBtnText">Verify &amp; Continue →</span>
+        <div class="btn-spinner" id="verifySpinner"></div>
+      </button>
+
+      <div class="expire-note">
+        Code expires in <strong id="expireLabel">10:00</strong>
+      </div>
+    </div>
+
+  </div><!-- end right-panel -->
+</div><!-- end page-body -->
+
+<div class="toast-box" id="toastBox"></div>
+
+<script>
+  // ════════════════════════════════
+  // STATE
+  // ════════════════════════════════
+  let currentFlow  = ''; // 'email-login' | 'register' | 'phone'
+  let pendingEmail = '';
+  let pendingPhone = '';
+  let pendingName  = '';
+  let generatedOTP = '';
+  let resendTimer  = null;
+  let expireTimer  = null;
+
+  function genOTP() {
+    return String(Math.floor(100000 + Math.random() * 900000));
+  }
+
+  // ════════════════════════════════
+  // SCREEN NAVIGATION
+  // ════════════════════════════════
+  const SCREENS = ['scr-signin','scr-register','scr-otp'];
+  const LEFT_MAP = { 'scr-signin':'lc-signin', 'scr-register':'lc-register', 'scr-otp':'lc-otp' };
+
+  function showScreen(id) {
+    SCREENS.forEach(s => document.getElementById(s).classList.toggle('hidden', s !== id));
+    Object.entries(LEFT_MAP).forEach(([s,lc]) => document.getElementById(lc).classList.toggle('lc-hidden', s !== id));
+    document.querySelector('.right-panel').scrollTop = 0;
+  }
+
+  function gotoSignin() {
+    showScreen('scr-signin');
+    document.getElementById('headerRight').innerHTML = 'New to NEXORA? <a href="#" onclick="gotoRegister();return false;">Create an account →</a>';
+  }
+
+  function gotoRegister() {
+    showScreen('scr-register');
+    document.getElementById('headerRight').innerHTML = 'Already a member? <a href="#" onclick="gotoSignin();return false;">Sign in →</a>';
+    // Reset progress
+    setProgress('pr1','pl1','pr2','pl2','pr3', 'step1');
+  }
+
+  function gotoOTP() {
+    showScreen('scr-otp');
+    document.getElementById('headerRight').innerHTML = '<a href="#" onclick="gotoSignin();return false;">← Back to Sign In</a>';
+  }
+
+  // ════════════════════════════════
+  // TAB SWITCHER
+  // ════════════════════════════════
+  function switchTab(t) {
+    const isEmail = t === 'email';
+    document.getElementById('tabEmail').classList.toggle('active', isEmail);
+    document.getElementById('tabPhone').classList.toggle('active', !isEmail);
+    document.getElementById('emailTab').classList.toggle('hidden', !isEmail);
+    document.getElementById('phoneTab').classList.toggle('hidden', isEmail);
+  }
+
+  // ════════════════════════════════
+  // PROGRESS BAR HELPER
+  // ════════════════════════════════
+  function setProgress(s1id, l1id, s2id, l2id, s3id, activeStep) {
+    const s1 = document.getElementById(s1id);
+    const s2 = document.getElementById(s2id);
+    const s3 = document.getElementById(s3id);
+    const l1 = document.getElementById(l1id);
+    const l2 = document.getElementById(l2id);
+    if (!s1) return;
+
+    const setStep = (el, state) => {
+      if (!el) return;
+      el.classList.remove('active','done');
+      if (state) el.classList.add(state);
+    };
+    const setLine = (el, done) => { if (el) el.classList.toggle('done', done); };
+
+    if (activeStep === 'step1') {
+      setStep(s1,'active'); setLine(l1,false); setStep(s2,null); setLine(l2,false); setStep(s3,null);
+    } else if (activeStep === 'step2') {
+      setStep(s1,'done'); setLine(l1,true); setStep(s2,'active'); setLine(l2,false); setStep(s3,null);
+    } else if (activeStep === 'step3') {
+      setStep(s1,'done'); setLine(l1,true); setStep(s2,'done'); setLine(l2,true); setStep(s3,'active');
+    }
+  }
+
+  // ════════════════════════════════
+  // EMAIL SIGN IN
+  // ════════════════════════════════
+  function handleEmailLogin(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value.trim();
+    const pass  = document.getElementById('loginPass').value;
+    let ok = true;
+
+    if (!validEmail(email)) { setErr('loginEmail','loginEmailErr',true); ok=false; }
+    else setErr('loginEmail','loginEmailErr',false);
+
+    if (pass.length < 6) { setErr('loginPass','loginPassErr',true); ok=false; }
+    else setErr('loginPass','loginPassErr',false);
+
+    if (!ok) return;
+
+    setLoading('loginBtn','loginSpinner',true);
+    pendingEmail  = email;
+    currentFlow   = 'email-login';
+
+    setTimeout(() => {
+      setLoading('loginBtn','loginSpinner',false);
+      setupOTPScreen('email');
+      gotoOTP();
+      toast('📧', `Verification code sent to ${email}`, 'success');
+      startExpire();
+      startResend();
+    }, 1400);
+  }
+
+  // ════════════════════════════════
+  // SOCIAL LOGIN
+  // ════════════════════════════════
+  function socialLogin(provider) {
+    toast('🔄', `Connecting to ${provider}…`, '');
+    setTimeout(() => {
+      toast('✅', `${provider} sign-in successful!`, 'success');
+      setTimeout(() => { window.location.href = 'admin.html'; }, 1200);
+    }, 1500);
+  }
+
+  // ════════════════════════════════
+  // FORGOT PASSWORD
+  // ════════════════════════════════
+  function showForgot() {
+    const email = document.getElementById('loginEmail').value.trim();
+    if (email && validEmail(email)) {
+      toast('📧', `Password reset link sent to ${email}`, 'success');
+    } else {
+      toast('⚠️', 'Enter your email first, then click Forgot', 'error');
+      document.getElementById('loginEmail').focus();
+    }
+  }
+
+  // ════════════════════════════════
+  // PHONE OTP
+  // ════════════════════════════════
+  function sendPhoneOTP() {
+    const phone = document.getElementById('phoneInput').value.trim();
+    if (phone.replace(/\D/g,'').length < 10) {
+      setErr('phoneInput','phoneErr',true); return;
+    }
+    setErr('phoneInput','phoneErr',false);
+    pendingPhone = phone;
+    currentFlow  = 'phone';
+    setLoading('sendOtpBtn','sendOtpSpinner',true);
+
+    setTimeout(() => {
+      setLoading('sendOtpBtn','sendOtpSpinner',false);
+      setupOTPScreen('phone');
+      gotoOTP();
+      toast('📱', `OTP sent to ${phone}`, 'success');
+      startExpire();
+      startResend();
+    }, 1200);
+  }
+
+  // ════════════════════════════════
+  // REGISTRATION
+  // ════════════════════════════════
+  function handleRegister(e) {
+    e.preventDefault();
+    const name    = document.getElementById('regName').value.trim();
+    const email   = document.getElementById('regEmail').value.trim();
+    const pass    = document.getElementById('regPass').value;
+    const confirm = document.getElementById('regConfirm').value;
+    const terms   = document.getElementById('termsChk').checked;
+    let ok = true;
+
+    if (name.length < 2) { setErr('regName','regNameErr',true); ok=false; } else setErr('regName','regNameErr',false);
+    if (!validEmail(email)) { setErr('regEmail','regEmailErr',true); ok=false; } else setErr('regEmail','regEmailErr',false);
+    if (pass.length < 8) { setErr('regPass','regPassErr',true); ok=false; } else setErr('regPass','regPassErr',false);
+    if (pass !== confirm || confirm.length === 0) { setErr('regConfirm','regConfirmErr',true); ok=false; } else setErr('regConfirm','regConfirmErr',false);
+    if (!terms) { document.getElementById('termsErr').classList.add('show'); ok=false; } else document.getElementById('termsErr').classList.remove('show');
+    if (!ok) return;
+
+    setLoading('regBtn','regSpinner',true);
+    pendingEmail = email;
+    pendingName  = name;
+    currentFlow  = 'register';
+
+    setTimeout(() => {
+      setLoading('regBtn','regSpinner',false);
+      setupOTPScreen('email-register');
+      gotoOTP();
+      toast('🎉', 'Account created! Check your email to verify.', 'success');
+      startExpire();
+      startResend();
+    }, 1800);
+  }
+
+  // ════════════════════════════════
+  // OTP SCREEN SETUP
+  // ════════════════════════════════
+  function setupOTPScreen(type) {
+    const isPhone    = type === 'phone';
+    const isRegister = type === 'email-register';
+    const target     = isPhone ? pendingPhone : pendingEmail;
+
+    // Generate fresh OTP
+    generatedOTP = genOTP();
+
+    // Icon
+    const iconEl = document.getElementById('otpIcon');
+    iconEl.textContent = isPhone ? '📱' : '📧';
+    iconEl.className = 'otp-screen-icon ' + (isPhone ? 'phone' : 'email');
+
+    // Title & target
+    document.getElementById('otpTitle').textContent = isPhone ? 'Verify your phone' : 'Check your email';
+    document.getElementById('otpTarget').textContent = target;
+
+    // Code card — update sender label for phone vs email
+    const fromEl = document.getElementById('codeCardFrom');
+    if (fromEl) fromEl.textContent = isPhone ? 'SMS from NEXORA' : 'noreply@nexora.com';
+    const toEl = document.getElementById('codeCardTo');
+    if (toEl) toEl.textContent = target;
+    const dispEl = document.getElementById('codeDisplay');
+    if (dispEl) dispEl.textContent = generatedOTP;
+
+    // Progress (register only)
+    document.getElementById('otpProg').classList.toggle('hidden', !isRegister);
+
+    // Back button & verify button text
+    document.getElementById('otpBackBtn').textContent = isRegister ? '← Back to Registration' : '← Back to Sign In';
+    document.getElementById('verifyBtnText').textContent = isRegister ? 'Verify & Activate Account →' : 'Verify & Sign In →';
+
+    clearOTP();
+    setTimeout(() => document.getElementById('v1').focus(), 300);
+  }
+
+  // ── Auto-fill from card ──
+  function autoFillCode() {
+    if (!generatedOTP) return;
+    generatedOTP.split('').forEach((d, i) => {
+      const el = document.getElementById('v' + (i + 1));
+      if (el) { el.value = d; el.classList.add('filled'); }
+    });
+    setTimeout(doVerify, 350);
+  }
+
+  function clearOTP() {
+    ['v1','v2','v3','v4','v5','v6'].forEach(id => {
+      const el = document.getElementById(id);
+      el.value = '';
+      el.classList.remove('filled');
+    });
+  }
+
+  // ════════════════════════════════
+  // OTP INPUT LOGIC
+  // ════════════════════════════════
+  function otpInput(el, nextId) {
+    el.value = el.value.replace(/\D/g,'');
+    if (el.value) {
+      el.classList.add('filled');
+      if (nextId) document.getElementById(nextId).focus();
+    } else {
+      el.classList.remove('filled');
+    }
+    // Auto-verify when all 6 filled
+    const code = ['v1','v2','v3','v4','v5','v6'].map(id => document.getElementById(id).value).join('');
+    if (code.length === 6) setTimeout(doVerify, 500);
+  }
+
+  function otpDel(e, prevId, nextId) {
+    if (e.key === 'Backspace' && !e.target.value && prevId) {
+      document.getElementById(prevId).focus();
+    }
+  }
+
+  function otpBack() {
+    clearInterval(resendTimer);
+    clearInterval(expireTimer);
+    if (currentFlow === 'register') {
+      gotoRegister();
+    } else if (currentFlow === 'phone') {
+      gotoSignin();
+      switchTab('phone');
+    } else {
+      gotoSignin();
+    }
+  }
+
+  // ════════════════════════════════
+  // VERIFY OTP
+  // ════════════════════════════════
+  let verifying = false;
+  function doVerify() {
+    if (verifying) return;
+    const code = ['v1','v2','v3','v4','v5','v6'].map(id => document.getElementById(id).value).join('');
+    if (code.length < 6) { toast('⚠️','Enter all 6 digits','error'); return; }
+
+    // Validate against generated code
+    if (code !== generatedOTP) {
+      const boxes = ['v1','v2','v3','v4','v5','v6'].map(id => document.getElementById(id));
+      boxes.forEach(b => { b.classList.add('is-error'); b.classList.remove('filled'); });
+      setTimeout(() => boxes.forEach(b => b.classList.remove('is-error')), 700);
+      toast('❌','Incorrect code — please try again','error');
+      clearOTP();
+      document.getElementById('v1').focus();
+      return;
+    }
+
+    verifying = true;
+    setLoading('verifyBtn','verifySpinner',true);
+
+    setTimeout(() => {
+      setLoading('verifyBtn','verifySpinner',false);
+      verifying = false;
+      clearInterval(expireTimer);
+      clearInterval(resendTimer);
+
+      // Advance progress for register flow
+      if (currentFlow === 'register') {
+        const p2 = document.getElementById('pr-o2');
+        const l2 = document.getElementById('pl-o2');
+        const p3 = document.getElementById('pr-o3');
+        if (p2) { p2.classList.remove('active'); p2.classList.add('done'); }
+        if (l2) l2.classList.add('done');
+        if (p3) p3.classList.add('active');
+      }
+
+      toast('✅','Verified! Welcome to NEXORA 🎉','success');
+      setTimeout(() => { window.location.href = 'admin.html'; }, 1600);
+    }, 1200);
+  }
+
+  // ════════════════════════════════
+  // TIMERS
+  // ════════════════════════════════
+  function startResend() {
+    let sec = 60;
+    const label = document.getElementById('resendLabel');
+    clearInterval(resendTimer);
+    label.textContent = ` (wait ${sec}s)`;
+    resendTimer = setInterval(() => {
+      sec--;
+      label.textContent = sec > 0 ? ` (wait ${sec}s)` : '';
+      if (sec <= 0) clearInterval(resendTimer);
+    }, 1000);
+  }
+
+  function startExpire() {
+    let total = 600;
+    const label1 = document.getElementById('expireLabel');
+    const label2 = document.getElementById('cardExpire');
+    clearInterval(expireTimer);
+    expireTimer = setInterval(() => {
+      total--;
+      const m = String(Math.floor(total / 60)).padStart(2,'0');
+      const s = String(total % 60).padStart(2,'0');
+      const txt = `${m}:${s}`;
+      if (label1) label1.textContent = txt;
+      if (label2) label2.textContent = txt;
+      if (total <= 0) {
+        clearInterval(expireTimer);
+        if (label1) label1.textContent = 'Expired';
+        if (label2) label2.textContent = 'Expired';
+        const dispEl = document.getElementById('codeDisplay');
+        if (dispEl) dispEl.textContent = '------';
+        generatedOTP = '';
+        toast('⏰','Code expired. Click Resend to get a new one.','error');
+      }
+    }, 1000);
+  }
+
+  function resendCode() {
+    clearOTP();
+    // Generate a new code
+    generatedOTP = genOTP();
+    const dispEl = document.getElementById('codeDisplay');
+    if (dispEl) dispEl.textContent = generatedOTP;
+    toast('📨','New code generated!','success');
+    startResend();
+    startExpire();
+    document.getElementById('v1').focus();
+  }
+
+  // ════════════════════════════════
+  // HELPERS
+  // ════════════════════════════════
+  function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
+  function setErr(inputId, errId, show) {
+    const inp = document.getElementById(inputId);
+    const err = document.getElementById(errId);
+    if (inp) inp.classList.toggle('is-error', show);
+    if (err) err.classList.toggle('show', show);
+  }
+
+  function setLoading(btnId, spinnerId, loading) {
+    const btn = document.getElementById(btnId);
+    const sp  = document.getElementById(spinnerId);
+    const txt = btn.querySelector('.btn-text');
+    if (loading) { if (txt) txt.style.display='none'; if (sp) sp.style.display='block'; btn.disabled=true; }
+    else          { if (txt) txt.style.display='block'; if (sp) sp.style.display='none'; btn.disabled=false; }
+  }
+
+  function togglePass(inputId, btn) {
+    const inp = document.getElementById(inputId);
+    const vis = inp.type === 'text';
+    inp.type = vis ? 'password' : 'text';
+    btn.textContent = vis ? '👁' : '🙈';
+  }
+
+  function checkStrength(pass) {
+    let score = 0;
+    if (pass.length >= 8) score++;
+    if (/[A-Z]/.test(pass)) score++;
+    if (/[0-9]/.test(pass)) score++;
+    if (/[^A-Za-z0-9]/.test(pass)) score++;
+
+    ['pb1','pb2','pb3','pb4'].forEach((id,i) => {
+      const el = document.getElementById(id);
+      el.className = 'pw-bar' + (i < score ? ` s${score}` : '');
+    });
+    const lbl   = document.getElementById('pwLbl');
+    const names = ['','Weak','Fair','Good','Strong ✓'];
+    const clrs  = ['','#ef4444','#f97316','#f59e0b','#10b981'];
+    lbl.textContent = names[score] || '';
+    lbl.style.color = clrs[score] || '';
+  }
+
+  function checkMatch() {
+    const pass    = document.getElementById('regPass').value;
+    const confirm = document.getElementById('regConfirm').value;
+    const inp     = document.getElementById('regConfirm');
+    if (!confirm) return;
+    if (pass === confirm) { inp.classList.remove('is-error'); inp.classList.add('is-ok'); document.getElementById('regConfirmErr').classList.remove('show'); }
+    else { inp.classList.add('is-error'); inp.classList.remove('is-ok'); }
+  }
+
+  function toast(icon, msg, type) {
+    const box = document.getElementById('toastBox');
+    const t   = document.createElement('div');
+    t.className = `toast ${type||''}`;
+    t.innerHTML = `<span>${icon}</span>${msg}`;
+    box.appendChild(t);
+    setTimeout(() => { t.style.opacity='0'; t.style.transition='.3s'; setTimeout(()=>t.remove(),300); }, 3500);
+  }
+
+  // ── Live validation ──
+  document.getElementById('loginEmail').addEventListener('input', function(){ if(validEmail(this.value)) setErr('loginEmail','loginEmailErr',false); });
+  document.getElementById('loginPass').addEventListener('input', function(){ if(this.value.length>=6) setErr('loginPass','loginPassErr',false); });
+  document.getElementById('regEmail').addEventListener('input', function(){ if(validEmail(this.value)) setErr('regEmail','regEmailErr',false); });
+  document.getElementById('termsChk').addEventListener('change', function(){ if(this.checked) document.getElementById('termsErr').classList.remove('show'); });
+</script>
+</body>
+</html>
