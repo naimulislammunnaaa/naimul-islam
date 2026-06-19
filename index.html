@@ -66,14 +66,76 @@
     .topbar-links { display: flex; gap: 20px; flex-wrap: wrap; }
     .topbar-login-link { color: var(--primary) !important; font-weight: 600; }
     .topbar-login-link:hover { color: var(--primary-light) !important; }
+    /* ── Topbar hover dropdowns ── */
+    .tb-item { position: relative; display: inline-block; }
+    .tb-drop {
+      position: absolute; top: calc(100% + 10px); left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      background: #fff; border-radius: 12px;
+      min-width: 200px; padding: 10px 0;
+      box-shadow: 0 10px 36px rgba(0,0,0,.18);
+      border: 1px solid #f0f0f0;
+      opacity: 0; pointer-events: none;
+      transition: opacity .18s, transform .18s;
+      z-index: 9999;
+    }
+    .tb-drop.drop-wide { min-width: 340px; padding: 14px 16px; }
+    .tb-item:hover .tb-drop { opacity: 1; pointer-events: all; transform: translateX(-50%) translateY(0); }
+    /* Arrow */
+    .tb-drop::before {
+      content: ''; position: absolute; top: -7px; left: 50%;
+      transform: translateX(-50%);
+      border: 7px solid transparent; border-bottom-color: #fff;
+      border-top: none; filter: drop-shadow(0 -2px 2px rgba(0,0,0,.06));
+    }
+    .tb-drop-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 16px; color: #333; font-size: 12px; font-weight: 500;
+      cursor: pointer; text-decoration: none; transition: background .12s;
+    }
+    .tb-drop-row:hover { background: #fff5f5; color: var(--primary); }
+    .tb-drop-row .tb-icon { font-size: 16px; width: 22px; flex-shrink: 0; text-align: center; }
+    .tb-drop-divider { height: 1px; background: #f0f0f0; margin: 6px 0; }
+    .tb-drop-title {
+      font-size: 10px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase;
+      color: #aaa; padding: 4px 16px 6px;
+    }
+    /* Bangladesh compact divisions grid */
+    .tb-bd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px 0; }
+    .tb-bd-div {
+      font-size: 11px; font-weight: 600; padding: 6px 10px; border-radius: 8px;
+      color: #444; cursor: pointer; transition: all .14s;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .tb-bd-div:hover { background: #fff5f5; color: var(--primary); }
+    .tb-bd-div .tb-bd-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .tb-drop-btn {
+      display: block; margin: 8px 16px 4px; padding: 7px 0; text-align: center;
+      background: var(--primary); color: #fff; border-radius: 20px;
+      font-size: 11px; font-weight: 700; text-decoration: none; cursor: pointer;
+      transition: background .15s;
+    }
+    .tb-drop-btn:hover { background: var(--primary-dark); color: #fff; }
+    /* Theme swatches */
+    .tb-swatches { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 0; }
+    .tb-swatch {
+      width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+      border: 2px solid transparent; transition: transform .15s, border-color .15s;
+    }
+    .tb-swatch:hover { transform: scale(1.2); border-color: #fff; }
+    /* Lang (reuse old styles + hover) */
     .tbar-lang-wrap { position: relative; display: inline-block; }
     .tbar-lang-menu {
-      display: none; position: absolute; top: calc(100% + 6px); left: 50%;
-      transform: translateX(-50%); background: #fff; border: 1px solid #e0e0e0;
-      border-radius: 6px; min-width: 170px; box-shadow: 0 6px 20px rgba(0,0,0,.15);
+      position: absolute; top: calc(100% + 10px); left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      background: #fff; border: 1px solid #e0e0e0;
+      border-radius: 12px; min-width: 170px; box-shadow: 0 10px 36px rgba(0,0,0,.18);
       z-index: 9999; overflow: hidden;
+      opacity: 0; pointer-events: none;
+      transition: opacity .18s, transform .18s;
     }
-    .tbar-lang-wrap.open .tbar-lang-menu { display: block; }
+    .tbar-lang-wrap:hover .tbar-lang-menu,
+    .tbar-lang-wrap.open .tbar-lang-menu { opacity: 1; pointer-events: all; transform: translateX(-50%) translateY(0); }
     .tl-opt {
       padding: 9px 14px; color: #333; cursor: pointer; font-size: 13px;
       display: flex; align-items: center; gap: 8px; transition: background .15s;
@@ -568,12 +630,44 @@
     }
     .nav-item:hover { background: #f0edff; color: var(--accent2); }
     .nav-item.hot { color: var(--primary); font-weight: 600; }
-    .nav-item.hot::after {
-      content: "🔥";
-      margin-left: 4px;
-      font-size: 12px;
-    }
+    .nav-item.hot::after { content: "🔥"; margin-left: 4px; font-size: 12px; }
     .nav-divider { width: 1px; height: 16px; background: var(--border); margin: 0 4px; }
+
+    /* ── Nav hover mega-dropdowns ── */
+    .nav-wrap { position: relative; display: inline-flex; }
+    .nav-mega {
+      position: absolute; top: 100%; left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 16px 48px rgba(0,0,0,.15);
+      border: 1px solid #f0f0f0;
+      padding: 14px 0; min-width: 220px;
+      opacity: 0; pointer-events: none;
+      transition: opacity .18s, transform .18s;
+      z-index: 8000;
+    }
+    .nav-mega.mega-wide { min-width: 420px; padding: 16px; }
+    .nav-wrap:hover .nav-mega { opacity: 1; pointer-events: all; transform: translateX(-50%) translateY(0); }
+    .nav-mega::before {
+      content: ''; position: absolute; top: -7px; left: 50%;
+      transform: translateX(-50%);
+      border: 7px solid transparent; border-bottom-color: #fff; border-top: none;
+      filter: drop-shadow(0 -1px 1px rgba(0,0,0,.06));
+    }
+    .nm-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 18px; font-size: 12px; font-weight: 500; color: #333;
+      cursor: pointer; text-decoration: none; transition: background .12s, color .12s;
+      white-space: nowrap;
+    }
+    .nm-row:hover { background: #fff5f5; color: var(--primary); }
+    .nm-row .nm-icon { font-size: 16px; width: 24px; text-align: center; flex-shrink: 0; }
+    .nm-title { font-size: 10px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; color: #bbb; padding: 6px 18px 4px; }
+    .nm-divider { height: 1px; background: #f0f0f0; margin: 6px 0; }
+    .nm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .nm-badge { font-size: 9px; background: var(--primary); color: #fff; border-radius: 4px; padding: 1px 5px; margin-left: auto; font-weight: 700; }
+    .nm-badge-green { background: #059669; }
+    .nm-badge-blue { background: #2563eb; }
 
     /* ── LAYOUT ── */
     .container {
@@ -1968,9 +2062,228 @@
     }
     .back-top.visible { opacity: 1; pointer-events: all; }
     .back-top:hover { transform: translateY(-3px); }
+
+    /* Bangladesh Districts Modal */
+    .bd-wrap { position:fixed; inset:0; z-index:1300; display:none; align-items:center; justify-content:center; }
+    .bd-wrap.open { display:flex; }
+    .bd-overlay { position:absolute; inset:0; background:rgba(0,0,0,.55); backdrop-filter:blur(4px); }
+    .bd-modal {
+      position:relative; z-index:1; background:#fff; border-radius:20px;
+      width:min(900px,95vw); max-height:85vh; overflow-y:auto;
+      box-shadow:0 24px 80px rgba(0,0,0,.25);
+      animation:bdIn .3s cubic-bezier(.4,0,.2,1);
+    }
+    @keyframes bdIn { from{opacity:0;transform:scale(.96)translateY(16px)} to{opacity:1;transform:scale(1)translateY(0)} }
+    .bd-head {
+      position:sticky; top:0; z-index:2;
+      background:linear-gradient(135deg,#006a4e,#f42a41);
+      padding:16px 22px; display:flex; align-items:center; justify-content:space-between;
+      border-radius:20px 20px 0 0;
+    }
+    .bd-head-left { display:flex; align-items:center; gap:12px; }
+    .bd-flag { font-size:28px; }
+    .bd-head-title { font-size:17px; font-weight:800; color:#fff; }
+    .bd-head-sub { font-size:11px; color:rgba(255,255,255,.75); margin-top:1px; }
+    .bd-close {
+      width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,.2);
+      border:none; color:#fff; font-size:16px; cursor:pointer;
+      display:flex; align-items:center; justify-content:center; transition:background .15s;
+    }
+    .bd-close:hover { background:rgba(255,255,255,.35); }
+    .bd-body { padding:20px 22px 24px; }
+    .bd-search-row {
+      display:flex; align-items:center; gap:10px; margin-bottom:18px;
+      background:#f8f8fc; border-radius:50px; padding:8px 16px;
+      border:1.5px solid #e5e7eb;
+    }
+    .bd-search-row input {
+      flex:1; border:none; background:transparent; outline:none;
+      font-size:13px; color:#333; font-family:inherit;
+    }
+    .bd-divisions { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    @media(max-width:700px) { .bd-divisions { grid-template-columns:repeat(2,1fr); } }
+    .bd-div {
+      background:#fafafa; border-radius:12px; padding:12px;
+      border:1px solid #f0f0f0;
+    }
+    .bd-div-name {
+      font-size:10px; font-weight:800; letter-spacing:.6px; text-transform:uppercase;
+      margin-bottom:8px; padding-bottom:6px; border-bottom:2px solid currentColor;
+    }
+    .bd-chips { display:flex; flex-wrap:wrap; gap:5px; }
+    .bd-chip {
+      font-size:11px; font-weight:500; padding:3px 9px; border-radius:20px;
+      border:1px solid #e5e7eb; background:#fff; color:#444; cursor:pointer;
+      transition:all .18s; white-space:nowrap;
+      position:relative;
+    }
+    /* Tooltip bubble */
+    .bd-chip::before {
+      content: '📍 ' attr(data-d);
+      position:absolute; bottom:calc(100% + 9px); left:50%;
+      transform:translateX(-50%) translateY(4px);
+      background:#1a1a2e; color:#fff;
+      padding:6px 14px; border-radius:10px;
+      font-size:12px; font-weight:700; white-space:nowrap;
+      pointer-events:none; z-index:50;
+      opacity:0; transition:opacity .18s, transform .18s;
+      box-shadow:0 6px 20px rgba(0,0,0,.22);
+    }
+    /* Tooltip arrow */
+    .bd-chip::after {
+      content:'';
+      position:absolute; bottom:calc(100% + 3px); left:50%;
+      transform:translateX(-50%) translateY(4px);
+      border:6px solid transparent; border-top-color:#1a1a2e;
+      pointer-events:none; z-index:50;
+      opacity:0; transition:opacity .18s, transform .18s;
+    }
+    .bd-chip:hover { background:var(--primary); color:#fff; border-color:var(--primary); transform:translateY(-2px); box-shadow:0 4px 14px rgba(255,60,95,.35); z-index:10; }
+    .bd-chip:hover::before { opacity:1; transform:translateX(-50%) translateY(0); }
+    .bd-chip:hover::after  { opacity:1; transform:translateX(-50%) translateY(0); }
+    .bd-chip.hidden { display:none; }
+    .bd-chip.bd-active { background:var(--primary); color:#fff; border-color:var(--primary); box-shadow:0 3px 10px rgba(255,60,95,.35); font-weight:700; }
   </style>
 </head>
 <body>
+
+  <!-- BANGLADESH DISTRICTS MODAL -->
+  <div class="bd-wrap" id="bdModal">
+    <div class="bd-overlay" onclick="closeBDModal()"></div>
+    <div class="bd-modal">
+      <div class="bd-head">
+        <div class="bd-head-left">
+          <span class="bd-flag">🇧🇩</span>
+          <div>
+            <div class="bd-head-title">Select Your District</div>
+            <div class="bd-head-sub">Bangladesh · 8 Divisions · 64 Districts</div>
+          </div>
+        </div>
+        <button class="bd-close" onclick="closeBDModal()">✕</button>
+      </div>
+      <div class="bd-body">
+        <div class="bd-search-row">
+          <span>🔍</span>
+          <input type="text" id="bdSearch" placeholder="Search district..." oninput="filterDistricts(this.value)" autocomplete="off" />
+        </div>
+        <div class="bd-divisions">
+
+          <div class="bd-div">
+            <div class="bd-div-name" style="color:#2563eb">Dhaka Division</div>
+            <div class="bd-chips">
+              <span class="bd-chip" data-d="Dhaka">Dhaka</span>
+              <span class="bd-chip" data-d="Faridpur">Faridpur</span>
+              <span class="bd-chip" data-d="Gazipur">Gazipur</span>
+              <span class="bd-chip" data-d="Gopalganj">Gopalganj</span>
+              <span class="bd-chip" data-d="Kishoreganj">Kishoreganj</span>
+              <span class="bd-chip" data-d="Madaripur">Madaripur</span>
+              <span class="bd-chip" data-d="Manikganj">Manikganj</span>
+              <span class="bd-chip" data-d="Munshiganj">Munshiganj</span>
+              <span class="bd-chip" data-d="Narayanganj">Narayanganj</span>
+              <span class="bd-chip" data-d="Narsingdi">Narsingdi</span>
+              <span class="bd-chip" data-d="Rajbari">Rajbari</span>
+              <span class="bd-chip" data-d="Shariatpur">Shariatpur</span>
+              <span class="bd-chip" data-d="Tangail">Tangail</span>
+            </div>
+          </div>
+
+          <div class="bd-div">
+            <div class="bd-div-name" style="color:#059669">Chattogram Division</div>
+            <div class="bd-chips">
+              <span class="bd-chip" data-d="Bandarban">Bandarban</span>
+              <span class="bd-chip" data-d="Brahmanbaria">Brahmanbaria</span>
+              <span class="bd-chip" data-d="Chandpur">Chandpur</span>
+              <span class="bd-chip" data-d="Chattogram">Chattogram</span>
+              <span class="bd-chip" data-d="Cox's Bazar">Cox's Bazar</span>
+              <span class="bd-chip" data-d="Cumilla">Cumilla</span>
+              <span class="bd-chip" data-d="Feni">Feni</span>
+              <span class="bd-chip" data-d="Khagrachari">Khagrachari</span>
+              <span class="bd-chip" data-d="Lakshmipur">Lakshmipur</span>
+              <span class="bd-chip" data-d="Noakhali">Noakhali</span>
+              <span class="bd-chip" data-d="Rangamati">Rangamati</span>
+            </div>
+          </div>
+
+          <div class="bd-div">
+            <div class="bd-div-name" style="color:#d97706">Rajshahi Division</div>
+            <div class="bd-chips">
+              <span class="bd-chip" data-d="Bogura">Bogura</span>
+              <span class="bd-chip" data-d="Chapai Nawabganj">Chapai Nawabganj</span>
+              <span class="bd-chip" data-d="Joypurhat">Joypurhat</span>
+              <span class="bd-chip" data-d="Naogaon">Naogaon</span>
+              <span class="bd-chip" data-d="Natore">Natore</span>
+              <span class="bd-chip" data-d="Pabna">Pabna</span>
+              <span class="bd-chip" data-d="Rajshahi">Rajshahi</span>
+              <span class="bd-chip" data-d="Sirajganj">Sirajganj</span>
+            </div>
+          </div>
+
+          <div class="bd-div">
+            <div class="bd-div-name" style="color:#0891b2">Khulna Division</div>
+            <div class="bd-chips">
+              <span class="bd-chip" data-d="Bagerhat">Bagerhat</span>
+              <span class="bd-chip" data-d="Chuadanga">Chuadanga</span>
+              <span class="bd-chip" data-d="Jashore">Jashore</span>
+              <span class="bd-chip" data-d="Jhenaidah">Jhenaidah</span>
+              <span class="bd-chip" data-d="Khulna">Khulna</span>
+              <span class="bd-chip" data-d="Kushtia">Kushtia</span>
+              <span class="bd-chip" data-d="Magura">Magura</span>
+              <span class="bd-chip" data-d="Meherpur">Meherpur</span>
+              <span class="bd-chip" data-d="Narail">Narail</span>
+              <span class="bd-chip" data-d="Satkhira">Satkhira</span>
+            </div>
+          </div>
+
+          <div class="bd-div">
+            <div class="bd-div-name" style="color:#7c3aed">Barishal Division</div>
+            <div class="bd-chips">
+              <span class="bd-chip" data-d="Barguna">Barguna</span>
+              <span class="bd-chip" data-d="Barishal">Barishal</span>
+              <span class="bd-chip" data-d="Bhola">Bhola</span>
+              <span class="bd-chip" data-d="Jhalokathi">Jhalokathi</span>
+              <span class="bd-chip" data-d="Patuakhali">Patuakhali</span>
+              <span class="bd-chip" data-d="Pirojpur">Pirojpur</span>
+            </div>
+          </div>
+
+          <div class="bd-div">
+            <div class="bd-div-name" style="color:#b45309">Sylhet Division</div>
+            <div class="bd-chips">
+              <span class="bd-chip" data-d="Habiganj">Habiganj</span>
+              <span class="bd-chip" data-d="Moulvibazar">Moulvibazar</span>
+              <span class="bd-chip" data-d="Sunamganj">Sunamganj</span>
+              <span class="bd-chip" data-d="Sylhet">Sylhet</span>
+            </div>
+          </div>
+
+          <div class="bd-div">
+            <div class="bd-div-name" style="color:#dc2626">Rangpur Division</div>
+            <div class="bd-chips">
+              <span class="bd-chip" data-d="Dinajpur">Dinajpur</span>
+              <span class="bd-chip" data-d="Gaibandha">Gaibandha</span>
+              <span class="bd-chip" data-d="Kurigram">Kurigram</span>
+              <span class="bd-chip" data-d="Lalmonirhat">Lalmonirhat</span>
+              <span class="bd-chip" data-d="Nilphamari">Nilphamari</span>
+              <span class="bd-chip" data-d="Panchagarh">Panchagarh</span>
+              <span class="bd-chip" data-d="Rangpur">Rangpur</span>
+              <span class="bd-chip" data-d="Thakurgaon">Thakurgaon</span>
+            </div>
+          </div>
+
+          <div class="bd-div">
+            <div class="bd-div-name" style="color:#db2777">Mymensingh Division</div>
+            <div class="bd-chips">
+              <span class="bd-chip" data-d="Jamalpur">Jamalpur</span>
+              <span class="bd-chip" data-d="Mymensingh">Mymensingh</span>
+              <span class="bd-chip" data-d="Netrokona">Netrokona</span>
+              <span class="bd-chip" data-d="Sherpur">Sherpur</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ══ SEARCH RESULTS OVERLAY ══ -->
   <div class="search-overlay" id="searchOverlay">
@@ -2009,12 +2322,102 @@
   <div class="topbar">
     <div class="topbar-inner">
       <div class="topbar-links">
-        <a href="#" data-i18n="topbar.country">Bangladesh</a>
-        <a href="login.html" class="topbar-login-link" data-i18n="topbar.login">Dear customer, please log in</a>
-        <a href="login.html" data-i18n="topbar.register">Free registration</a>
-        <a href="#" data-i18n="topbar.access">Web accessibility</a>
-        <a href="#" data-i18n="topbar.enterprise">Switch to Enterprise Edition</a>
-        <a href="#" data-i18n="topbar.theme">Choose a theme</a>
+
+        <!-- Bangladesh -->
+        <div class="tb-item">
+          <a href="#" onclick="openBDModal();return false;" data-i18n="topbar.country">Bangladesh</a>
+          <div class="tb-drop drop-wide">
+            <div class="tb-drop-title">Select Division</div>
+            <div class="tb-bd-grid">
+              <div class="tb-bd-div" onclick="openBDModal()"><span class="tb-bd-dot" style="background:#2563eb"></span>Dhaka</div>
+              <div class="tb-bd-div" onclick="openBDModal()"><span class="tb-bd-dot" style="background:#059669"></span>Chattogram</div>
+              <div class="tb-bd-div" onclick="openBDModal()"><span class="tb-bd-dot" style="background:#d97706"></span>Rajshahi</div>
+              <div class="tb-bd-div" onclick="openBDModal()"><span class="tb-bd-dot" style="background:#0891b2"></span>Khulna</div>
+              <div class="tb-bd-div" onclick="openBDModal()"><span class="tb-bd-dot" style="background:#7c3aed"></span>Barishal</div>
+              <div class="tb-bd-div" onclick="openBDModal()"><span class="tb-bd-dot" style="background:#b45309"></span>Sylhet</div>
+              <div class="tb-bd-div" onclick="openBDModal()"><span class="tb-bd-dot" style="background:#dc2626"></span>Rangpur</div>
+              <div class="tb-bd-div" onclick="openBDModal()"><span class="tb-bd-dot" style="background:#db2777"></span>Mymensingh</div>
+            </div>
+            <div class="tb-drop-divider"></div>
+            <span class="tb-drop-btn" onclick="openBDModal()">🗺️ View All 64 Districts</span>
+          </div>
+        </div>
+
+        <!-- Login -->
+        <div class="tb-item">
+          <a href="login.html" class="topbar-login-link" data-i18n="topbar.login">Dear customer, please log in</a>
+          <div class="tb-drop">
+            <div class="tb-drop-title">My Account</div>
+            <a class="tb-drop-row" href="login.html"><span class="tb-icon">🔑</span>Sign In</a>
+            <a class="tb-drop-row" href="register.html"><span class="tb-icon">✨</span>Create Account</a>
+            <div class="tb-drop-divider"></div>
+            <a class="tb-drop-row" href="#"><span class="tb-icon">📦</span>My Orders</a>
+            <a class="tb-drop-row" href="#"><span class="tb-icon">❤️</span>My Wishlist</a>
+            <a class="tb-drop-row" href="#"><span class="tb-icon">💬</span>Messages</a>
+          </div>
+        </div>
+
+        <!-- Register -->
+        <div class="tb-item">
+          <a href="register.html" data-i18n="topbar.register">Free registration</a>
+          <div class="tb-drop">
+            <div class="tb-drop-title">Join NEXORA Free</div>
+            <div class="tb-drop-row"><span class="tb-icon">🎁</span>New member gift — up to 70% off</div>
+            <div class="tb-drop-row"><span class="tb-icon">🚚</span>Free delivery on first order</div>
+            <div class="tb-drop-row"><span class="tb-icon">🔒</span>Secure buyer protection</div>
+            <div class="tb-drop-divider"></div>
+            <a class="tb-drop-btn" href="register.html">Register Now — It's Free</a>
+          </div>
+        </div>
+
+        <!-- Accessibility -->
+        <div class="tb-item">
+          <a href="#" data-i18n="topbar.access">Web accessibility</a>
+          <div class="tb-drop">
+            <div class="tb-drop-title">Accessibility</div>
+            <div class="tb-drop-row" onclick="document.body.style.fontSize='16px'"><span class="tb-icon">🔤</span>Larger Text</div>
+            <div class="tb-drop-row" onclick="document.body.style.fontSize=''"><span class="tb-icon">🔡</span>Default Text</div>
+            <div class="tb-drop-divider"></div>
+            <div class="tb-drop-row" onclick="document.body.style.filter='contrast(1.5)'"><span class="tb-icon">🌗</span>High Contrast</div>
+            <div class="tb-drop-row" onclick="document.body.style.filter=''"><span class="tb-icon">🌕</span>Normal View</div>
+          </div>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="tb-item">
+          <a href="#" data-i18n="topbar.enterprise">Switch to Enterprise Edition</a>
+          <div class="tb-drop">
+            <div class="tb-drop-title">Enterprise Edition</div>
+            <div class="tb-drop-row"><span class="tb-icon">🏢</span>Bulk ordering & invoicing</div>
+            <div class="tb-drop-row"><span class="tb-icon">📊</span>Business analytics dashboard</div>
+            <div class="tb-drop-row"><span class="tb-icon">🤝</span>Dedicated account manager</div>
+            <div class="tb-drop-row"><span class="tb-icon">💳</span>Net-30 credit terms</div>
+            <div class="tb-drop-divider"></div>
+            <a class="tb-drop-btn" href="#">Contact Sales Team</a>
+          </div>
+        </div>
+
+        <!-- Theme -->
+        <div class="tb-item">
+          <a href="#" data-i18n="topbar.theme">Choose a theme</a>
+          <div class="tb-drop">
+            <div class="tb-drop-title">Page Color Theme</div>
+            <div style="padding:4px 16px 10px">
+              <div class="tb-swatches">
+                <div class="tb-swatch" style="background:linear-gradient(135deg,#ff3c5f,#ff6b35)" title="Sunset" onclick="document.documentElement.style.setProperty('--primary','#ff3c5f')"></div>
+                <div class="tb-swatch" style="background:linear-gradient(135deg,#2563eb,#06b6d4)" title="Ocean" onclick="document.documentElement.style.setProperty('--primary','#2563eb')"></div>
+                <div class="tb-swatch" style="background:linear-gradient(135deg,#059669,#10b981)" title="Forest" onclick="document.documentElement.style.setProperty('--primary','#059669')"></div>
+                <div class="tb-swatch" style="background:linear-gradient(135deg,#7c3aed,#db2777)" title="Galaxy" onclick="document.documentElement.style.setProperty('--primary','#7c3aed')"></div>
+                <div class="tb-swatch" style="background:linear-gradient(135deg,#d97706,#f59e0b)" title="Gold" onclick="document.documentElement.style.setProperty('--primary','#d97706')"></div>
+                <div class="tb-swatch" style="background:linear-gradient(135deg,#333,#666)" title="Dark" onclick="document.documentElement.style.setProperty('--primary','#444')"></div>
+              </div>
+            </div>
+            <div class="tb-drop-divider"></div>
+            <div class="tb-drop-row" onclick="document.documentElement.style.removeProperty('--primary')"><span class="tb-icon">↩️</span>Reset to Default</div>
+          </div>
+        </div>
+
+        <!-- Language -->
         <div class="tbar-lang-wrap" id="tbarLangWrap">
           <a href="#" onclick="toggleTopbarLang(event)" data-i18n="topbar.lang">Language ▾</a>
           <div class="tbar-lang-menu" id="tbarLangMenu">
@@ -2024,6 +2427,7 @@
             <div class="tl-opt" id="tl-ur" onclick="setLang('ur')">🇵🇰 اردو</div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -2144,19 +2548,188 @@
     <!-- NAV -->
     <nav class="nav">
       <div class="nav-inner">
-        <a href="category.html" class="nav-item hot" data-i18n="nav.deals">Today's Deals 🔥</a>
+
+        <!-- Today's Deals -->
+        <div class="nav-wrap">
+          <a href="category.html" class="nav-item hot" data-i18n="nav.deals">Today's Deals 🔥</a>
+          <div class="nav-mega mega-wide">
+            <div class="nm-title">Flash Offers</div>
+            <div class="nm-grid">
+              <a class="nm-row" href="category.html?cat=Electronics"><span class="nm-icon">📱</span>Electronics<span class="nm-badge">-72%</span></a>
+              <a class="nm-row" href="category.html?cat=Fashion"><span class="nm-icon">👗</span>Fashion<span class="nm-badge">-65%</span></a>
+              <a class="nm-row" href="category.html?cat=Beauty"><span class="nm-icon">💄</span>Beauty<span class="nm-badge">-50%</span></a>
+              <a class="nm-row" href="category.html?cat=Sports"><span class="nm-icon">🏋️</span>Sports<span class="nm-badge">-40%</span></a>
+              <a class="nm-row" href="category.html?cat=Home+%26+Living"><span class="nm-icon">🏠</span>Home & Living<span class="nm-badge">-45%</span></a>
+              <a class="nm-row" href="category.html?cat=Groceries"><span class="nm-icon">🛒</span>Groceries<span class="nm-badge">-30%</span></a>
+            </div>
+            <div class="nm-divider"></div>
+            <a class="nm-row" href="category.html"><span class="nm-icon">🔥</span>View All Deals Today</a>
+          </div>
+        </div>
+
         <div class="nav-divider"></div>
-        <a href="category.html?cat=Electronics" class="nav-item" data-i18n="nav.electronics">Electronics</a>
-        <a href="category.html?cat=Fashion" class="nav-item" data-i18n="nav.fashion">Fashion</a>
-        <a href="category.html?cat=Home+%26+Living" class="nav-item" data-i18n="nav.home">Home & Living</a>
-        <a href="category.html?cat=Beauty" class="nav-item" data-i18n="nav.beauty">Beauty</a>
-        <a href="category.html?cat=Sports" class="nav-item" data-i18n="nav.sports">Sports</a>
-        <a href="category.html?cat=Groceries" class="nav-item" data-i18n="nav.groceries">Groceries</a>
-        <a href="category.html?cat=Toys+%26+Kids" class="nav-item" data-i18n="nav.toys">Toys & Kids</a>
-        <a href="category.html?cat=Books" class="nav-item" data-i18n="nav.books">Books</a>
-        <a href="category.html?cat=Automotive" class="nav-item" data-i18n="nav.auto">Automotive</a>
+
+        <!-- Electronics -->
+        <div class="nav-wrap">
+          <a href="category.html?cat=Electronics" class="nav-item" data-i18n="nav.electronics">Electronics</a>
+          <div class="nav-mega">
+            <div class="nm-title">Electronics</div>
+            <a class="nm-row" href="category.html?cat=Electronics"><span class="nm-icon">📱</span>Smartphones</a>
+            <a class="nm-row" href="category.html?cat=Electronics"><span class="nm-icon">💻</span>Laptops & PCs</a>
+            <a class="nm-row" href="category.html?cat=Electronics"><span class="nm-icon">🎧</span>Audio & Headphones</a>
+            <a class="nm-row" href="category.html?cat=Electronics"><span class="nm-icon">📷</span>Cameras</a>
+            <a class="nm-row" href="category.html?cat=Electronics"><span class="nm-icon">⌚</span>Smart Watches</a>
+            <a class="nm-row" href="category.html?cat=Electronics"><span class="nm-icon">🎮</span>Gaming</a>
+            <a class="nm-row" href="category.html?cat=Electronics"><span class="nm-icon">📺</span>TVs & Displays</a>
+            <div class="nm-divider"></div>
+            <a class="nm-row" href="category.html?cat=Electronics"><span class="nm-icon">→</span>All Electronics</a>
+          </div>
+        </div>
+
+        <!-- Fashion -->
+        <div class="nav-wrap">
+          <a href="category.html?cat=Fashion" class="nav-item" data-i18n="nav.fashion">Fashion</a>
+          <div class="nav-mega">
+            <div class="nm-title">Fashion</div>
+            <a class="nm-row" href="category.html?cat=Fashion"><span class="nm-icon">👔</span>Men's Clothing</a>
+            <a class="nm-row" href="category.html?cat=Fashion"><span class="nm-icon">👗</span>Women's Clothing</a>
+            <a class="nm-row" href="category.html?cat=Fashion"><span class="nm-icon">👶</span>Kids' Fashion</a>
+            <a class="nm-row" href="category.html?cat=Fashion"><span class="nm-icon">👟</span>Footwear</a>
+            <a class="nm-row" href="category.html?cat=Fashion"><span class="nm-icon">👜</span>Bags & Accessories</a>
+            <a class="nm-row" href="category.html?cat=Fashion"><span class="nm-icon">💍</span>Jewellery</a>
+            <div class="nm-divider"></div>
+            <a class="nm-row" href="category.html?cat=Fashion"><span class="nm-icon">→</span>All Fashion</a>
+          </div>
+        </div>
+
+        <!-- Home & Living -->
+        <div class="nav-wrap">
+          <a href="category.html?cat=Home+%26+Living" class="nav-item" data-i18n="nav.home">Home & Living</a>
+          <div class="nav-mega">
+            <div class="nm-title">Home & Living</div>
+            <a class="nm-row" href="category.html?cat=Home+%26+Living"><span class="nm-icon">🛋️</span>Furniture</a>
+            <a class="nm-row" href="category.html?cat=Home+%26+Living"><span class="nm-icon">🍳</span>Kitchen & Dining</a>
+            <a class="nm-row" href="category.html?cat=Home+%26+Living"><span class="nm-icon">🛏️</span>Bedding & Bath</a>
+            <a class="nm-row" href="category.html?cat=Home+%26+Living"><span class="nm-icon">💡</span>Lighting</a>
+            <a class="nm-row" href="category.html?cat=Home+%26+Living"><span class="nm-icon">🌿</span>Plants & Garden</a>
+            <a class="nm-row" href="category.html?cat=Home+%26+Living"><span class="nm-icon">🧹</span>Cleaning & Storage</a>
+            <div class="nm-divider"></div>
+            <a class="nm-row" href="category.html?cat=Home+%26+Living"><span class="nm-icon">→</span>All Home & Living</a>
+          </div>
+        </div>
+
+        <!-- Beauty -->
+        <div class="nav-wrap">
+          <a href="category.html?cat=Beauty" class="nav-item" data-i18n="nav.beauty">Beauty</a>
+          <div class="nav-mega">
+            <div class="nm-title">Beauty</div>
+            <a class="nm-row" href="category.html?cat=Beauty"><span class="nm-icon">💄</span>Makeup</a>
+            <a class="nm-row" href="category.html?cat=Beauty"><span class="nm-icon">🧴</span>Skincare</a>
+            <a class="nm-row" href="category.html?cat=Beauty"><span class="nm-icon">💆</span>Hair Care</a>
+            <a class="nm-row" href="category.html?cat=Beauty"><span class="nm-icon">🌸</span>Fragrances</a>
+            <a class="nm-row" href="category.html?cat=Beauty"><span class="nm-icon">💅</span>Nail Care</a>
+            <a class="nm-row" href="category.html?cat=Beauty"><span class="nm-icon">🪥</span>Personal Hygiene</a>
+            <div class="nm-divider"></div>
+            <a class="nm-row" href="category.html?cat=Beauty"><span class="nm-icon">→</span>All Beauty</a>
+          </div>
+        </div>
+
+        <!-- Sports -->
+        <div class="nav-wrap">
+          <a href="category.html?cat=Sports" class="nav-item" data-i18n="nav.sports">Sports</a>
+          <div class="nav-mega">
+            <div class="nm-title">Sports</div>
+            <a class="nm-row" href="category.html?cat=Sports"><span class="nm-icon">🏋️</span>Fitness Equipment</a>
+            <a class="nm-row" href="category.html?cat=Sports"><span class="nm-icon">⚽</span>Outdoor Sports</a>
+            <a class="nm-row" href="category.html?cat=Sports"><span class="nm-icon">🏊</span>Swimming</a>
+            <a class="nm-row" href="category.html?cat=Sports"><span class="nm-icon">🚴</span>Cycling</a>
+            <a class="nm-row" href="category.html?cat=Sports"><span class="nm-icon">🥊</span>Combat Sports</a>
+            <a class="nm-row" href="category.html?cat=Sports"><span class="nm-icon">🎽</span>Sports Apparel</a>
+            <div class="nm-divider"></div>
+            <a class="nm-row" href="category.html?cat=Sports"><span class="nm-icon">→</span>All Sports</a>
+          </div>
+        </div>
+
+        <!-- Groceries -->
+        <div class="nav-wrap">
+          <a href="category.html?cat=Groceries" class="nav-item" data-i18n="nav.groceries">Groceries</a>
+          <div class="nav-mega">
+            <div class="nm-title">Groceries</div>
+            <a class="nm-row" href="category.html?cat=Groceries"><span class="nm-icon">🥦</span>Fresh Vegetables</a>
+            <a class="nm-row" href="category.html?cat=Groceries"><span class="nm-icon">🍎</span>Fruits</a>
+            <a class="nm-row" href="category.html?cat=Groceries"><span class="nm-icon">🥛</span>Dairy & Eggs</a>
+            <a class="nm-row" href="category.html?cat=Groceries"><span class="nm-icon">🍗</span>Meat & Fish</a>
+            <a class="nm-row" href="category.html?cat=Groceries"><span class="nm-icon">🫙</span>Pantry Staples</a>
+            <a class="nm-row" href="category.html?cat=Groceries"><span class="nm-icon">🧃</span>Drinks & Beverages</a>
+            <div class="nm-divider"></div>
+            <a class="nm-row" href="category.html?cat=Groceries"><span class="nm-icon">→</span>All Groceries</a>
+          </div>
+        </div>
+
+        <!-- Toys & Kids -->
+        <div class="nav-wrap">
+          <a href="category.html?cat=Toys+%26+Kids" class="nav-item" data-i18n="nav.toys">Toys & Kids</a>
+          <div class="nav-mega">
+            <div class="nm-title">Toys & Kids</div>
+            <a class="nm-row" href="category.html?cat=Toys+%26+Kids"><span class="nm-icon">🧸</span>Soft Toys</a>
+            <a class="nm-row" href="category.html?cat=Toys+%26+Kids"><span class="nm-icon">🎲</span>Board Games</a>
+            <a class="nm-row" href="category.html?cat=Toys+%26+Kids"><span class="nm-icon">🚗</span>Remote Control</a>
+            <a class="nm-row" href="category.html?cat=Toys+%26+Kids"><span class="nm-icon">🎨</span>Arts & Crafts</a>
+            <a class="nm-row" href="category.html?cat=Toys+%26+Kids"><span class="nm-icon">📚</span>Kids' Books</a>
+            <a class="nm-row" href="category.html?cat=Toys+%26+Kids"><span class="nm-icon">👶</span>Baby Essentials</a>
+            <div class="nm-divider"></div>
+            <a class="nm-row" href="category.html?cat=Toys+%26+Kids"><span class="nm-icon">→</span>All Toys & Kids</a>
+          </div>
+        </div>
+
+        <!-- Books -->
+        <div class="nav-wrap">
+          <a href="category.html?cat=Books" class="nav-item" data-i18n="nav.books">Books</a>
+          <div class="nav-mega">
+            <div class="nm-title">Books</div>
+            <a class="nm-row" href="category.html?cat=Books"><span class="nm-icon">📖</span>Fiction</a>
+            <a class="nm-row" href="category.html?cat=Books"><span class="nm-icon">📗</span>Non-Fiction</a>
+            <a class="nm-row" href="category.html?cat=Books"><span class="nm-icon">🎓</span>Academic</a>
+            <a class="nm-row" href="category.html?cat=Books"><span class="nm-icon">🧒</span>Children's Books</a>
+            <a class="nm-row" href="category.html?cat=Books"><span class="nm-icon">💼</span>Business</a>
+            <a class="nm-row" href="category.html?cat=Books"><span class="nm-icon">📱</span>E-Books & Kindle</a>
+            <div class="nm-divider"></div>
+            <a class="nm-row" href="category.html?cat=Books"><span class="nm-icon">→</span>All Books</a>
+          </div>
+        </div>
+
+        <!-- Automotive -->
+        <div class="nav-wrap">
+          <a href="category.html?cat=Automotive" class="nav-item" data-i18n="nav.auto">Automotive</a>
+          <div class="nav-mega">
+            <div class="nm-title">Automotive</div>
+            <a class="nm-row" href="category.html?cat=Automotive"><span class="nm-icon">🚗</span>Car Accessories</a>
+            <a class="nm-row" href="category.html?cat=Automotive"><span class="nm-icon">🛵</span>Bike Accessories</a>
+            <a class="nm-row" href="category.html?cat=Automotive"><span class="nm-icon">🔧</span>Tools & Parts</a>
+            <a class="nm-row" href="category.html?cat=Automotive"><span class="nm-icon">📷</span>Dash Cams</a>
+            <a class="nm-row" href="category.html?cat=Automotive"><span class="nm-icon">🪫</span>Car Electronics</a>
+            <a class="nm-row" href="category.html?cat=Automotive"><span class="nm-icon">🧽</span>Car Care</a>
+            <div class="nm-divider"></div>
+            <a class="nm-row" href="category.html?cat=Automotive"><span class="nm-icon">→</span>All Automotive</a>
+          </div>
+        </div>
+
         <div class="nav-divider"></div>
-        <a href="category.html?cat=Gaming" class="nav-item" style="color:#ff9f1c;font-weight:700;" data-i18n="nav.groupbuy">Group Buy 👥</a>
+
+        <!-- Group Buy -->
+        <div class="nav-wrap">
+          <a href="category.html?cat=Gaming" class="nav-item" style="color:#ff9f1c;font-weight:700;" data-i18n="nav.groupbuy">Group Buy 👥</a>
+          <div class="nav-mega">
+            <div class="nm-title">Group Buy</div>
+            <a class="nm-row" href="category.html?cat=Gaming"><span class="nm-icon">👥</span>Join a Group Deal<span class="nm-badge nm-badge-green">LIVE</span></a>
+            <a class="nm-row" href="category.html?cat=Gaming"><span class="nm-icon">🔥</span>Trending Group Buys</a>
+            <a class="nm-row" href="category.html?cat=Gaming"><span class="nm-icon">⏰</span>Ending Soon</a>
+            <a class="nm-row" href="category.html?cat=Gaming"><span class="nm-icon">🆕</span>Just Launched</a>
+            <div class="nm-divider"></div>
+            <a class="nm-row" href="category.html?cat=Gaming"><span class="nm-icon">💡</span>How Group Buy Works</a>
+          </div>
+        </div>
+
       </div>
     </nav>
   </header>
@@ -3427,6 +4000,71 @@
       backTop.classList.toggle('visible', window.scrollY > 400);
     });
 
+    // ════════════════════════════════
+    // BANGLADESH DISTRICTS MODAL
+    // ════════════════════════════════
+    (function() {
+      var savedDistrict = localStorage.getItem('bd_district') || '';
+
+      function markSelected(name) {
+        document.querySelectorAll('.bd-chip').forEach(function(c) {
+          c.classList.toggle('bd-active', c.dataset.d === name);
+        });
+      }
+
+      window.openBDModal = function() {
+        document.getElementById('bdModal').classList.add('open');
+        document.body.style.overflow = 'hidden';
+        markSelected(savedDistrict);
+        setTimeout(function() {
+          var s = document.getElementById('bdSearch');
+          if (s) s.focus();
+        }, 220);
+      };
+
+      window.closeBDModal = function() {
+        document.getElementById('bdModal').classList.remove('open');
+        document.body.style.overflow = '';
+        var s = document.getElementById('bdSearch');
+        if (s) s.value = '';
+        window.filterDistricts('');
+      };
+
+      window.filterDistricts = function(q) {
+        var search = q.toLowerCase().trim();
+        document.querySelectorAll('.bd-chip').forEach(function(chip) {
+          chip.classList.toggle('hidden', search.length > 0 && chip.dataset.d.toLowerCase().indexOf(search) === -1);
+        });
+      };
+
+      // Single delegated listener — handles every chip, no inline onclick needed
+      document.addEventListener('click', function(e) {
+        var chip = e.target.closest ? e.target.closest('.bd-chip[data-d]') : null;
+        if (!chip) return;
+        var name = chip.dataset.d;
+        savedDistrict = name;
+        localStorage.setItem('bd_district', name);
+        document.querySelectorAll('.bd-chip').forEach(function(c) { c.classList.remove('bd-active'); });
+        chip.classList.add('bd-active');
+        setTimeout(function() {
+          var link = document.querySelector('[data-i18n="topbar.country"]');
+          if (link) link.textContent = '📍 ' + name;
+          showToast('📍', 'Delivering to ' + name);
+          window.closeBDModal();
+        }, 160);
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') window.closeBDModal();
+      });
+
+      // Restore saved district on page load
+      if (savedDistrict) {
+        var link = document.querySelector('[data-i18n="topbar.country"]');
+        if (link) link.textContent = '📍 ' + savedDistrict;
+      }
+    })();
+
     // ── Auto-rotate banner dots ──
     let currentDot = 0;
     const dots = document.querySelectorAll('.dot');
@@ -3435,6 +4073,7 @@
       currentDot = (currentDot + 1) % dots.length;
       dots[currentDot].classList.add('active');
     }, 3000);
+
   </script>
 </body>
 </html>
