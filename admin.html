@@ -771,6 +771,17 @@
   </style>
 </head>
 <body>
+<script>
+  // Session guard — redirect to login if not admin
+  (function() {
+    var s = localStorage.getItem('nx_session');
+    if (!s) { window.location.href = 'login.html'; return; }
+    try {
+      var sess = JSON.parse(s);
+      if (sess.role !== 'admin') { window.location.href = 'login.html'; }
+    } catch(e) { window.location.href = 'login.html'; }
+  })();
+</script>
 
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
@@ -820,6 +831,10 @@
     <div class="nav-item" onclick="showPage('coupons',this)">
       <span class="nav-icon">🎟️</span> Coupons
     </div>
+    <div class="nav-item" onclick="showPage('returns',this)">
+      <span class="nav-icon">↩️</span> Returns & Refunds
+      <span class="nav-badge orange">7</span>
+    </div>
   </div>
 
   <div class="sidebar-section">
@@ -830,10 +845,55 @@
     <div class="nav-item" onclick="showPage('reviews',this)">
       <span class="nav-icon">⭐</span> Reviews
     </div>
+    <div class="nav-item" onclick="showPage('tickets',this)">
+      <span class="nav-icon">🎫</span> Support Tickets
+      <span class="nav-badge">12</span>
+    </div>
+    <div class="nav-item" onclick="showPage('wishlist',this)">
+      <span class="nav-icon">❤️</span> Wishlists
+    </div>
+    <div class="nav-item" onclick="showPage('loyalty',this)">
+      <span class="nav-icon">🏆</span> Loyalty Points
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Marketing</div>
+    <div class="nav-item" onclick="showPage('email',this)">
+      <span class="nav-icon">📧</span> Email Campaigns
+    </div>
+    <div class="nav-item" onclick="showPage('notifications',this)">
+      <span class="nav-icon">🔔</span> Push Notifications
+    </div>
+    <div class="nav-item" onclick="showPage('seo',this)">
+      <span class="nav-icon">🔍</span> SEO Manager
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Store</div>
+    <div class="nav-item" onclick="showPage('banners',this)">
+      <span class="nav-icon">🖼️</span> Banners
+    </div>
+    <div class="nav-item" onclick="showPage('delivery',this)">
+      <span class="nav-icon">🚚</span> Delivery Zones
+    </div>
+    <div class="nav-item" onclick="showPage('payments',this)">
+      <span class="nav-icon">💳</span> Payment Methods
+    </div>
   </div>
 
   <div class="sidebar-section">
     <div class="sidebar-section-label">System</div>
+    <div class="nav-item" onclick="showPage('reports',this)">
+      <span class="nav-icon">📊</span> Reports
+    </div>
+    <div class="nav-item" onclick="showPage('activitylog',this)">
+      <span class="nav-icon">📋</span> Activity Log
+    </div>
+    <div class="nav-item" onclick="showPage('crawler',this)">
+      <span class="nav-icon">🕷️</span> Product Crawler
+    </div>
     <div class="nav-item" onclick="showPage('settings',this)">
       <span class="nav-icon">⚙️</span> Settings
     </div>
@@ -846,7 +906,7 @@
     <div class="sidebar-user">
       <div class="sidebar-user-avatar">👑</div>
       <div>
-        <div class="sidebar-user-name">Admin User</div>
+        <div class="sidebar-user-name" id="sidebarName">Munna</div>
         <div class="sidebar-user-role">Super Admin</div>
       </div>
       <div class="sidebar-user-menu">⋯</div>
@@ -955,7 +1015,7 @@
     <div class="page-section active" id="page-dashboard">
       <div class="page-title-row">
         <div>
-          <div class="page-title">Welcome back, Admin 👋</div>
+          <div class="page-title" id="dashWelcome">Welcome back, Munna 👋</div>
           <div class="page-subtitle">Here's what's happening with NEXORA today.</div>
         </div>
         <div style="display:flex;gap:10px;">
@@ -968,31 +1028,31 @@
       <div class="stats-grid">
         <div class="stat-card red">
           <div class="stat-icon-wrap">💰</div>
-          <div class="stat-value">৳48.6L</div>
+          <div class="stat-value" id="dashRevenue">—</div>
           <div class="stat-label">Total Revenue</div>
-          <span class="stat-change up">▲ 18.2%</span>
-          <div class="stat-period">vs last month</div>
+          <span class="stat-change up" id="dashRevenueChange">Loading…</span>
+          <div class="stat-period">all time</div>
         </div>
         <div class="stat-card purple">
           <div class="stat-icon-wrap">🛒</div>
-          <div class="stat-value">3,842</div>
+          <div class="stat-value" id="dashOrders">—</div>
           <div class="stat-label">Total Orders</div>
-          <span class="stat-change up">▲ 12.5%</span>
-          <div class="stat-period">vs last month</div>
+          <span class="stat-change up" id="dashOrdersChange">Loading…</span>
+          <div class="stat-period">all time</div>
         </div>
         <div class="stat-card green">
           <div class="stat-icon-wrap">👤</div>
-          <div class="stat-value">29,104</div>
+          <div class="stat-value" id="dashUsers">—</div>
           <div class="stat-label">Total Users</div>
-          <span class="stat-change up">▲ 9.1%</span>
-          <div class="stat-period">vs last month</div>
+          <span class="stat-change up"></span>
+          <div class="stat-period">registered</div>
         </div>
         <div class="stat-card orange">
           <div class="stat-icon-wrap">📦</div>
-          <div class="stat-value">1,247</div>
+          <div class="stat-value" id="dashProducts">—</div>
           <div class="stat-label">Products Listed</div>
-          <span class="stat-change down">▼ 2.3%</span>
-          <div class="stat-period">vs last month</div>
+          <span class="stat-change up"></span>
+          <div class="stat-period">active</div>
         </div>
       </div>
 
@@ -1448,13 +1508,978 @@
       </div>
     </div>
 
-    <!-- ══ PLACEHOLDER PAGES ══ -->
-    <div class="page-section" id="page-categories"><div class="page-title-row"><div><div class="page-title">Categories</div><div class="page-subtitle">Manage product categories</div></div><button class="btn btn-primary">+ Add Category</button></div><div class="card"><div class="card-body" style="text-align:center;padding:60px;color:var(--text-muted)"><div style="font-size:48px;margin-bottom:12px">🏷️</div><div style="font-size:16px;font-weight:600;margin-bottom:6px">Categories Management</div><div style="font-size:13px">16 categories — Electronics, Fashion, Home & Living, Beauty and more</div></div></div></div>
-    <div class="page-section" id="page-inventory"><div class="page-title-row"><div><div class="page-title">Inventory</div><div class="page-subtitle">Track stock levels</div></div></div><div class="stats-grid"><div class="stat-card green"><div class="stat-icon-wrap">✅</div><div class="stat-value">1,198</div><div class="stat-label">In Stock</div></div><div class="stat-card orange"><div class="stat-icon-wrap">⚠️</div><div class="stat-value">37</div><div class="stat-label">Low Stock</div></div><div class="stat-card red"><div class="stat-icon-wrap">❌</div><div class="stat-value">12</div><div class="stat-label">Out of Stock</div></div><div class="stat-card purple"><div class="stat-icon-wrap">📦</div><div class="stat-value">1,247</div><div class="stat-label">Total SKUs</div></div></div><div class="card"><div class="card-body" style="text-align:center;padding:40px;color:var(--text-muted)"><div style="font-size:13px">Detailed inventory grid loads here with real-time stock tracking.</div></div></div></div>
-    <div class="page-section" id="page-groupbuy"><div class="page-title-row"><div><div class="page-title">Group Buys</div><div class="page-subtitle">Manage active and upcoming group deals</div></div><button class="btn btn-primary" onclick="toast('✅','New group buy created!','success')">+ Create Group Buy</button></div><div class="card"><div class="card-body" style="text-align:center;padding:60px;color:var(--text-muted)"><div style="font-size:48px;margin-bottom:12px">👥</div><div style="font-size:16px;font-weight:600;margin-bottom:6px">4 Active Group Buys</div><div style="font-size:13px">LG Monitor · Dyson Airwrap · LEGO Technic · DJI Mini 4 Pro</div></div></div></div>
-    <div class="page-section" id="page-flashdeals"><div class="page-title-row"><div><div class="page-title">Flash Deals</div><div class="page-subtitle">Create and schedule time-limited offers</div></div><button class="btn btn-primary" onclick="toast('⚡','Flash deal created!','success')">+ New Flash Deal</button></div><div class="card"><div class="card-body" style="text-align:center;padding:60px;color:var(--text-muted)"><div style="font-size:48px;margin-bottom:12px">⚡</div><div style="font-size:16px;font-weight:600;margin-bottom:6px">5 Active Flash Deals</div><div style="font-size:13px">Running deals with countdown timers and progress bars</div></div></div></div>
-    <div class="page-section" id="page-coupons"><div class="page-title-row"><div><div class="page-title">Coupons</div><div class="page-subtitle">Manage discount codes</div></div><button class="btn btn-primary" onclick="openModal('add-coupon')">+ Add Coupon</button></div><div class="card"><div class="card-body" style="text-align:center;padding:60px;color:var(--text-muted)"><div style="font-size:48px;margin-bottom:12px">🎟️</div><div style="font-size:16px;font-weight:600;margin-bottom:6px">18 Active Coupons</div><div style="font-size:13px">NEXORA10 · WELCOME20 · FLASH50 and more</div></div></div></div>
-    <div class="page-section" id="page-reviews"><div class="page-title-row"><div><div class="page-title">Reviews</div><div class="page-subtitle">Moderate customer reviews</div></div></div><div class="card"><div class="card-body" style="text-align:center;padding:60px;color:var(--text-muted)"><div style="font-size:48px;margin-bottom:12px">⭐</div><div style="font-size:16px;font-weight:600;margin-bottom:6px">Avg Rating: 4.7 / 5</div><div style="font-size:13px">42,891 reviews across all products</div></div></div></div>
+    <!-- ══ CATEGORIES ══ -->
+    <div class="page-section" id="page-categories">
+      <div class="page-title-row">
+        <div><div class="page-title">Categories</div><div class="page-subtitle" id="catSubtitle">Loading…</div></div>
+        <button class="btn btn-primary" onclick="openAddCategoryModal()">+ Add Category</button>
+      </div>
+
+      <!-- Add Category Modal -->
+      <div id="addCatModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;align-items:center;justify-content:center;">
+        <div style="background:var(--card-bg);border-radius:18px;padding:28px;width:420px;max-width:95vw;box-shadow:0 24px 80px rgba(0,0,0,.35);">
+          <div style="font-size:18px;font-weight:800;margin-bottom:20px;">➕ Add New Category</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="form-group" style="margin:0;"><label class="form-label">Icon (emoji)</label><input class="form-input" id="newCatIcon" placeholder="📦" maxlength="4" /></div>
+            <div class="form-group" style="margin:0;"><label class="form-label">Category Name *</label><input class="form-input" id="newCatName" placeholder="e.g. Electronics" /></div>
+            <div class="form-group" style="margin:0;"><label class="form-label">Description</label><input class="form-input" id="newCatDesc" placeholder="Short description..." /></div>
+          </div>
+          <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
+            <button class="btn btn-outline" onclick="closeAddCategoryModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="submitAddCategory()">Save Category</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <input class="filter-input" id="catSearch" placeholder="🔍 Search categories..." style="max-width:260px;" oninput="filterCatTable(this.value)" />
+          <span id="catCountBadge" style="font-size:12px;color:var(--text-muted);margin-left:auto;"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Category</th><th>Slug</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="catTableBody">
+              <tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted);">⏳ Loading categories…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ INVENTORY ══ -->
+    <div class="page-section" id="page-inventory">
+      <div class="page-title-row">
+        <div><div class="page-title">Inventory</div><div class="page-subtitle">Real-time stock tracking across all products</div></div>
+        <button class="btn btn-outline" onclick="toast('📄','Stock report exported!','success')">📄 Export</button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card green"><div class="stat-icon-wrap">✅</div><div class="stat-value">1,198</div><div class="stat-label">In Stock</div><span class="stat-change up">96%</span></div>
+        <div class="stat-card orange"><div class="stat-icon-wrap">⚠️</div><div class="stat-value">37</div><div class="stat-label">Low Stock</div><span class="stat-change down">Alert</span></div>
+        <div class="stat-card red"><div class="stat-icon-wrap">❌</div><div class="stat-value">12</div><div class="stat-label">Out of Stock</div><span class="stat-change down">Urgent</span></div>
+        <div class="stat-card purple"><div class="stat-icon-wrap">📦</div><div class="stat-value">1,247</div><div class="stat-label">Total SKUs</div></div>
+      </div>
+      <div class="card">
+        <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;">
+          <input class="filter-input" placeholder="Search product or SKU..." style="max-width:260px;" oninput="filterTable('invTable',this.value)" />
+          <select class="filter-select" onchange="filterTableByCol('invTable',7,this.value)">
+            <option value="">All Status</option>
+            <option value="In Stock">In Stock</option>
+            <option value="Low Stock">Low Stock</option>
+            <option value="Out of Stock">Out of Stock</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table id="invTable">
+            <thead><tr><th>Product</th><th>SKU</th><th>Category</th><th>In Stock</th><th>Reserved</th><th>Reorder Point</th><th>Warehouse</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><div class="order-product"><div class="product-thumb">📱</div><div><div class="product-thumb-name">Samsung Galaxy A55 5G</div></div></div></td><td style="font-size:12px;color:var(--text-muted);">SAM-A55-256</td><td>Electronics</td><td><strong>214</strong></td><td>18</td><td>50</td><td>Dhaka-WH1</td><td><span class="badge badge-success">In Stock</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('📦','Updating stock')">Restock</button></div></td></tr>
+              <tr><td><div class="order-product"><div class="product-thumb">🎧</div><div><div class="product-thumb-name">Sony WH-1000XM5</div></div></div></td><td style="font-size:12px;color:var(--text-muted);">SON-WH5-BLK</td><td>Electronics</td><td><strong style="color:var(--warning);">11</strong></td><td>4</td><td>25</td><td>Dhaka-WH1</td><td><span class="badge badge-warning">Low Stock</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('⚠️','Restock order placed!','success')">Restock</button></div></td></tr>
+              <tr><td><div class="order-product"><div class="product-thumb">⌚</div><div><div class="product-thumb-name">Apple Watch SE 2nd Gen</div></div></div></td><td style="font-size:12px;color:var(--text-muted);">APL-WSE-44</td><td>Electronics</td><td><strong style="color:var(--danger);">3</strong></td><td>2</td><td>20</td><td>Ctg-WH2</td><td><span class="badge badge-danger">Critical</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('🚨','Urgent restock!','success')">Restock</button></div></td></tr>
+              <tr><td><div class="order-product"><div class="product-thumb">👟</div><div><div class="product-thumb-name">Nike Air Max 270</div></div></div></td><td style="font-size:12px;color:var(--text-muted);">NIK-AM270-42</td><td>Fashion</td><td><strong>88</strong></td><td>6</td><td>30</td><td>Dhaka-WH1</td><td><span class="badge badge-success">In Stock</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('📦','Updating stock')">Restock</button></div></td></tr>
+              <tr><td><div class="order-product"><div class="product-thumb">☕</div><div><div class="product-thumb-name">Nespresso Vertuo Plus</div></div></div></td><td style="font-size:12px;color:var(--text-muted);">NES-VTP-BLK</td><td>Home</td><td><strong style="color:var(--danger);">0</strong></td><td>0</td><td>15</td><td>—</td><td><span class="badge badge-gray">Out of Stock</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('📦','Restock order sent!','success')">Restock</button></div></td></tr>
+              <tr><td><div class="order-product"><div class="product-thumb">🎮</div><div><div class="product-thumb-name">PS5 DualSense Controller</div></div></div></td><td style="font-size:12px;color:var(--text-muted);">PS5-DSC-WHT</td><td>Gaming</td><td><strong>52</strong></td><td>9</td><td>20</td><td>Dhaka-WH1</td><td><span class="badge badge-success">In Stock</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('📦','Updating stock')">Restock</button></div></td></tr>
+              <tr><td><div class="order-product"><div class="product-thumb">💻</div><div><div class="product-thumb-name">Xiaomi Pad 6 Pro</div></div></div></td><td style="font-size:12px;color:var(--text-muted);">XMI-P6P-256</td><td>Electronics</td><td><strong style="color:var(--warning);">8</strong></td><td>3</td><td>20</td><td>Ctg-WH2</td><td><span class="badge badge-warning">Low Stock</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('⚠️','Restock order placed!','success')">Restock</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ COUPONS ══ -->
+    <div class="page-section" id="page-coupons">
+      <div class="page-title-row">
+        <div><div class="page-title">Coupons</div><div class="page-subtitle">18 active discount codes</div></div>
+        <button class="btn btn-primary" onclick="openModal('add-coupon')">+ Add Coupon</button>
+      </div>
+      <div class="card">
+        <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;">
+          <input class="filter-input" placeholder="Search coupon code..." style="max-width:240px;" oninput="filterTable('couponTable',this.value)" />
+          <select class="filter-select">
+            <option>All Types</option><option>Percentage</option><option>Fixed Amount</option><option>Free Shipping</option>
+          </select>
+          <select class="filter-select">
+            <option>All Status</option><option>Active</option><option>Expired</option><option>Scheduled</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table id="couponTable">
+            <thead><tr><th>Code</th><th>Type</th><th>Discount</th><th>Min Order</th><th>Used / Limit</th><th>Expires</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><code style="background:var(--bg);padding:3px 8px;border-radius:5px;font-weight:700;letter-spacing:1px;font-size:12px;">NEXORA10</code></td><td>Percentage</td><td><strong>10%</strong></td><td>৳500</td><td><span style="font-weight:700;">1,248</span> / 5,000</td><td>Dec 31, 2026</td><td><span class="badge badge-success">Active</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing coupon')">Edit</button><button class="action-btn del" onclick="toast('🗑️','Deleted','error')">Delete</button></div></td></tr>
+              <tr><td><code style="background:var(--bg);padding:3px 8px;border-radius:5px;font-weight:700;letter-spacing:1px;font-size:12px;">WELCOME20</code></td><td>Percentage</td><td><strong>20%</strong></td><td>৳1,000</td><td><span style="font-weight:700;">3,821</span> / 10,000</td><td>Dec 31, 2026</td><td><span class="badge badge-success">Active</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing coupon')">Edit</button><button class="action-btn del" onclick="toast('🗑️','Deleted','error')">Delete</button></div></td></tr>
+              <tr><td><code style="background:var(--bg);padding:3px 8px;border-radius:5px;font-weight:700;letter-spacing:1px;font-size:12px;">FLASH50</code></td><td>Percentage</td><td><strong>50%</strong></td><td>৳2,000</td><td><span style="font-weight:700;">498</span> / 500</td><td>Jun 30, 2026</td><td><span class="badge badge-warning">Near Limit</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing coupon')">Edit</button><button class="action-btn del" onclick="toast('🗑️','Deleted','error')">Delete</button></div></td></tr>
+              <tr><td><code style="background:var(--bg);padding:3px 8px;border-radius:5px;font-weight:700;letter-spacing:1px;font-size:12px;">FREESHIP</code></td><td>Free Shipping</td><td><strong>100%</strong></td><td>৳300</td><td><span style="font-weight:700;">2,104</span> / ∞</td><td>Sep 30, 2026</td><td><span class="badge badge-success">Active</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing coupon')">Edit</button><button class="action-btn del" onclick="toast('🗑️','Deleted','error')">Delete</button></div></td></tr>
+              <tr><td><code style="background:var(--bg);padding:3px 8px;border-radius:5px;font-weight:700;letter-spacing:1px;font-size:12px;">EID2026</code></td><td>Fixed Amount</td><td><strong>৳500 off</strong></td><td>৳3,000</td><td><span style="font-weight:700;">0</span> / 2,000</td><td>Jul 15, 2026</td><td><span class="badge badge-info">Scheduled</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing coupon')">Edit</button><button class="action-btn del" onclick="toast('🗑️','Deleted','error')">Delete</button></div></td></tr>
+              <tr><td><code style="background:var(--bg);padding:3px 8px;border-radius:5px;font-weight:700;letter-spacing:1px;font-size:12px;">SUMMER30</code></td><td>Percentage</td><td><strong>30%</strong></td><td>৳1,500</td><td><span style="font-weight:700;">876</span> / 1,000</td><td>Jan 1, 2026</td><td><span class="badge badge-danger">Expired</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Reactivating')">Reactivate</button><button class="action-btn del" onclick="toast('🗑️','Deleted','error')">Delete</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ FLASH DEALS ══ -->
+    <div class="page-section" id="page-flashdeals">
+      <div class="page-title-row">
+        <div><div class="page-title">Flash Deals</div><div class="page-subtitle">5 active time-limited offers</div></div>
+        <button class="btn btn-primary" onclick="toast('⚡','Flash deal created!','success')">+ New Flash Deal</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Product</th><th>Original Price</th><th>Deal Price</th><th>Discount</th><th>Sold / Total</th><th>Progress</th><th>Ends In</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="order-product"><div class="product-thumb">🎧</div><div><div class="product-thumb-name">Sony WH-1000XM5</div></div></div></td>
+                <td><s style="color:var(--text-muted);">৳34,999</s></td><td><strong style="color:var(--primary);">৳14,499</strong></td>
+                <td><span class="badge badge-danger">-59%</span></td>
+                <td>489 / 500</td>
+                <td><div style="width:100px;height:6px;background:var(--border);border-radius:3px;"><div style="width:98%;height:100%;background:var(--success);border-radius:3px;"></div></div></td>
+                <td style="color:var(--danger);font-weight:700;">02:14:38</td>
+                <td><span class="badge badge-success">Live</span></td>
+                <td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing deal')">Edit</button><button class="action-btn del" onclick="toast('⏹️','Deal ended','error')">End</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="order-product"><div class="product-thumb">⌚</div><div><div class="product-thumb-name">Apple Watch SE 2nd Gen</div></div></div></td>
+                <td><s style="color:var(--text-muted);">৳42,000</s></td><td><strong style="color:var(--primary);">৳19,999</strong></td>
+                <td><span class="badge badge-danger">-52%</span></td>
+                <td>97 / 150</td>
+                <td><div style="width:100px;height:6px;background:var(--border);border-radius:3px;"><div style="width:65%;height:100%;background:var(--warning);border-radius:3px;"></div></div></td>
+                <td style="color:var(--warning);font-weight:700;">06:48:12</td>
+                <td><span class="badge badge-success">Live</span></td>
+                <td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing deal')">Edit</button><button class="action-btn del" onclick="toast('⏹️','Deal ended','error')">End</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="order-product"><div class="product-thumb">📱</div><div><div class="product-thumb-name">Samsung Galaxy A55 5G</div></div></div></td>
+                <td><s style="color:var(--text-muted);">৳99,999</s></td><td><strong style="color:var(--primary);">৳28,999</strong></td>
+                <td><span class="badge badge-danger">-71%</span></td>
+                <td>213 / 300</td>
+                <td><div style="width:100px;height:6px;background:var(--border);border-radius:3px;"><div style="width:71%;height:100%;background:var(--primary);border-radius:3px;"></div></div></td>
+                <td style="color:var(--text-muted);font-weight:700;">12:00:00</td>
+                <td><span class="badge badge-info">Scheduled</span></td>
+                <td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing deal')">Edit</button><button class="action-btn del" onclick="toast('⏹️','Deal removed','error')">End</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="order-product"><div class="product-thumb">🪥</div><div><div class="product-thumb-name">Dyson Airwrap Complete</div></div></div></td>
+                <td><s style="color:var(--text-muted);">৳65,000</s></td><td><strong style="color:var(--primary);">৳38,999</strong></td>
+                <td><span class="badge badge-danger">-40%</span></td>
+                <td>44 / 100</td>
+                <td><div style="width:100px;height:6px;background:var(--border);border-radius:3px;"><div style="width:44%;height:100%;background:var(--accent2);border-radius:3px;"></div></div></td>
+                <td style="color:var(--success);font-weight:700;">1d 08:00</td>
+                <td><span class="badge badge-success">Live</span></td>
+                <td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing deal')">Edit</button><button class="action-btn del" onclick="toast('⏹️','Deal ended','error')">End</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ GROUP BUYS ══ -->
+    <div class="page-section" id="page-groupbuy">
+      <div class="page-title-row">
+        <div><div class="page-title">Group Buys</div><div class="page-subtitle">4 active group purchase deals</div></div>
+        <button class="btn btn-primary" onclick="toast('✅','New group buy created!','success')">+ Create Group Buy</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Product</th><th>Target Price</th><th>Min Members</th><th>Joined</th><th>Progress</th><th>Ends</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="order-product"><div class="product-thumb">🖥️</div><div><div class="product-thumb-name">LG 27" 4K Monitor</div><div class="product-thumb-sub">Normal: ৳45,000</div></div></div></td>
+                <td><strong style="color:var(--success);">৳31,500</strong></td><td>10 members</td>
+                <td><span style="font-weight:800;color:var(--primary);">15</span> / 10</td>
+                <td><div style="width:120px;height:6px;background:var(--border);border-radius:3px;"><div style="width:100%;height:100%;background:var(--success);border-radius:3px;"></div></div></td>
+                <td>Jun 25, 2026</td><td><span class="badge badge-success">Goal Met ✓</span></td>
+                <td><div class="action-btns"><button class="action-btn edit" onclick="toast('✅','Deal confirmed!','success')">Confirm</button><button class="action-btn del" onclick="toast('⏹️','Cancelled','error')">Cancel</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="order-product"><div class="product-thumb">🪥</div><div><div class="product-thumb-name">Dyson Airwrap</div><div class="product-thumb-sub">Normal: ৳65,000</div></div></div></td>
+                <td><strong style="color:var(--success);">৳48,000</strong></td><td>20 members</td>
+                <td><span style="font-weight:800;color:var(--warning);">12</span> / 20</td>
+                <td><div style="width:120px;height:6px;background:var(--border);border-radius:3px;"><div style="width:60%;height:100%;background:var(--warning);border-radius:3px;"></div></div></td>
+                <td>Jun 28, 2026</td><td><span class="badge badge-warning">In Progress</span></td>
+                <td><div class="action-btns"><button class="action-btn view" onclick="toast('👥','Viewing members')">Members</button><button class="action-btn del" onclick="toast('⏹️','Cancelled','error')">Cancel</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="order-product"><div class="product-thumb">🧱</div><div><div class="product-thumb-name">LEGO Technic Supercar</div><div class="product-thumb-sub">Normal: ৳18,000</div></div></div></td>
+                <td><strong style="color:var(--success);">৳12,500</strong></td><td>15 members</td>
+                <td><span style="font-weight:800;color:var(--info);">4</span> / 15</td>
+                <td><div style="width:120px;height:6px;background:var(--border);border-radius:3px;"><div style="width:27%;height:100%;background:var(--info);border-radius:3px;"></div></div></td>
+                <td>Jul 5, 2026</td><td><span class="badge badge-info">Open</span></td>
+                <td><div class="action-btns"><button class="action-btn view" onclick="toast('👥','Viewing members')">Members</button><button class="action-btn del" onclick="toast('⏹️','Cancelled','error')">Cancel</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="order-product"><div class="product-thumb">🚁</div><div><div class="product-thumb-name">DJI Mini 4 Pro Drone</div><div class="product-thumb-sub">Normal: ৳78,000</div></div></div></td>
+                <td><strong style="color:var(--success);">৳58,000</strong></td><td>8 members</td>
+                <td><span style="font-weight:800;color:var(--success);">9</span> / 8</td>
+                <td><div style="width:120px;height:6px;background:var(--border);border-radius:3px;"><div style="width:100%;height:100%;background:var(--success);border-radius:3px;"></div></div></td>
+                <td>Jun 22, 2026</td><td><span class="badge badge-success">Goal Met ✓</span></td>
+                <td><div class="action-btns"><button class="action-btn edit" onclick="toast('✅','Deal confirmed!','success')">Confirm</button><button class="action-btn del" onclick="toast('⏹️','Cancelled','error')">Cancel</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ REVIEWS ══ -->
+    <div class="page-section" id="page-reviews">
+      <div class="page-title-row">
+        <div><div class="page-title">Reviews</div><div class="page-subtitle">42,891 reviews · Avg rating 4.7 ★</div></div>
+        <div style="display:flex;gap:10px;">
+          <select class="filter-select"><option>All Ratings</option><option>5 ★</option><option>4 ★</option><option>3 ★</option><option>2 ★</option><option>1 ★</option></select>
+          <select class="filter-select"><option>All Status</option><option>Published</option><option>Pending</option><option>Rejected</option></select>
+        </div>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Customer</th><th>Product</th><th>Rating</th><th>Review</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#ff3c5f,#ff6b35)">👨</div><div><div class="user-name-cell">Rahim Ahmed</div><div class="user-email-cell">rahim@gmail.com</div></div></div></td>
+                <td><div class="order-product"><div class="product-thumb" style="width:28px;height:28px;font-size:14px;">📱</div><div>Samsung Galaxy A55</div></div></td>
+                <td><span style="color:#f59e0b;font-weight:700;">★★★★★</span> 5.0</td>
+                <td style="max-width:220px;font-size:12px;color:var(--text-muted);">"Amazing phone, great camera and battery life. Highly recommend!"</td>
+                <td style="font-size:12px;">Jun 18, 2026</td><td><span class="badge badge-success">Published</span></td>
+                <td><div class="action-btns"><button class="action-btn del" onclick="toast('🗑️','Review removed','error')">Remove</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#7b2ff7,#9b5de5)">👩</div><div><div class="user-name-cell">Fatima Khanom</div><div class="user-email-cell">fatima@yahoo.com</div></div></div></td>
+                <td><div class="order-product"><div class="product-thumb" style="width:28px;height:28px;font-size:14px;">🎧</div><div>Sony WH-1000XM5</div></div></td>
+                <td><span style="color:#f59e0b;font-weight:700;">★★★★★</span> 5.0</td>
+                <td style="max-width:220px;font-size:12px;color:var(--text-muted);">"Best noise cancelling headphones I've ever used. Worth every taka!"</td>
+                <td style="font-size:12px;">Jun 17, 2026</td><td><span class="badge badge-success">Published</span></td>
+                <td><div class="action-btns"><button class="action-btn del" onclick="toast('🗑️','Review removed','error')">Remove</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">👨</div><div><div class="user-name-cell">Mehedi Hassan</div><div class="user-email-cell">mehedi@gmail.com</div></div></div></td>
+                <td><div class="order-product"><div class="product-thumb" style="width:28px;height:28px;font-size:14px;">⌚</div><div>Apple Watch SE</div></div></td>
+                <td><span style="color:#f59e0b;font-weight:700;">★★★</span><span style="color:#e5e7eb;font-weight:700;">★★</span> 3.0</td>
+                <td style="max-width:220px;font-size:12px;color:var(--text-muted);">"Good watch but delivery was very late. Packaging could be better."</td>
+                <td style="font-size:12px;">Jun 16, 2026</td><td><span class="badge badge-warning">Pending</span></td>
+                <td><div class="action-btns"><button class="action-btn edit" onclick="toast('✅','Review approved!','success')">Approve</button><button class="action-btn del" onclick="toast('🗑️','Review rejected','error')">Reject</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444)">👨</div><div><div class="user-name-cell">Arif Hossain</div><div class="user-email-cell">arif@yahoo.com</div></div></div></td>
+                <td><div class="order-product"><div class="product-thumb" style="width:28px;height:28px;font-size:14px;">👟</div><div>Nike Air Max 270</div></div></td>
+                <td><span style="color:#f59e0b;font-weight:700;">★</span><span style="color:#e5e7eb;font-weight:700;">★★★★</span> 1.0</td>
+                <td style="max-width:220px;font-size:12px;color:var(--text-muted);">"Received wrong size. Very disappointed. Worst experience ever!!!"</td>
+                <td style="font-size:12px;">Jun 15, 2026</td><td><span class="badge badge-warning">Pending</span></td>
+                <td><div class="action-btns"><button class="action-btn edit" onclick="toast('✅','Review approved!','success')">Approve</button><button class="action-btn del" onclick="toast('🗑️','Review rejected','error')">Reject</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#10b981,#34d399)">👩</div><div><div class="user-name-cell">Nusrat Jahan</div><div class="user-email-cell">nusrat@gmail.com</div></div></div></td>
+                <td><div class="order-product"><div class="product-thumb" style="width:28px;height:28px;font-size:14px;">💄</div><div>MAANGE Makeup Set</div></div></td>
+                <td><span style="color:#f59e0b;font-weight:700;">★★★★</span><span style="color:#e5e7eb;font-weight:700;">★</span> 4.0</td>
+                <td style="max-width:220px;font-size:12px;color:var(--text-muted);">"Great quality brushes! Colors are vibrant. Shipping was fast."</td>
+                <td style="font-size:12px;">Jun 14, 2026</td><td><span class="badge badge-success">Published</span></td>
+                <td><div class="action-btns"><button class="action-btn del" onclick="toast('🗑️','Review removed','error')">Remove</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ RETURNS & REFUNDS ══ -->
+    <div class="page-section" id="page-returns">
+      <div class="page-title-row">
+        <div><div class="page-title">Returns & Refunds</div><div class="page-subtitle">7 pending return requests</div></div>
+        <button class="btn btn-outline" onclick="toast('📄','CSV exported!','success')">📄 Export</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;">
+        <div class="stat-card orange"><div class="stat-icon-wrap">⏳</div><div class="stat-value">7</div><div class="stat-label">Pending Review</div></div>
+        <div class="stat-card green"><div class="stat-icon-wrap">✅</div><div class="stat-value">142</div><div class="stat-label">Approved</div></div>
+        <div class="stat-card red"><div class="stat-icon-wrap">❌</div><div class="stat-value">18</div><div class="stat-label">Rejected</div></div>
+        <div class="stat-card purple"><div class="stat-icon-wrap">💰</div><div class="stat-value">৳2.4L</div><div class="stat-label">Total Refunded</div></div>
+      </div>
+      <div class="card">
+        <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;">
+          <input class="filter-input" placeholder="Search by order ID or customer..." style="max-width:280px;" oninput="filterTable('returnsTable',this.value)" />
+          <select class="filter-select"><option>All Status</option><option>Pending</option><option>Approved</option><option>Rejected</option><option>Refunded</option></select>
+          <select class="filter-select"><option>All Reasons</option><option>Defective</option><option>Wrong Item</option><option>Not as Described</option><option>Changed Mind</option></select>
+        </div>
+        <div class="table-wrap">
+          <table id="returnsTable">
+            <thead><tr><th>Return ID</th><th>Order</th><th>Customer</th><th>Product</th><th>Reason</th><th>Amount</th><th>Requested</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td style="font-weight:700;color:var(--accent2);">#RET-112</td><td class="order-id">#NX-4810</td><td>Karim Islam</td><td><div class="order-product"><div class="product-thumb" style="width:28px;height:28px;font-size:14px;">📱</div><div>Samsung Galaxy A55</div></div></td><td><span class="badge badge-danger">Defective</span></td><td><strong>৳28,999</strong></td><td style="font-size:12px;color:var(--text-muted);">Jun 18</td><td><span class="badge badge-warning">Pending</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('✅','Return approved! Refund initiated.','success')">Approve</button><button class="action-btn del" onclick="toast('❌','Return rejected','error')">Reject</button></div></td></tr>
+              <tr><td style="font-weight:700;color:var(--accent2);">#RET-111</td><td class="order-id">#NX-4803</td><td>Nusrat Jahan</td><td><div class="order-product"><div class="product-thumb" style="width:28px;height:28px;font-size:14px;">👟</div><div>Nike Air Max 270</div></div></td><td><span class="badge badge-info">Wrong Size</span></td><td><strong>৳8,499</strong></td><td style="font-size:12px;color:var(--text-muted);">Jun 17</td><td><span class="badge badge-warning">Pending</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('✅','Return approved!','success')">Approve</button><button class="action-btn del" onclick="toast('❌','Rejected','error')">Reject</button></div></td></tr>
+              <tr><td style="font-weight:700;color:var(--accent2);">#RET-110</td><td class="order-id">#NX-4798</td><td>Rahim Ahmed</td><td><div class="order-product"><div class="product-thumb" style="width:28px;height:28px;font-size:14px;">🎧</div><div>Sony WH-1000XM5</div></div></td><td><span class="badge badge-warning">Not as Described</span></td><td><strong>৳14,499</strong></td><td style="font-size:12px;color:var(--text-muted);">Jun 16</td><td><span class="badge badge-success">Approved</span></td><td><div class="action-btns"><button class="action-btn view" onclick="toast('💰','Refund of ৳14,499 processing','success')">Refund</button></div></td></tr>
+              <tr><td style="font-weight:700;color:var(--accent2);">#RET-109</td><td class="order-id">#NX-4792</td><td>Sabbir Hossain</td><td><div class="order-product"><div class="product-thumb" style="width:28px;height:28px;font-size:14px;">⌚</div><div>Apple Watch SE</div></div></td><td><span class="badge badge-danger">Defective</span></td><td><strong>৳19,999</strong></td><td style="font-size:12px;color:var(--text-muted);">Jun 14</td><td><span class="badge badge-success">Refunded</span></td><td><div class="action-btns"><button class="action-btn view" onclick="toast('📄','Viewing refund receipt')">Receipt</button></div></td></tr>
+              <tr><td style="font-weight:700;color:var(--accent2);">#RET-108</td><td class="order-id">#NX-4785</td><td>Fatima Khanom</td><td><div class="order-product"><div class="product-thumb" style="width:28px;height:28px;font-size:14px;">💄</div><div>MAANGE Makeup Set</div></div></td><td><span class="badge badge-gray">Changed Mind</span></td><td><strong>৳3,299</strong></td><td style="font-size:12px;color:var(--text-muted);">Jun 13</td><td><span class="badge badge-danger">Rejected</span></td><td><div class="action-btns"><button class="action-btn view" onclick="toast('📄','Viewing rejection reason')">Details</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SUPPORT TICKETS ══ -->
+    <div class="page-section" id="page-tickets">
+      <div class="page-title-row">
+        <div><div class="page-title">Support Tickets</div><div class="page-subtitle">12 open tickets need attention</div></div>
+        <div style="display:flex;gap:10px;">
+          <select class="filter-select"><option>All Priority</option><option>🔴 Urgent</option><option>🟡 High</option><option>🟢 Normal</option></select>
+          <button class="btn btn-primary" onclick="toast('✅','Ticket created!','success')">+ New Ticket</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;">
+        <div class="stat-card red"><div class="stat-icon-wrap">🔴</div><div class="stat-value">3</div><div class="stat-label">Urgent</div></div>
+        <div class="stat-card orange"><div class="stat-icon-wrap">🟡</div><div class="stat-value">9</div><div class="stat-label">Open</div></div>
+        <div class="stat-card green"><div class="stat-icon-wrap">✅</div><div class="stat-value">284</div><div class="stat-label">Resolved</div></div>
+        <div class="stat-card purple"><div class="stat-icon-wrap">⏱️</div><div class="stat-value">4.2h</div><div class="stat-label">Avg Response</div></div>
+      </div>
+      <div class="card">
+        <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;">
+          <input class="filter-input" placeholder="Search tickets..." style="max-width:260px;" oninput="filterTable('ticketTable',this.value)" />
+          <select class="filter-select"><option>All Status</option><option>Open</option><option>In Progress</option><option>Resolved</option><option>Closed</option></select>
+        </div>
+        <div class="table-wrap">
+          <table id="ticketTable">
+            <thead><tr><th>Ticket ID</th><th>Customer</th><th>Subject</th><th>Category</th><th>Priority</th><th>Created</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td style="font-weight:700;color:var(--primary);">#TKT-1048</td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#ff3c5f,#ff6b35);font-size:12px;">👨</div><div><div class="user-name-cell">Rahim Ahmed</div><div class="user-email-cell">rahim@gmail.com</div></div></div></td><td style="font-weight:600;">Package not received after 7 days</td><td><span class="badge badge-info">Delivery</span></td><td><span class="badge badge-danger">🔴 Urgent</span></td><td style="font-size:12px;color:var(--text-muted);">2h ago</td><td><span class="badge badge-warning">Open</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('💬','Opening ticket reply')">Reply</button><button class="action-btn view" onclick="toast('✅','Marked resolved!','success')">Resolve</button></div></td></tr>
+              <tr><td style="font-weight:700;color:var(--primary);">#TKT-1047</td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#7b2ff7,#9b5de5);font-size:12px;">👩</div><div><div class="user-name-cell">Fatima Khanom</div><div class="user-email-cell">fatima@yahoo.com</div></div></div></td><td style="font-weight:600;">Wrong product received in order</td><td><span class="badge badge-danger">Order Issue</span></td><td><span class="badge badge-danger">🔴 Urgent</span></td><td style="font-size:12px;color:var(--text-muted);">5h ago</td><td><span class="badge badge-warning">Open</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('💬','Opening ticket reply')">Reply</button><button class="action-btn view" onclick="toast('✅','Marked resolved!','success')">Resolve</button></div></td></tr>
+              <tr><td style="font-weight:700;color:var(--primary);">#TKT-1046</td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#059669,#10b981);font-size:12px;">👨</div><div><div class="user-name-cell">Mehedi Hassan</div><div class="user-email-cell">mehedi@gmail.com</div></div></div></td><td style="font-weight:600;">Coupon code FLASH50 not working</td><td><span class="badge badge-warning">Coupon</span></td><td><span class="badge badge-warning">🟡 High</span></td><td style="font-size:12px;color:var(--text-muted);">8h ago</td><td><span class="badge badge-info">In Progress</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('💬','Opening ticket reply')">Reply</button><button class="action-btn view" onclick="toast('✅','Marked resolved!','success')">Resolve</button></div></td></tr>
+              <tr><td style="font-weight:700;color:var(--primary);">#TKT-1045</td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#d97706,#f59e0b);font-size:12px;">👩</div><div><div class="user-name-cell">Nusrat Jahan</div><div class="user-email-cell">nusrat@gmail.com</div></div></div></td><td style="font-weight:600;">Payment deducted but order not placed</td><td><span class="badge badge-danger">Payment</span></td><td><span class="badge badge-danger">🔴 Urgent</span></td><td style="font-size:12px;color:var(--text-muted);">1d ago</td><td><span class="badge badge-warning">Open</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('💬','Opening ticket reply')">Reply</button><button class="action-btn view" onclick="toast('✅','Resolved!','success')">Resolve</button></div></td></tr>
+              <tr><td style="font-weight:700;color:var(--primary);">#TKT-1044</td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#2563eb,#06b6d4);font-size:12px;">👨</div><div><div class="user-name-cell">Sabbir Rahman</div><div class="user-email-cell">sabbir@shop.com</div></div></div></td><td style="font-weight:600;">How do I update my delivery address?</td><td><span class="badge badge-gray">General</span></td><td><span class="badge badge-success">🟢 Normal</span></td><td style="font-size:12px;color:var(--text-muted);">2d ago</td><td><span class="badge badge-success">Resolved</span></td><td><div class="action-btns"><button class="action-btn view" onclick="toast('📄','Viewing ticket')">View</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ WISHLISTS ══ -->
+    <div class="page-section" id="page-wishlist">
+      <div class="page-title-row">
+        <div><div class="page-title">Wishlists</div><div class="page-subtitle">Most wanted products across all customers</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;">
+        <div class="stat-card red"><div class="stat-icon-wrap">❤️</div><div class="stat-value">8,421</div><div class="stat-label">Total Wishlisted</div></div>
+        <div class="stat-card purple"><div class="stat-icon-wrap">👤</div><div class="stat-value">6,204</div><div class="stat-label">Active Wishlisters</div></div>
+        <div class="stat-card green"><div class="stat-icon-wrap">🛒</div><div class="stat-value">34%</div><div class="stat-label">Wishlist → Purchase</div></div>
+        <div class="stat-card orange"><div class="stat-icon-wrap">📦</div><div class="stat-value">312</div><div class="stat-label">Products Wishlisted</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Top Wishlisted Products</div><div class="card-subtitle">Send restock alerts to interested customers</div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Product</th><th>Category</th><th>Price</th><th>Wishlist Count</th><th>In Stock</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td style="font-weight:800;color:#f59e0b;">1</td><td><div class="order-product"><div class="product-thumb">🪥</div><div><div class="product-thumb-name">Dyson Airwrap Complete</div></div></div></td><td>Beauty</td><td>৳65,000</td><td><span style="font-weight:800;color:var(--primary);">1,842</span> <div style="width:80px;height:4px;background:var(--border);border-radius:2px;display:inline-block;vertical-align:middle;margin-left:6px;"><div style="width:92%;height:100%;background:var(--primary);border-radius:2px;"></div></div></td><td><span class="badge badge-success">Yes</span></td><td><button class="action-btn edit" onclick="toast('📧','Alert sent to 1,842 customers!','success')">Send Alert</button></td></tr>
+              <tr><td style="font-weight:800;color:#9ca3af;">2</td><td><div class="order-product"><div class="product-thumb">🚁</div><div><div class="product-thumb-name">DJI Mini 4 Pro Drone</div></div></div></td><td>Electronics</td><td>৳78,000</td><td><span style="font-weight:800;color:var(--primary);">1,204</span> <div style="width:80px;height:4px;background:var(--border);border-radius:2px;display:inline-block;vertical-align:middle;margin-left:6px;"><div style="width:60%;height:100%;background:var(--accent2);border-radius:2px;"></div></div></td><td><span class="badge badge-warning">Low (4)</span></td><td><button class="action-btn edit" onclick="toast('📧','Alert sent!','success')">Send Alert</button></td></tr>
+              <tr><td style="font-weight:800;color:#b45309;">3</td><td><div class="order-product"><div class="product-thumb">📱</div><div><div class="product-thumb-name">iPhone 15 Pro Max</div></div></div></td><td>Electronics</td><td>৳1,85,000</td><td><span style="font-weight:800;color:var(--primary);">987</span> <div style="width:80px;height:4px;background:var(--border);border-radius:2px;display:inline-block;vertical-align:middle;margin-left:6px;"><div style="width:49%;height:100%;background:var(--accent);border-radius:2px;"></div></div></td><td><span class="badge badge-gray">Out of Stock</span></td><td><button class="action-btn edit" onclick="toast('📧','Alert sent to 987 customers!','success')">Send Alert</button></td></tr>
+              <tr><td>4</td><td><div class="order-product"><div class="product-thumb">💻</div><div><div class="product-thumb-name">MacBook Air M3</div></div></div></td><td>Electronics</td><td>৳1,55,000</td><td><span style="font-weight:800;color:var(--primary);">743</span><div style="width:80px;height:4px;background:var(--border);border-radius:2px;display:inline-block;vertical-align:middle;margin-left:6px;"><div style="width:37%;height:100%;background:var(--success);border-radius:2px;"></div></div></td><td><span class="badge badge-success">Yes (8)</span></td><td><button class="action-btn edit" onclick="toast('📧','Alert sent!','success')">Send Alert</button></td></tr>
+              <tr><td>5</td><td><div class="order-product"><div class="product-thumb">🎧</div><div><div class="product-thumb-name">Sony WH-1000XM5</div></div></div></td><td>Electronics</td><td>৳34,999</td><td><span style="font-weight:800;color:var(--primary);">612</span><div style="width:80px;height:4px;background:var(--border);border-radius:2px;display:inline-block;vertical-align:middle;margin-left:6px;"><div style="width:31%;height:100%;background:var(--info);border-radius:2px;"></div></div></td><td><span class="badge badge-warning">Low (11)</span></td><td><button class="action-btn edit" onclick="toast('📧','Alert sent!','success')">Send Alert</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ LOYALTY POINTS ══ -->
+    <div class="page-section" id="page-loyalty">
+      <div class="page-title-row">
+        <div><div class="page-title">Loyalty Points</div><div class="page-subtitle">Reward your best customers automatically</div></div>
+        <button class="btn btn-primary" onclick="toast('✅','Points rules saved!','success')">Save Rules</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;">
+        <div class="stat-card purple"><div class="stat-icon-wrap">🏆</div><div class="stat-value">2.4M</div><div class="stat-label">Points Issued</div></div>
+        <div class="stat-card green"><div class="stat-icon-wrap">💎</div><div class="stat-value">1.1M</div><div class="stat-label">Points Redeemed</div></div>
+        <div class="stat-card orange"><div class="stat-icon-wrap">👥</div><div class="stat-value">14,820</div><div class="stat-label">Active Members</div></div>
+        <div class="stat-card red"><div class="stat-icon-wrap">💰</div><div class="stat-value">৳3.2L</div><div class="stat-label">Discount Given</div></div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Points Rules</div><div class="card-subtitle">How customers earn points</div></div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:14px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg);border-radius:10px;"><div><div style="font-weight:600;font-size:13px;">Purchase Points</div><div style="font-size:11px;color:var(--text-muted);">Points earned per ৳100 spent</div></div><input type="number" value="10" style="width:70px;padding:6px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;text-align:center;" /></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg);border-radius:10px;"><div><div style="font-weight:600;font-size:13px;">Signup Bonus</div><div style="font-size:11px;color:var(--text-muted);">Points on new account creation</div></div><input type="number" value="100" style="width:70px;padding:6px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;text-align:center;" /></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg);border-radius:10px;"><div><div style="font-weight:600;font-size:13px;">Review Bonus</div><div style="font-size:11px;color:var(--text-muted);">Points for leaving a review</div></div><input type="number" value="20" style="width:70px;padding:6px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;text-align:center;" /></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg);border-radius:10px;"><div><div style="font-weight:600;font-size:13px;">Referral Bonus</div><div style="font-size:11px;color:var(--text-muted);">Points when referred user purchases</div></div><input type="number" value="200" style="width:70px;padding:6px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;text-align:center;" /></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg);border-radius:10px;"><div><div style="font-weight:600;font-size:13px;">Redemption Value</div><div style="font-size:11px;color:var(--text-muted);">Points needed for ৳1 discount</div></div><input type="number" value="50" style="width:70px;padding:6px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:13px;text-align:center;" /></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Top Members by Points</div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>#</th><th>Customer</th><th>Points</th><th>Tier</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#f59e0b,#fbbf24)">👨</div><div><div class="user-name-cell">Sabbir Rahman</div></div></div></td><td><strong style="color:var(--primary);">24,800</strong></td><td><span class="badge badge-warning">💎 Diamond</span></td><td><button class="action-btn edit" onclick="toast('🎁','Bonus points added!','success')">Add Points</button></td></tr>
+                <tr><td>2</td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#7b2ff7,#9b5de5)">👩</div><div><div class="user-name-cell">Fatima Khanom</div></div></div></td><td><strong style="color:var(--primary);">18,240</strong></td><td><span class="badge badge-info">🥇 Gold</span></td><td><button class="action-btn edit" onclick="toast('🎁','Bonus points added!','success')">Add Points</button></td></tr>
+                <tr><td>3</td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#ff3c5f,#ff6b35)">👨</div><div><div class="user-name-cell">Rahim Ahmed</div></div></div></td><td><strong style="color:var(--primary);">12,500</strong></td><td><span class="badge badge-success">🥈 Silver</span></td><td><button class="action-btn edit" onclick="toast('🎁','Bonus points added!','success')">Add Points</button></td></tr>
+                <tr><td>4</td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#059669,#10b981)">👩</div><div><div class="user-name-cell">Nusrat Jahan</div></div></div></td><td><strong style="color:var(--primary);">7,820</strong></td><td><span class="badge badge-gray">🥉 Bronze</span></td><td><button class="action-btn edit" onclick="toast('🎁','Bonus points added!','success')">Add Points</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ EMAIL CAMPAIGNS ══ -->
+    <div class="page-section" id="page-email">
+      <div class="page-title-row">
+        <div><div class="page-title">Email Campaigns</div><div class="page-subtitle">29,104 subscribers · Avg open rate 42%</div></div>
+        <button class="btn btn-primary" onclick="toast('✅','Campaign created!','success')">+ New Campaign</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;">
+        <div class="stat-card purple"><div class="stat-icon-wrap">📧</div><div class="stat-value">29,104</div><div class="stat-label">Subscribers</div></div>
+        <div class="stat-card green"><div class="stat-icon-wrap">📬</div><div class="stat-value">42%</div><div class="stat-label">Open Rate</div></div>
+        <div class="stat-card orange"><div class="stat-icon-wrap">🖱️</div><div class="stat-value">18%</div><div class="stat-label">Click Rate</div></div>
+        <div class="stat-card red"><div class="stat-icon-wrap">💰</div><div class="stat-value">৳8.4L</div><div class="stat-label">Revenue from Email</div></div>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Campaign Name</th><th>Type</th><th>Sent To</th><th>Opened</th><th>Clicked</th><th>Revenue</th><th>Sent Date</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Eid Mubarak Sale 🎉</strong></td><td><span class="badge badge-info">Promotional</span></td><td>29,104</td><td><span style="color:var(--success);font-weight:700;">14,820 (51%)</span></td><td>5,240 (18%)</td><td>৳2.1L</td><td style="font-size:12px;">Jun 15</td><td><span class="badge badge-success">Sent</span></td><td><div class="action-btns"><button class="action-btn view" onclick="toast('📊','Viewing report')">Report</button><button class="action-btn edit" onclick="toast('📧','Campaign duplicated!','success')">Duplicate</button></div></td></tr>
+              <tr><td><strong>Flash Deal Alert ⚡</strong></td><td><span class="badge badge-danger">Flash</span></td><td>15,000</td><td><span style="color:var(--success);font-weight:700;">8,400 (56%)</span></td><td>4,200 (28%)</td><td>৳1.8L</td><td style="font-size:12px;">Jun 10</td><td><span class="badge badge-success">Sent</span></td><td><div class="action-btns"><button class="action-btn view" onclick="toast('📊','Viewing report')">Report</button><button class="action-btn edit" onclick="toast('📧','Duplicated!','success')">Duplicate</button></div></td></tr>
+              <tr><td><strong>Welcome New Members 🎁</strong></td><td><span class="badge badge-success">Automated</span></td><td>—</td><td><span style="color:var(--success);font-weight:700;">68%</span></td><td>31%</td><td>৳4.5L</td><td style="font-size:12px;">Ongoing</td><td><span class="badge badge-success">Active</span></td><td><div class="action-btns"><button class="action-btn view" onclick="toast('📊','Viewing report')">Report</button><button class="action-btn edit" onclick="toast('✏️','Editing campaign')">Edit</button></div></td></tr>
+              <tr><td><strong>Cart Abandonment 🛒</strong></td><td><span class="badge badge-success">Automated</span></td><td>—</td><td><span style="color:var(--success);font-weight:700;">44%</span></td><td>22%</td><td>৳2.2L</td><td style="font-size:12px;">Ongoing</td><td><span class="badge badge-success">Active</span></td><td><div class="action-btns"><button class="action-btn view" onclick="toast('📊','Viewing report')">Report</button><button class="action-btn edit" onclick="toast('✏️','Editing campaign')">Edit</button></div></td></tr>
+              <tr><td><strong>Summer Collection Preview</strong></td><td><span class="badge badge-info">Promotional</span></td><td>29,104</td><td>—</td><td>—</td><td>—</td><td style="font-size:12px;">Jul 1, 2026</td><td><span class="badge badge-warning">Scheduled</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing campaign')">Edit</button><button class="action-btn del" onclick="toast('🗑️','Cancelled','error')">Cancel</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PUSH NOTIFICATIONS ══ -->
+    <div class="page-section" id="page-notifications">
+      <div class="page-title-row">
+        <div><div class="page-title">Push Notifications</div><div class="page-subtitle">Send alerts directly to customers' devices</div></div>
+        <button class="btn btn-primary" onclick="toast('🔔','Notification sent to all users!','success')">📢 Send Now</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;">
+        <div class="stat-card green"><div class="stat-icon-wrap">📱</div><div class="stat-value">18,420</div><div class="stat-label">Subscribed Devices</div></div>
+        <div class="stat-card purple"><div class="stat-icon-wrap">📬</div><div class="stat-value">78%</div><div class="stat-label">Delivery Rate</div></div>
+        <div class="stat-card orange"><div class="stat-icon-wrap">👆</div><div class="stat-value">24%</div><div class="stat-label">Click-Through</div></div>
+        <div class="stat-card red"><div class="stat-icon-wrap">🔔</div><div class="stat-value">48</div><div class="stat-label">Sent This Month</div></div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Send New Notification</div></div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:14px;">
+            <div class="form-group" style="margin:0;"><label class="form-label">Title</label><input class="form-input" placeholder="e.g. Flash Sale starts now! ⚡" /></div>
+            <div class="form-group" style="margin:0;"><label class="form-label">Message</label><textarea class="form-input" rows="3" placeholder="Your notification message here..." style="resize:vertical;"></textarea></div>
+            <div class="form-group" style="margin:0;"><label class="form-label">Send To</label><select class="form-input"><option>All Users (18,420)</option><option>Active Customers Only</option><option>Users in Dhaka</option><option>Users with Abandoned Carts</option><option>VIP / Diamond Members</option></select></div>
+            <div class="form-group" style="margin:0;"><label class="form-label">Schedule</label><select class="form-input"><option>Send Immediately</option><option>Schedule for Later</option></select></div>
+            <button class="btn btn-primary" style="align-self:flex-end;" onclick="toast('🔔','Notification sent to 18,420 devices!','success')">🔔 Send Notification</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Recent Notifications</div></div>
+          <div class="activity-list">
+            <div class="activity-item"><div class="activity-icon" style="background:rgba(255,60,95,.1)">⚡</div><div class="activity-text"><div class="activity-title">Flash Deal — Sony WH-1000XM5 -59%!</div><div class="activity-sub">Sent to 18,420 · 24% CTR</div></div><div class="activity-time">2h ago</div></div>
+            <div class="activity-item"><div class="activity-icon" style="background:rgba(16,185,129,.1)">🎉</div><div class="activity-text"><div class="activity-title">Eid Sale is LIVE! Up to 70% off</div><div class="activity-sub">Sent to 18,420 · 31% CTR</div></div><div class="activity-time">1d ago</div></div>
+            <div class="activity-item"><div class="activity-icon" style="background:rgba(123,47,247,.1)">📦</div><div class="activity-text"><div class="activity-title">Your order #NX-4821 has been shipped!</div><div class="activity-sub">Sent to 1 user · Transactional</div></div><div class="activity-time">2d ago</div></div>
+            <div class="activity-item"><div class="activity-icon" style="background:rgba(245,158,11,.1)">🛒</div><div class="activity-text"><div class="activity-title">You left items in your cart!</div><div class="activity-sub">Sent to 2,840 · Cart Abandonment</div></div><div class="activity-time">3d ago</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SEO MANAGER ══ -->
+    <div class="page-section" id="page-seo">
+      <div class="page-title-row">
+        <div><div class="page-title">SEO Manager</div><div class="page-subtitle">Optimize pages for search engines</div></div>
+        <button class="btn btn-primary" onclick="toast('✅','SEO settings saved!','success')">Save All</button>
+      </div>
+      <div class="card" style="margin-bottom:18px;">
+        <div class="card-header"><div class="card-title">Homepage SEO</div></div>
+        <div class="card-body" style="display:flex;flex-direction:column;gap:14px;">
+          <div class="form-group" style="margin:0;"><label class="form-label">Meta Title <span style="color:var(--text-muted);font-weight:400;">(60 chars max)</span></label><input class="form-input" value="NEXORA — Shop Smart, Save More | Bangladesh's #1 Online Store" /></div>
+          <div class="form-group" style="margin:0;"><label class="form-label">Meta Description <span style="color:var(--text-muted);font-weight:400;">(160 chars max)</span></label><textarea class="form-input" rows="2" style="resize:none;">Shop millions of products at the best prices. Flash deals, group buys, fast delivery across all 64 districts of Bangladesh. Free shipping above ৳500.</textarea></div>
+          <div class="form-group" style="margin:0;"><label class="form-label">Keywords</label><input class="form-input" value="online shopping bangladesh, nexora, flash deals, buy online, cheap products" /></div>
+          <div class="form-row-2">
+            <div class="form-group" style="margin:0;"><label class="form-label">OG Image URL</label><input class="form-input" placeholder="https://..." /></div>
+            <div class="form-group" style="margin:0;"><label class="form-label">Canonical URL</label><input class="form-input" value="https://nexora.vercel.app" /></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Category Pages SEO</div><div class="card-subtitle">Set meta tags per category</div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Category</th><th>Meta Title</th><th>Meta Description</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><div class="order-product"><div class="product-thumb">📱</div><div>Electronics</div></div></td><td style="font-size:12px;">Electronics — NEXORA | Phones, Laptops, Gadgets</td><td style="font-size:11px;color:var(--text-muted);">Shop the latest electronics at unbeatable prices...</td><td><button class="action-btn edit" onclick="toast('✏️','Editing SEO')">Edit</button></td></tr>
+              <tr><td><div class="order-product"><div class="product-thumb">👗</div><div>Fashion</div></div></td><td style="font-size:12px;">Fashion — NEXORA | Men, Women & Kids Clothing</td><td style="font-size:11px;color:var(--text-muted);">Discover the latest fashion trends at great prices...</td><td><button class="action-btn edit" onclick="toast('✏️','Editing SEO')">Edit</button></td></tr>
+              <tr><td><div class="order-product"><div class="product-thumb">🏠</div><div>Home & Living</div></div></td><td style="font-size:12px;">Home & Living — NEXORA | Furniture, Kitchen & More</td><td style="font-size:11px;color:var(--text-muted);">Transform your home with our amazing collection...</td><td><button class="action-btn edit" onclick="toast('✏️','Editing SEO')">Edit</button></td></tr>
+              <tr><td><div class="order-product"><div class="product-thumb">💄</div><div>Beauty</div></div></td><td style="font-size:12px;">Beauty & Care — NEXORA | Skincare, Makeup & Hair</td><td style="font-size:11px;color:var(--text-muted);">Shop premium beauty products at great deals...</td><td><button class="action-btn edit" onclick="toast('✏️','Editing SEO')">Edit</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ REPORTS ══ -->
+    <div class="page-section" id="page-reports">
+      <div class="page-title-row">
+        <div><div class="page-title">Reports</div><div class="page-subtitle">Download and view detailed business reports</div></div>
+        <select class="filter-select"><option>June 2026</option><option>May 2026</option><option>Q2 2026</option><option>2026 YTD</option></select>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card red"><div class="stat-icon-wrap">💰</div><div class="stat-value">৳48.6L</div><div class="stat-label">Total Revenue</div><span class="stat-change up">▲ 18.2%</span></div>
+        <div class="stat-card purple"><div class="stat-icon-wrap">🛒</div><div class="stat-value">3,842</div><div class="stat-label">Total Orders</div><span class="stat-change up">▲ 12.5%</span></div>
+        <div class="stat-card green"><div class="stat-icon-wrap">💎</div><div class="stat-value">৳12,660</div><div class="stat-label">Avg Order Value</div><span class="stat-change up">▲ 6.8%</span></div>
+        <div class="stat-card orange"><div class="stat-icon-wrap">↩️</div><div class="stat-value">4.3%</div><div class="stat-label">Return Rate</div><span class="stat-change down">▼ 0.4%</span></div>
+      </div>
+      <div class="grid-2" style="margin-bottom:20px;">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Revenue by Category</div></div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;align-items:center;gap:10px;"><span style="width:100px;font-size:12px;font-weight:600;">📱 Electronics</span><div style="flex:1;height:10px;background:var(--border);border-radius:5px;"><div style="width:78%;height:100%;background:var(--primary);border-radius:5px;"></div></div><span style="font-size:12px;font-weight:700;width:60px;text-align:right;">৳18.4L</span></div>
+              <div style="display:flex;align-items:center;gap:10px;"><span style="width:100px;font-size:12px;font-weight:600;">👗 Fashion</span><div style="flex:1;height:10px;background:var(--border);border-radius:5px;"><div style="width:49%;height:100%;background:var(--accent2);border-radius:5px;"></div></div><span style="font-size:12px;font-weight:700;width:60px;text-align:right;">৳9.2L</span></div>
+              <div style="display:flex;align-items:center;gap:10px;"><span style="width:100px;font-size:12px;font-weight:600;">🏠 Home</span><div style="flex:1;height:10px;background:var(--border);border-radius:5px;"><div style="width:41%;height:100%;background:var(--success);border-radius:5px;"></div></div><span style="font-size:12px;font-weight:700;width:60px;text-align:right;">৳7.8L</span></div>
+              <div style="display:flex;align-items:center;gap:10px;"><span style="width:100px;font-size:12px;font-weight:600;">🎮 Gaming</span><div style="flex:1;height:10px;background:var(--border);border-radius:5px;"><div style="width:25%;height:100%;background:var(--accent);border-radius:5px;"></div></div><span style="font-size:12px;font-weight:700;width:60px;text-align:right;">৳4.7L</span></div>
+              <div style="display:flex;align-items:center;gap:10px;"><span style="width:100px;font-size:12px;font-weight:600;">💄 Beauty</span><div style="flex:1;height:10px;background:var(--border);border-radius:5px;"><div style="width:27%;height:100%;background:#db2777;border-radius:5px;"></div></div><span style="font-size:12px;font-weight:700;width:60px;text-align:right;">৳5.1L</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Payment Method Breakdown</div></div>
+          <div class="card-body">
+            <div class="donut-wrap">
+              <div class="donut" style="background:conic-gradient(#e2136e 0% 42%,#f5821f 42% 68%,#1a56db 68% 84%,#374151 84% 100%)">
+                <div class="donut-center">42%<small>bKash</small></div>
+              </div>
+              <div class="donut-labels">
+                <div class="donut-label"><div class="donut-label-dot" style="background:#e2136e"></div><span class="donut-label-name">bKash</span><span class="donut-label-pct">42%</span></div>
+                <div class="donut-label"><div class="donut-label-dot" style="background:#f5821f"></div><span class="donut-label-name">Nagad</span><span class="donut-label-pct">26%</span></div>
+                <div class="donut-label"><div class="donut-label-dot" style="background:#1a56db"></div><span class="donut-label-name">Card</span><span class="donut-label-pct">16%</span></div>
+                <div class="donut-label"><div class="donut-label-dot" style="background:#374151"></div><span class="donut-label-name">COD</span><span class="donut-label-pct">16%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Download Reports</div><div class="card-subtitle">Export data in various formats</div></div>
+        <div class="card-body">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+            <button class="quick-btn" onclick="toast('📄','Sales report downloaded!','success')"><span class="quick-btn-icon">💰</span>Sales Report (CSV)</button>
+            <button class="quick-btn" onclick="toast('📄','Orders report downloaded!','success')"><span class="quick-btn-icon">🛒</span>Orders Report (CSV)</button>
+            <button class="quick-btn" onclick="toast('📄','Users report downloaded!','success')"><span class="quick-btn-icon">👤</span>Customers Report (CSV)</button>
+            <button class="quick-btn" onclick="toast('📄','Products report downloaded!','success')"><span class="quick-btn-icon">📦</span>Inventory Report (Excel)</button>
+            <button class="quick-btn" onclick="toast('📄','Tax report downloaded!','success')"><span class="quick-btn-icon">📊</span>Tax Report (PDF)</button>
+            <button class="quick-btn" onclick="toast('📄','Full report downloaded!','success')"><span class="quick-btn-icon">📋</span>Full Summary (PDF)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ACTIVITY LOG ══ -->
+    <div class="page-section" id="page-activitylog">
+      <div class="page-title-row">
+        <div><div class="page-title">Activity Log</div><div class="page-subtitle">Complete audit trail of admin actions</div></div>
+        <button class="btn btn-outline" onclick="toast('📄','Log exported!','success')">📄 Export Log</button>
+      </div>
+      <div class="card">
+        <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;">
+          <input class="filter-input" placeholder="Search actions..." style="max-width:260px;" oninput="filterTable('logTable',this.value)" />
+          <select class="filter-select"><option>All Actions</option><option>Product</option><option>Order</option><option>User</option><option>Setting</option><option>Login</option></select>
+          <select class="filter-select"><option>All Time</option><option>Today</option><option>This Week</option><option>This Month</option></select>
+        </div>
+        <div class="table-wrap">
+          <table id="logTable">
+            <thead><tr><th>Time</th><th>Admin</th><th>Action</th><th>Target</th><th>IP Address</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td style="font-size:12px;color:var(--text-muted);">Today 11:42</td><td><span style="font-weight:600;">👑 Munna</span></td><td><span class="badge badge-success">LOGIN</span></td><td>Admin Panel</td><td style="font-size:12px;color:var(--text-muted);">103.x.x.x</td><td><span class="badge badge-success">Success</span></td></tr>
+              <tr><td style="font-size:12px;color:var(--text-muted);">Today 11:38</td><td><span style="font-weight:600;">👑 Munna</span></td><td><span class="badge badge-warning">EDIT</span></td><td>Product: Samsung Galaxy A55</td><td style="font-size:12px;color:var(--text-muted);">103.x.x.x</td><td><span class="badge badge-success">Success</span></td></tr>
+              <tr><td style="font-size:12px;color:var(--text-muted);">Today 10:22</td><td><span style="font-weight:600;">👑 Munna</span></td><td><span class="badge badge-danger">DELETE</span></td><td>Coupon: SUMMER30</td><td style="font-size:12px;color:var(--text-muted);">103.x.x.x</td><td><span class="badge badge-success">Success</span></td></tr>
+              <tr><td style="font-size:12px;color:var(--text-muted);">Today 09:15</td><td><span style="font-weight:600;">👑 Munna</span></td><td><span class="badge badge-info">CREATE</span></td><td>Flash Deal: Dyson Airwrap -40%</td><td style="font-size:12px;color:var(--text-muted);">103.x.x.x</td><td><span class="badge badge-success">Success</span></td></tr>
+              <tr><td style="font-size:12px;color:var(--text-muted);">Yesterday 18:44</td><td><span style="font-weight:600;">👑 Munna</span></td><td><span class="badge badge-warning">UPDATE</span></td><td>Order #NX-4819 → Shipped</td><td style="font-size:12px;color:var(--text-muted);">103.x.x.x</td><td><span class="badge badge-success">Success</span></td></tr>
+              <tr><td style="font-size:12px;color:var(--text-muted);">Yesterday 16:30</td><td><span style="font-weight:600;">👑 Munna</span></td><td><span class="badge badge-success">CREATE</span></td><td>Coupon: EID2026 (৳500 off)</td><td style="font-size:12px;color:var(--text-muted);">103.x.x.x</td><td><span class="badge badge-success">Success</span></td></tr>
+              <tr><td style="font-size:12px;color:var(--text-muted);">Yesterday 14:10</td><td><span style="font-weight:600;">👑 Munna</span></td><td><span class="badge badge-warning">SETTINGS</span></td><td>Payment: bKash API key updated</td><td style="font-size:12px;color:var(--text-muted);">103.x.x.x</td><td><span class="badge badge-success">Success</span></td></tr>
+              <tr><td style="font-size:12px;color:var(--text-muted);">Jun 18 09:00</td><td><span style="font-weight:600;">👑 Munna</span></td><td><span class="badge badge-danger">SUSPEND</span></td><td>User: nusrat@gmail.com</td><td style="font-size:12px;color:var(--text-muted);">103.x.x.x</td><td><span class="badge badge-success">Success</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PRODUCT CRAWLER ══ -->
+    <div class="page-section" id="page-crawler">
+      <div class="page-title-row">
+        <div><div class="page-title">🕷️ Product Importer</div><div class="page-subtitle">Crawl URLs or bulk import via CSV</div></div>
+      </div>
+
+      <!-- Tab switcher -->
+      <div style="display:flex;gap:0;margin-bottom:20px;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;width:fit-content;">
+        <button id="tabUrl" onclick="switchCrawlTab('url')" style="padding:10px 28px;font-size:13px;font-weight:700;border:none;cursor:pointer;background:var(--primary);color:#fff;transition:all .2s;">🕷️ URL Crawler</button>
+        <button id="tabCsv" onclick="switchCrawlTab('csv')" style="padding:10px 28px;font-size:13px;font-weight:700;border:none;cursor:pointer;background:var(--card-bg);color:var(--text);transition:all .2s;">📄 CSV Import</button>
+      </div>
+
+      <!-- ── URL TAB ── -->
+      <div id="crawlUrlTab">
+      <!-- URL Input Card -->
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-body">
+          <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
+            <div style="flex:1;min-width:280px;">
+              <label class="form-label">Product Page URL</label>
+              <input class="form-input" id="crawlUrl" placeholder="https://www.example.com/product/..." style="font-size:13px;" onkeydown="if(event.key==='Enter')runCrawler()" />
+            </div>
+            <button class="btn btn-primary" id="crawlBtn" onclick="runCrawler()" style="white-space:nowrap;height:42px;">
+              <span id="crawlBtnText">🕷️ Crawl URL</span>
+            </button>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:var(--text-muted);">
+            ⚡ Works best with product pages that have open graph tags or structured data (JSON-LD)
+          </div>
+        </div>
+      </div>
+
+      <!-- Results (hidden until crawl runs) -->
+      <div id="crawlResults" style="display:none;">
+        <div class="grid-2" style="margin-bottom:20px;">
+          <!-- Extracted Images -->
+          <div class="card">
+            <div class="card-header"><div class="card-title">Extracted Images</div><div class="card-subtitle" id="crawlImgCount">0 images found</div></div>
+            <div class="card-body">
+              <div id="crawlImgGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div>
+              <div style="margin-top:12px;">
+                <label class="form-label">Selected Thumbnail</label>
+                <input class="form-input" id="crawlThumb" placeholder="Paste image URL or click an image above" style="font-size:12px;" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Extracted Info -->
+          <div class="card">
+            <div class="card-header"><div class="card-title">Extracted Product Info</div><div class="card-subtitle">Edit before saving</div></div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:12px;">
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Product Name</label>
+                <input class="form-input" id="crawlName" placeholder="Product name..." />
+              </div>
+              <div class="form-row-2">
+                <div class="form-group" style="margin:0;">
+                  <label class="form-label">Price (৳)</label>
+                  <input class="form-input" id="crawlPrice" placeholder="0" type="number" />
+                </div>
+                <div class="form-group" style="margin:0;">
+                  <label class="form-label">Discount %</label>
+                  <input class="form-input" id="crawlDiscount" placeholder="0" type="number" min="0" max="100" />
+                </div>
+              </div>
+              <div class="form-row-2">
+                <div class="form-group" style="margin:0;">
+                  <label class="form-label">Brand</label>
+                  <input class="form-input" id="crawlBrand" placeholder="Brand name..." />
+                </div>
+                <div class="form-group" style="margin:0;">
+                  <label class="form-label">Stock</label>
+                  <input class="form-input" id="crawlStock" placeholder="100" type="number" value="100" />
+                </div>
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label class="form-label">Category</label>
+                <select class="form-input" id="crawlCategory">
+                  <option value="">Select category...</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-header"><div class="card-title">Description</div></div>
+          <div class="card-body">
+            <textarea class="form-input" id="crawlDesc" rows="5" style="resize:vertical;"></textarea>
+          </div>
+        </div>
+
+        <!-- Source URL + Save -->
+        <div class="card">
+          <div class="card-body" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+            <div style="font-size:12px;color:var(--text-muted);">
+              Source: <a id="crawlSourceLink" href="#" target="_blank" style="color:var(--primary);word-break:break-all;"></a>
+            </div>
+            <div style="display:flex;gap:10px;">
+              <button class="btn btn-outline" onclick="resetCrawler()">🔄 Crawl Another</button>
+              <button class="btn btn-primary" onclick="saveProduct()">💾 Save as Product</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty state -->
+      <div id="crawlEmpty" style="text-align:center;padding:60px 20px;">
+        <div style="font-size:64px;margin-bottom:16px;">🕷️</div>
+        <div style="font-size:18px;font-weight:700;margin-bottom:8px;">No URL crawled yet</div>
+        <div style="font-size:13px;color:var(--text-muted);">Paste a product URL above and click Crawl URL</div>
+      </div>
+
+      <!-- History -->
+      <div class="card" style="margin-top:24px;" id="crawlHistoryCard" style="display:none;">
+        <div class="card-header"><div class="card-title">Crawl History</div><div class="card-subtitle">Last 10 URLs crawled this session</div></div>
+        <div id="crawlHistoryList" style="padding:0 20px 14px;display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+      </div><!-- end #crawlUrlTab -->
+
+      <!-- ── CSV TAB ── -->
+      <div id="crawlCsvTab" style="display:none;">
+
+        <!-- Download template -->
+        <div class="card" style="margin-bottom:18px;">
+          <div class="card-body" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+            <div>
+              <div style="font-weight:700;font-size:14px;margin-bottom:4px;">📄 CSV Format</div>
+              <div style="font-size:12px;color:var(--text-muted);">Required columns: <code style="background:var(--bg);padding:2px 6px;border-radius:4px;">name, price, category</code> &nbsp;|&nbsp; Optional: <code style="background:var(--bg);padding:2px 6px;border-radius:4px;">description, brand, stock, discount, thumbnail</code></div>
+            </div>
+            <button class="btn btn-outline" onclick="downloadCsvTemplate()">⬇️ Download Template</button>
+          </div>
+        </div>
+
+        <!-- Drop zone -->
+        <div id="csvDropZone" style="border:2.5px dashed var(--border);border-radius:16px;padding:48px 24px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:18px;"
+          onclick="document.getElementById('csvFileInput').click()"
+          ondragover="event.preventDefault();this.style.borderColor='var(--primary)';this.style.background='rgba(255,60,95,.04)'"
+          ondragleave="this.style.borderColor='var(--border)';this.style.background=''"
+          ondrop="handleCsvDrop(event)">
+          <div style="font-size:48px;margin-bottom:12px;">📂</div>
+          <div style="font-size:16px;font-weight:700;margin-bottom:6px;">Drop your CSV file here</div>
+          <div style="font-size:13px;color:var(--text-muted);">or click to browse</div>
+          <input type="file" id="csvFileInput" accept=".csv,.txt" style="display:none;" onchange="handleCsvFile(this.files[0])" />
+        </div>
+
+        <!-- Column mapping (shown after file loads) -->
+        <div id="csvMappingWrap" style="display:none;">
+          <div class="card" style="margin-bottom:18px;">
+            <div class="card-header">
+              <div class="card-title">Column Mapping</div>
+              <div class="card-subtitle" id="csvFileInfo"></div>
+            </div>
+            <div class="card-body">
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;" id="csvMappingGrid"></div>
+            </div>
+          </div>
+
+          <!-- Category assignment -->
+          <div class="card" style="margin-bottom:18px;">
+            <div class="card-header"><div class="card-title">Default Category</div><div class="card-subtitle">Used when the CSV row has no category column</div></div>
+            <div class="card-body">
+              <!-- Searchable category picker -->
+              <div style="position:relative;max-width:340px;" id="catPickerWrap">
+                <div style="display:flex;align-items:center;gap:8px;border:1.5px solid var(--border);border-radius:10px;padding:8px 12px;background:var(--bg);cursor:pointer;" onclick="toggleCatPicker()" id="catPickerDisplay">
+                  <span id="catPickerIcon" style="font-size:18px;">📦</span>
+                  <span id="catPickerLabel" style="font-size:13px;flex:1;color:var(--text-muted);">Select default category…</span>
+                  <span style="color:var(--text-muted);font-size:11px;">▼</span>
+                </div>
+                <input type="hidden" id="csvDefaultCategory" value="" />
+                <div id="catPickerDropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.18);z-index:200;overflow:hidden;">
+                  <div style="padding:8px;">
+                    <input id="catPickerSearch" class="form-input" placeholder="🔍 Search category…" style="font-size:12px;padding:7px 10px;" oninput="filterCatPicker(this.value)" onclick="event.stopPropagation()" />
+                  </div>
+                  <div id="catPickerList" style="max-height:240px;overflow-y:auto;padding:0 4px 6px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preview table -->
+          <div class="card" style="margin-bottom:18px;">
+            <div class="card-header">
+              <div class="card-title">Preview</div>
+              <div class="card-subtitle" id="csvPreviewCount"></div>
+            </div>
+            <div class="table-wrap">
+              <table id="csvPreviewTable">
+                <thead><tr id="csvPreviewHead"></tr></thead>
+                <tbody id="csvPreviewBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Import button -->
+          <div class="card">
+            <div class="card-body" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+              <div id="csvImportStatus" style="font-size:13px;color:var(--text-muted);"></div>
+              <div style="display:flex;gap:10px;">
+                <button class="btn btn-outline" onclick="resetCsvImport()">🔄 Reset</button>
+                <button class="btn btn-primary" id="csvImportBtn" onclick="runCsvImport()">⬆️ Import All Products</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end #crawlCsvTab -->
+    </div>
+
+    <!-- ══ BANNERS ══ -->
+    <div class="page-section" id="page-banners">
+      <div class="page-title-row">
+        <div><div class="page-title">Banners</div><div class="page-subtitle">Manage homepage hero banners and promotional slides</div></div>
+        <button class="btn btn-primary" onclick="toast('✅','Banner added!','success')">+ Add Banner</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Preview</th><th>Title</th><th>Subtitle</th><th>Link</th><th>Position</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div style="width:80px;height:44px;background:linear-gradient(135deg,#1a1a2e,#0f3460);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;">📱</div></td>
+                <td><strong>Galaxy A55 Flash Sale</strong></td>
+                <td style="font-size:12px;color:var(--text-muted);">Up to 72% off today only</td>
+                <td style="font-size:12px;color:var(--accent2);">category.html?cat=Electronics</td>
+                <td><span class="badge badge-info">Slide 1</span></td>
+                <td><span class="badge badge-success">Active</span></td>
+                <td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing banner')">Edit</button><button class="action-btn del" onclick="toast('🗑️','Removed','error')">Remove</button></div></td>
+              </tr>
+              <tr>
+                <td><div style="width:80px;height:44px;background:linear-gradient(135deg,#ff6b35,#ff3c5f);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;">👗</div></td>
+                <td><strong>Fashion Forward</strong></td>
+                <td style="font-size:12px;color:var(--text-muted);">New arrivals — up to 65% off</td>
+                <td style="font-size:12px;color:var(--accent2);">category.html?cat=Fashion</td>
+                <td><span class="badge badge-info">Slide 2</span></td>
+                <td><span class="badge badge-success">Active</span></td>
+                <td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing banner')">Edit</button><button class="action-btn del" onclick="toast('🗑️','Removed','error')">Remove</button></div></td>
+              </tr>
+              <tr>
+                <td><div style="width:80px;height:44px;background:linear-gradient(135deg,#059669,#10b981);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;">🛒</div></td>
+                <td><strong>Fresh Groceries</strong></td>
+                <td style="font-size:12px;color:var(--text-muted);">Daily essentials delivered fast</td>
+                <td style="font-size:12px;color:var(--accent2);">category.html?cat=Groceries</td>
+                <td><span class="badge badge-info">Slide 3</span></td>
+                <td><span class="badge badge-success">Active</span></td>
+                <td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing banner')">Edit</button><button class="action-btn del" onclick="toast('🗑️','Removed','error')">Remove</button></div></td>
+              </tr>
+              <tr>
+                <td><div style="width:80px;height:44px;background:linear-gradient(135deg,#7b2ff7,#db2777);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;">⚡</div></td>
+                <td><strong>Group Buy Launch</strong></td>
+                <td style="font-size:12px;color:var(--text-muted);">Join group deals — save more together</td>
+                <td style="font-size:12px;color:var(--accent2);">category.html?cat=Gaming</td>
+                <td><span class="badge badge-warning">Slide 4 (Draft)</span></td>
+                <td><span class="badge badge-warning">Draft</span></td>
+                <td><div class="action-btns"><button class="action-btn edit" onclick="toast('✅','Banner published!','success')">Publish</button><button class="action-btn del" onclick="toast('🗑️','Removed','error')">Remove</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card" style="margin-top:18px;">
+        <div class="card-header"><div class="card-title">Banner Display Order</div><div class="card-subtitle">Drag to reorder (saved automatically)</div></div>
+        <div class="card-body" style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg);border-radius:10px;cursor:grab;"><span style="font-size:16px;color:#ccc;">⠿</span><span style="font-size:18px;">📱</span><span style="font-weight:600;font-size:13px;">Galaxy A55 Flash Sale</span><span class="badge badge-success" style="margin-left:auto;">Slide 1</span></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg);border-radius:10px;cursor:grab;"><span style="font-size:16px;color:#ccc;">⠿</span><span style="font-size:18px;">👗</span><span style="font-weight:600;font-size:13px;">Fashion Forward</span><span class="badge badge-success" style="margin-left:auto;">Slide 2</span></div>
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg);border-radius:10px;cursor:grab;"><span style="font-size:16px;color:#ccc;">⠿</span><span style="font-size:18px;">🛒</span><span style="font-weight:600;font-size:13px;">Fresh Groceries</span><span class="badge badge-success" style="margin-left:auto;">Slide 3</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ DELIVERY ZONES ══ -->
+    <div class="page-section" id="page-delivery">
+      <div class="page-title-row">
+        <div><div class="page-title">Delivery Zones</div><div class="page-subtitle">Set rates and coverage by Bangladesh district</div></div>
+        <button class="btn btn-primary" onclick="toast('✅','Zone added!','success')">+ Add Zone</button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card green"><div class="stat-icon-wrap">🚚</div><div class="stat-value">64</div><div class="stat-label">Districts Covered</div></div>
+        <div class="stat-card purple"><div class="stat-icon-wrap">📦</div><div class="stat-value">8</div><div class="stat-label">Delivery Zones</div></div>
+        <div class="stat-card orange"><div class="stat-icon-wrap">⏱️</div><div class="stat-value">1–3d</div><div class="stat-label">Avg Delivery Time</div></div>
+        <div class="stat-card red"><div class="stat-icon-wrap">💰</div><div class="stat-value">৳60</div><div class="stat-label">Base Delivery Fee</div></div>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Zone Name</th><th>Districts</th><th>Delivery Fee</th><th>Free Above</th><th>Est. Time</th><th>Courier</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Dhaka City</strong></td><td><span class="badge badge-info">Dhaka, Narayanganj, Gazipur</span></td><td><strong>৳60</strong></td><td>৳500</td><td>Same day / Next day</td><td>Pathao, Paperfly</td><td><span class="badge badge-success">Active</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing zone')">Edit</button></div></td></tr>
+              <tr><td><strong>Dhaka Division</strong></td><td><span class="badge badge-info">13 districts</span></td><td><strong>৳80</strong></td><td>৳1,000</td><td>1–2 days</td><td>Sundarban, RedX</td><td><span class="badge badge-success">Active</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing zone')">Edit</button></div></td></tr>
+              <tr><td><strong>Chattogram City</strong></td><td><span class="badge badge-info">Chattogram, Cox's Bazar</span></td><td><strong>৳100</strong></td><td>৳1,000</td><td>1–2 days</td><td>Paperfly, SA Paribahan</td><td><span class="badge badge-success">Active</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing zone')">Edit</button></div></td></tr>
+              <tr><td><strong>Rajshahi Division</strong></td><td><span class="badge badge-info">8 districts</span></td><td><strong>৳120</strong></td><td>৳2,000</td><td>2–3 days</td><td>Sundarban, Khunji</td><td><span class="badge badge-success">Active</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing zone')">Edit</button></div></td></tr>
+              <tr><td><strong>Khulna Division</strong></td><td><span class="badge badge-info">10 districts</span></td><td><strong>৳120</strong></td><td>৳2,000</td><td>2–3 days</td><td>Sundarban, SA Paribahan</td><td><span class="badge badge-success">Active</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing zone')">Edit</button></div></td></tr>
+              <tr><td><strong>Sylhet Division</strong></td><td><span class="badge badge-info">4 districts</span></td><td><strong>৳130</strong></td><td>৳2,500</td><td>2–3 days</td><td>RedX, Khunji</td><td><span class="badge badge-success">Active</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing zone')">Edit</button></div></td></tr>
+              <tr><td><strong>Rangpur Division</strong></td><td><span class="badge badge-info">8 districts</span></td><td><strong>৳140</strong></td><td>৳3,000</td><td>3 days</td><td>Sundarban, G4S</td><td><span class="badge badge-success">Active</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing zone')">Edit</button></div></td></tr>
+              <tr><td><strong>Barishal + Mymensingh</strong></td><td><span class="badge badge-info">10 districts</span></td><td><strong>৳150</strong></td><td>৳3,000</td><td>3 days</td><td>SA Paribahan</td><td><span class="badge badge-success">Active</span></td><td><div class="action-btns"><button class="action-btn edit" onclick="toast('✏️','Editing zone')">Edit</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAYMENT METHODS ══ -->
+    <div class="page-section" id="page-payments">
+      <div class="page-title-row">
+        <div><div class="page-title">Payment Methods</div><div class="page-subtitle">Configure accepted payment gateways</div></div>
+        <button class="btn btn-primary" onclick="toast('✅','Settings saved!','success')">Save Settings</button>
+      </div>
+      <div class="grid-2" style="margin-bottom:20px;">
+
+        <div class="card">
+          <div class="card-header" style="background:linear-gradient(135deg,#e2136e,#c0105a);padding:16px 20px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:44px;height:44px;background:rgba(255,255,255,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;">📱</div>
+              <div><div class="card-title" style="color:#fff;">bKash</div><div style="font-size:11px;color:rgba(255,255,255,.8);">Mobile Banking</div></div>
+              <div class="toggle on" style="margin-left:auto;" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-group"><label class="form-label">Merchant Number</label><input class="form-input" value="01XXXXXXXXX" /></div>
+            <div class="form-group"><label class="form-label">App Key</label><input class="form-input" value="●●●●●●●●●●●●" /></div>
+            <div class="form-group"><label class="form-label">App Secret</label><input class="form-input" value="●●●●●●●●●●●●" /></div>
+            <div style="display:flex;justify-content:flex-end;"><button class="btn btn-primary" style="font-size:12px;" onclick="toast('✅','bKash saved!','success')">Save bKash Settings</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header" style="background:linear-gradient(135deg,#f5821f,#e05f00);padding:16px 20px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:44px;height:44px;background:rgba(255,255,255,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;">💰</div>
+              <div><div class="card-title" style="color:#fff;">Nagad</div><div style="font-size:11px;color:rgba(255,255,255,.8);">Mobile Banking</div></div>
+              <div class="toggle on" style="margin-left:auto;" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-group"><label class="form-label">Merchant Account</label><input class="form-input" value="01XXXXXXXXX" /></div>
+            <div class="form-group"><label class="form-label">API Key</label><input class="form-input" value="●●●●●●●●●●●●" /></div>
+            <div class="form-group"><label class="form-label">Secret Key</label><input class="form-input" value="●●●●●●●●●●●●" /></div>
+            <div style="display:flex;justify-content:flex-end;"><button class="btn btn-primary" style="font-size:12px;" onclick="toast('✅','Nagad saved!','success')">Save Nagad Settings</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header" style="background:linear-gradient(135deg,#1a56db,#1e3a8a);padding:16px 20px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:44px;height:44px;background:rgba(255,255,255,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;">💳</div>
+              <div><div class="card-title" style="color:#fff;">Card Payment</div><div style="font-size:11px;color:rgba(255,255,255,.8);">Visa / MasterCard / AMEX</div></div>
+              <div class="toggle on" style="margin-left:auto;" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-group"><label class="form-label">Gateway</label><select class="form-input"><option>SSLCommerz</option><option>ShurjoPay</option><option>SSLC</option><option>AmarPay</option></select></div>
+            <div class="form-group"><label class="form-label">Store ID</label><input class="form-input" value="nexora@ssl" /></div>
+            <div class="form-group"><label class="form-label">Store Password</label><input class="form-input" value="●●●●●●●●●●●●" /></div>
+            <div style="display:flex;justify-content:flex-end;"><button class="btn btn-primary" style="font-size:12px;" onclick="toast('✅','Card gateway saved!','success')">Save Card Settings</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header" style="background:linear-gradient(135deg,#374151,#1f2937);padding:16px 20px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:44px;height:44px;background:rgba(255,255,255,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;">🏠</div>
+              <div><div class="card-title" style="color:#fff;">Cash on Delivery</div><div style="font-size:11px;color:rgba(255,255,255,.8);">Pay when received</div></div>
+              <div class="toggle on" style="margin-left:auto;" onclick="this.classList.toggle('on')"></div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-group"><label class="form-label">COD Fee</label><input class="form-input" type="number" value="30" placeholder="৳ extra charge for COD" /></div>
+            <div class="form-group"><label class="form-label">Max Order Value for COD</label><input class="form-input" type="number" value="50000" /></div>
+            <div class="form-group"><label class="form-label">Available Zones</label><select class="form-input"><option>All Zones</option><option>Dhaka Only</option><option>Dhaka + Chattogram</option></select></div>
+            <div style="display:flex;justify-content:flex-end;"><button class="btn btn-primary" style="font-size:12px;" onclick="toast('✅','COD settings saved!','success')">Save COD Settings</button></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
 
   </div><!-- end .content -->
 </div><!-- end .main -->
@@ -1851,6 +2876,22 @@
   const d = new Date();
   document.getElementById('topDate').textContent = d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
 
+  // Load admin name from session
+  (function() {
+    var s = localStorage.getItem('nx_session');
+    if (!s) return;
+    try {
+      var sess = JSON.parse(s);
+      var n = sess.name || 'Admin';
+      var els = ['profileNameTop','profileNameMenu','sidebarName','dashWelcome'];
+      document.getElementById('profileNameTop') && (document.getElementById('profileNameTop').textContent = n);
+      document.getElementById('profileNameMenu') && (document.getElementById('profileNameMenu').textContent = n);
+      document.getElementById('sidebarName') && (document.getElementById('sidebarName').textContent = n);
+      document.getElementById('dashWelcome') && (document.getElementById('dashWelcome').textContent = 'Welcome back, ' + n + ' 👋');
+      document.getElementById('profileEmailMenu') && (document.getElementById('profileEmailMenu').textContent = sess.email || 'admin@nexora.com');
+    } catch(e) {}
+  })();
+
   // ── Page switching ──
   function showPage(name, el) {
     document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
@@ -2044,7 +3085,11 @@
 
   // ── Logout ──
   function logout() {
-    if (confirm('Sign out of the admin panel?')) { toast('🚪','Signing out...',''); setTimeout(()=>{ window.location.href='login.html'; },1200); }
+    if (confirm('Sign out of the admin panel?')) {
+      localStorage.removeItem('nx_session');
+      toast('🚪','Signing out...','');
+      setTimeout(() => { window.location.href = 'login.html'; }, 1000);
+    }
   }
 
   // ── Close notif on outside click ──
@@ -2056,6 +3101,23 @@
   // ══════════════════════════════════════════
   // RECENT ORDERS SEARCH (dashboard widget)
   // ══════════════════════════════════════════
+  // Generic table search filter used by Categories, Inventory, Coupons
+  function filterTable(tableId, q) {
+    const term = q.trim().toLowerCase();
+    const rows = document.querySelectorAll('#' + tableId + ' tbody tr');
+    rows.forEach(row => {
+      row.style.display = (!term || row.textContent.toLowerCase().includes(term)) ? '' : 'none';
+    });
+  }
+  function filterTableByCol(tableId, colIndex, val) {
+    const rows = document.querySelectorAll('#' + tableId + ' tbody tr');
+    rows.forEach(row => {
+      const cell = row.cells[colIndex];
+      const text = cell ? cell.textContent.trim() : '';
+      row.style.display = (!val || text.includes(val)) ? '' : 'none';
+    });
+  }
+
   function filterDashOrders(q) {
     const term = q.trim().toLowerCase();
     const rows = document.querySelectorAll('#dashOrdersBody tr');
@@ -2727,6 +3789,644 @@
     if (su)  su.textContent  = displayName;
     if (sr)  sr.textContent  = adminProfile.role;
   }
+</script>
+
+<!-- ══ PRODUCT CRAWLER JS ══ -->
+<script>
+(function () {
+  const API = 'http://localhost:5000/api';
+  let crawlHistory = [];
+  let crawledCategories = [];
+
+  // Load categories into dropdown when crawler page opens
+  async function loadCrawlCategories() {
+    if (crawledCategories.length) return;
+    try {
+      const r = await fetch(API + '/categories');
+      const d = await r.json();
+      if (d.success) {
+        crawledCategories = d.categories;
+        const sel = document.getElementById('crawlCategory');
+        if (!sel) return;
+        sel.innerHTML = '<option value="">Select category...</option>';
+        d.categories.forEach(c => {
+          sel.innerHTML += `<option value="${c._id}">${c.icon} ${c.name}</option>`;
+        });
+      }
+    } catch {}
+  }
+
+  window.runCrawler = async function () {
+    const url = document.getElementById('crawlUrl').value.trim();
+    if (!url || !url.startsWith('http')) { toast('⚠️', 'Enter a valid URL starting with http', 'error'); return; }
+
+    const btn = document.getElementById('crawlBtn');
+    const btnText = document.getElementById('crawlBtnText');
+    btn.disabled = true;
+    btnText.textContent = '⏳ Crawling…';
+
+    try {
+      const token = localStorage.getItem('nx_token');
+      const res = await fetch(API + '/crawler', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({ url }),
+      });
+      const json = await res.json();
+
+      if (!json.success) { toast('❌', json.message || 'Crawl failed', 'error'); return; }
+
+      const d = json.data;
+      document.getElementById('crawlName').value    = d.name || '';
+      document.getElementById('crawlDesc').value    = d.description || '';
+      document.getElementById('crawlBrand').value   = d.brand || '';
+      document.getElementById('crawlPrice').value   = d.price ? d.price.toString().replace(/[^0-9.]/g,'') : '';
+      document.getElementById('crawlDiscount').value = '';
+      document.getElementById('crawlThumb').value   = d.images[0] || '';
+      document.getElementById('crawlSourceLink').textContent = url;
+      document.getElementById('crawlSourceLink').href = url;
+
+      // Images grid
+      const grid = document.getElementById('crawlImgGrid');
+      grid.innerHTML = '';
+      document.getElementById('crawlImgCount').textContent = d.images.length + ' image' + (d.images.length !== 1 ? 's' : '') + ' found';
+      d.images.forEach((img, i) => {
+        const div = document.createElement('div');
+        div.style = 'position:relative;cursor:pointer;border-radius:8px;overflow:hidden;border:2px solid ' + (i === 0 ? 'var(--primary)' : 'var(--border)') + ';aspect-ratio:1;';
+        div.innerHTML = `<img src="${img}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.style.display='none'" />`;
+        div.onclick = function () {
+          document.querySelectorAll('#crawlImgGrid > div').forEach(el => el.style.borderColor = 'var(--border)');
+          div.style.borderColor = 'var(--primary)';
+          document.getElementById('crawlThumb').value = img;
+        };
+        grid.appendChild(div);
+      });
+
+      // Show/hide sections
+      document.getElementById('crawlResults').style.display = 'block';
+      document.getElementById('crawlEmpty').style.display   = 'none';
+
+      // Add to history
+      crawlHistory.unshift({ url, name: d.name, time: new Date().toLocaleTimeString() });
+      if (crawlHistory.length > 10) crawlHistory.pop();
+      renderHistory();
+
+      await loadCrawlCategories();
+      toast('✅', 'Crawled successfully! ' + d.images.length + ' images found.', 'success');
+    } catch (err) {
+      toast('❌', 'Server error: ' + err.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btnText.textContent = '🕷️ Crawl URL';
+    }
+  };
+
+  window.resetCrawler = function () {
+    document.getElementById('crawlUrl').value = '';
+    document.getElementById('crawlResults').style.display = 'none';
+    document.getElementById('crawlEmpty').style.display   = 'block';
+    document.getElementById('crawlUrl').focus();
+  };
+
+  window.saveProduct = async function () {
+    const name     = document.getElementById('crawlName').value.trim();
+    const price    = parseFloat(document.getElementById('crawlPrice').value);
+    const category = document.getElementById('crawlCategory').value;
+    const thumb    = document.getElementById('crawlThumb').value.trim();
+
+    if (!name)     { toast('⚠️', 'Product name is required', 'error'); return; }
+    if (!price)    { toast('⚠️', 'Price is required', 'error'); return; }
+    if (!category) { toast('⚠️', 'Select a category', 'error'); return; }
+
+    const token = localStorage.getItem('nx_token');
+    if (!token) {
+      toast('⚠️', 'Session expired — please log out and log in again to get API access', 'error');
+      return;
+    }
+
+    const slug = name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'') + '-' + Date.now();
+
+    try {
+      const res = await fetch(API + '/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({
+          name, slug, price,
+          discount:    parseInt(document.getElementById('crawlDiscount').value) || 0,
+          description: document.getElementById('crawlDesc').value,
+          brand:       document.getElementById('crawlBrand').value,
+          stock:       parseInt(document.getElementById('crawlStock').value) || 100,
+          category, thumbnail: thumb || '📦',
+          images:      [thumb].filter(Boolean),
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast('✅', '"' + name + '" saved as product!', 'success');
+        resetCrawler();
+      } else {
+        toast('❌', data.message || 'Save failed', 'error');
+      }
+    } catch (err) {
+      toast('❌', 'Save failed: ' + err.message, 'error');
+    }
+  };
+
+  function renderHistory() {
+    const card = document.getElementById('crawlHistoryCard');
+    const list = document.getElementById('crawlHistoryList');
+    if (!crawlHistory.length) { card.style.display = 'none'; return; }
+    card.style.display = 'block';
+    list.innerHTML = crawlHistory.map(h => `
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+        <div>
+          <div style="font-weight:600;font-size:13px;">${h.name || 'Untitled'}</div>
+          <div style="font-size:11px;color:var(--text-muted);word-break:break-all;">${h.url}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+          <span style="font-size:11px;color:var(--text-muted);">${h.time}</span>
+          <button class="action-btn view" onclick="document.getElementById('crawlUrl').value='${h.url}';runCrawler()">Re-crawl</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Load categories when crawler page is first opened
+  const _showPage = window.showPage;
+  if (_showPage) {
+    window.showPage = function(id, el) {
+      _showPage(id, el);
+      if (id === 'crawler') { loadCrawlCategories(); document.getElementById('crawlUrl').focus(); }
+    };
+  }
+})();
+</script>
+
+<!-- ══ CATEGORIES PAGE JS ══ -->
+<script>
+(function(){
+  const API = 'http://localhost:5000/api';
+  let allCats = [];
+
+  async function loadCategories() {
+    const token = localStorage.getItem('nx_token');
+    try {
+      const res  = await fetch(API + '/categories');
+      const data = await res.json();
+      if (!data.success) throw new Error();
+      allCats = data.categories;
+      renderCatTable(allCats);
+      document.getElementById('catSubtitle').textContent = `${allCats.length} categories in database`;
+      document.getElementById('catCountBadge').textContent = allCats.length + ' total';
+    } catch {
+      document.getElementById('catTableBody').innerHTML =
+        '<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted);">⚠️ Could not load categories — make sure server is running</td></tr>';
+    }
+  }
+
+  function renderCatTable(cats) {
+    const body = document.getElementById('catTableBody');
+    if (!cats.length) {
+      body.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted);">No categories found</td></tr>';
+      return;
+    }
+    body.innerHTML = cats.map((c, i) => `
+      <tr data-id="${c._id}">
+        <td style="color:var(--text-muted);font-size:13px;">${i + 1}</td>
+        <td>
+          <div class="order-product">
+            <div class="product-thumb" style="font-size:22px;width:38px;height:38px;">${c.icon || '📦'}</div>
+            <div>
+              <div class="product-thumb-name">${c.name}</div>
+              <div class="product-thumb-sub" style="font-size:11px;color:var(--text-muted);">${c.description || ''}</div>
+            </div>
+          </div>
+        </td>
+        <td style="color:var(--text-muted);font-size:12px;">/${c.slug}</td>
+        <td><span class="badge badge-success">Active</span></td>
+        <td>
+          <div class="action-btns">
+            <button class="action-btn del" onclick="deleteCategory('${c._id}','${c.name}',this)">Delete</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  window.filterCatTable = function(q) {
+    const filtered = allCats.filter(c =>
+      c.name.toLowerCase().includes(q.toLowerCase()) ||
+      c.slug.includes(q.toLowerCase())
+    );
+    renderCatTable(filtered);
+  };
+
+  window.openAddCategoryModal = function() {
+    document.getElementById('addCatModal').style.display = 'flex';
+    document.getElementById('newCatName').focus();
+  };
+
+  window.closeAddCategoryModal = function() {
+    document.getElementById('addCatModal').style.display = 'none';
+    document.getElementById('newCatName').value = '';
+    document.getElementById('newCatIcon').value = '';
+    document.getElementById('newCatDesc').value = '';
+  };
+
+  window.submitAddCategory = async function() {
+    const name = document.getElementById('newCatName').value.trim();
+    const icon = document.getElementById('newCatIcon').value.trim() || '📦';
+    const description = document.getElementById('newCatDesc').value.trim();
+    if (!name) { toast('⚠️', 'Category name is required', 'error'); return; }
+
+    const token = localStorage.getItem('nx_token');
+    if (!token) { toast('⚠️', 'Please log out and log in again', 'error'); return; }
+
+    try {
+      const res  = await fetch(API + '/categories', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({ name, icon, description }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast('✅', `"${name}" category added!`, 'success');
+        closeAddCategoryModal();
+        loadCategories();
+      } else {
+        toast('❌', data.message || 'Failed to add category', 'error');
+      }
+    } catch {
+      toast('❌', 'Server error', 'error');
+    }
+  };
+
+  window.deleteCategory = async function(id, name, btn) {
+    if (!confirm(`Delete category "${name}"? This cannot be undone.`)) return;
+    const token = localStorage.getItem('nx_token');
+    if (!token) { toast('⚠️', 'Please log out and log in again', 'error'); return; }
+    try {
+      const res  = await fetch(`${API}/categories/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': 'Bearer ' + token },
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast('🗑️', `"${name}" deleted`, 'error');
+        btn.closest('tr').remove();
+        allCats = allCats.filter(c => c._id !== id);
+        document.getElementById('catSubtitle').textContent = `${allCats.length} categories in database`;
+      } else {
+        toast('❌', data.message || 'Delete failed', 'error');
+      }
+    } catch {
+      toast('❌', 'Server error', 'error');
+    }
+  };
+
+  // Load when navigating to categories page
+  const _orig = window.showPage;
+  if (_orig) {
+    window.showPage = function(id, el) {
+      _orig(id, el);
+      if (id === 'categories') loadCategories();
+    };
+  }
+  // Also load on DOMContentLoaded if already on categories
+  document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('page-categories')?.classList.contains('active')) loadCategories();
+  });
+})();
+</script>
+
+<!-- ══ CSV IMPORT JS ══ -->
+<script>
+(function(){
+  const API = 'http://localhost:5000/api';
+  let csvRows    = [];
+  let csvHeaders = [];
+  let csvCats    = [];
+
+  const FIELD_MAP = {
+    name:        ['name','product name','title','product title','item','item name','商品名','名称','product title text','info-wrapper-title-text','wrapper-title-text','title-text','product-title','goods name','commodity name'],
+    price:       ['price','cost','amount','mrp','regular price','sale price','unit price','价格','售价','price-value','current price','现价','actual price','item price'],
+    description: ['description','desc','details','about','summary','detail','product description','商品描述','intro'],
+    brand:       ['brand','manufacturer','vendor','make','brand name','品牌','seller'],
+    stock:       ['stock','qty','quantity','inventory','units','stock qty','available','库存'],
+    discount:    ['discount','discount %','discount percent','off','sale','折扣','discount rate'],
+    thumbnail:   ['thumbnail','image','img','image url','photo','picture','main image','product image','img src','product-img src','image src','cover','封面','主图','src','product img'],
+    category:    ['category','cat','type','department','分类','类别','product type','product category'],
+  };
+
+  function guessField(header) {
+    const h = header.toLowerCase().trim();
+    // Exact match
+    for (const [field, aliases] of Object.entries(FIELD_MAP)) {
+      if (aliases.includes(h)) return field;
+    }
+    // Partial match — header contains keyword
+    if (h.includes('title') || h.includes('name') || h.includes('商品')) return 'name';
+    if (h.includes('price') || h.includes('价') || h.includes('cost')) return 'price';
+    if (h.includes('img') || h.includes('image') || h.includes('photo') || h.includes('src') || h.includes('picture')) return 'thumbnail';
+    if (h.includes('desc') || h.includes('detail') || h.includes('about')) return 'description';
+    if (h.includes('brand') || h.includes('maker') || h.includes('vendor')) return 'brand';
+    if (h.includes('stock') || h.includes('qty') || h.includes('quantity') || h.includes('inventory')) return 'stock';
+    if (h.includes('discount') || h.includes('off') || h.includes('sale')) return 'discount';
+    if (h.includes('category') || h.includes('cat') || h.includes('type') || h.includes('department')) return 'category';
+    return '';
+  }
+
+  function parseCSV(text) {
+    const lines = text.trim().split(/\r?\n/);
+    if (lines.length < 2) return { headers: [], rows: [] };
+    const headers = lines[0].split(',').map(h => h.replace(/^"|"$/g,'').trim());
+    const rows = lines.slice(1).map(line => {
+      const vals = [];
+      let inQ = false, cur = '';
+      for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (ch === '"') { inQ = !inQ; }
+        else if (ch === ',' && !inQ) { vals.push(cur.trim()); cur = ''; }
+        else cur += ch;
+      }
+      vals.push(cur.trim());
+      const obj = {};
+      headers.forEach((h, i) => { obj[h] = (vals[i] || '').replace(/^"|"$/g,'').trim(); });
+      return obj;
+    }).filter(r => Object.values(r).some(v => v));
+    return { headers, rows };
+  }
+
+  function renderMapping(headers) {
+    const grid = document.getElementById('csvMappingGrid');
+    grid.innerHTML = headers.map(h => {
+      const guess = guessField(h);
+      return `<div style="background:var(--bg);padding:10px 12px;border-radius:10px;">
+        <div style="font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;">CSV: "${h}"</div>
+        <select class="form-input" style="font-size:12px;padding:6px;" data-csv-col="${h}">
+          <option value="">— skip —</option>
+          ${Object.keys(FIELD_MAP).map(f => `<option value="${f}" ${guess===f?'selected':''}>${f}</option>`).join('')}
+        </select>
+      </div>`;
+    }).join('');
+  }
+
+  function renderPreview(rows, headers) {
+    const showCols = headers.slice(0, 6);
+    document.getElementById('csvPreviewHead').innerHTML = showCols.map(h => `<th>${h}</th>`).join('') + (headers.length > 6 ? `<th>+${headers.length-6} more</th>` : '');
+    document.getElementById('csvPreviewBody').innerHTML = rows.slice(0, 10).map(r =>
+      `<tr>${showCols.map(h => `<td style="font-size:12px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r[h] || ''}</td>`).join('')}${headers.length > 6 ? '<td style="color:var(--text-muted)">...</td>' : ''}</tr>`
+    ).join('');
+    document.getElementById('csvPreviewCount').textContent = `Showing 10 of ${rows.length} rows`;
+  }
+
+  async function loadCsvCategories() {
+    if (csvCats.length) return;
+    try {
+      const r = await fetch(API + '/categories');
+      const d = await r.json();
+      if (!d.success) return;
+      csvCats = d.categories;
+      renderCatPickerList(csvCats);
+    } catch {}
+  }
+
+  function renderCatPickerList(cats) {
+    const list = document.getElementById('catPickerList');
+    if (!list) return;
+    list.innerHTML = cats.length
+      ? cats.map(c => `
+          <div onclick="selectCatPicker('${c._id}','${c.name}','${c.icon || '📦'}')"
+            style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:13px;transition:background .15s;"
+            onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background=''">
+            <span style="font-size:18px;width:24px;text-align:center;">${c.icon || '📦'}</span>
+            <span>${c.name}</span>
+          </div>`).join('')
+      : '<div style="padding:12px;text-align:center;font-size:12px;color:var(--text-muted);">No categories found</div>';
+  }
+
+  window.toggleCatPicker = function() {
+    const dd = document.getElementById('catPickerDropdown');
+    const isOpen = dd.style.display !== 'none';
+    dd.style.display = isOpen ? 'none' : 'block';
+    if (!isOpen) {
+      document.getElementById('catPickerSearch').value = '';
+      renderCatPickerList(csvCats);
+      setTimeout(() => document.getElementById('catPickerSearch').focus(), 50);
+      loadCsvCategories();
+    }
+  };
+
+  window.filterCatPicker = function(q) {
+    const filtered = csvCats.filter(c => c.name.toLowerCase().includes(q.toLowerCase()));
+    renderCatPickerList(filtered);
+  };
+
+  window.selectCatPicker = function(id, name, icon) {
+    document.getElementById('csvDefaultCategory').value = id;
+    document.getElementById('catPickerLabel').textContent = name;
+    document.getElementById('catPickerLabel').style.color = 'var(--text)';
+    document.getElementById('catPickerIcon').textContent = icon;
+    document.getElementById('catPickerDropdown').style.display = 'none';
+  };
+
+  // Close picker when clicking outside
+  document.addEventListener('click', function(e) {
+    const wrap = document.getElementById('catPickerWrap');
+    if (wrap && !wrap.contains(e.target)) {
+      const dd = document.getElementById('catPickerDropdown');
+      if (dd) dd.style.display = 'none';
+    }
+  });
+
+  function processFile(text, fileName) {
+    const { headers, rows } = parseCSV(text);
+    if (!rows.length) { toast('⚠️', 'CSV appears empty or malformed', 'error'); return; }
+
+    csvHeaders = headers;
+    csvRows    = rows;
+
+    document.getElementById('csvFileInfo').textContent = `${fileName} — ${rows.length} rows, ${headers.length} columns`;
+    document.getElementById('csvDropZone').style.display = 'none';
+    document.getElementById('csvMappingWrap').style.display = 'block';
+    renderMapping(headers);
+    renderPreview(rows, headers);
+    loadCsvCategories();
+    toast('✅', `Loaded ${rows.length} rows from ${fileName}`, 'success');
+  }
+
+  window.handleCsvFile = function(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => processFile(e.target.result, file.name);
+    reader.readAsText(file);
+  };
+
+  window.handleCsvDrop = function(e) {
+    e.preventDefault();
+    document.getElementById('csvDropZone').style.borderColor = 'var(--border)';
+    document.getElementById('csvDropZone').style.background  = '';
+    const file = e.dataTransfer.files[0];
+    if (file) handleCsvFile(file);
+  };
+
+  window.resetCsvImport = function() {
+    csvRows = []; csvHeaders = [];
+    document.getElementById('csvDropZone').style.display   = 'block';
+    document.getElementById('csvMappingWrap').style.display = 'none';
+    document.getElementById('csvFileInput').value = '';
+    document.getElementById('csvImportStatus').textContent = '';
+  };
+
+  window.runCsvImport = async function() {
+    const token = localStorage.getItem('nx_token');
+    if (!token) { toast('⚠️', 'Please log out and log in again to get API access', 'error'); return; }
+
+    // Build mapping from selects
+    const mapping = {};
+    document.querySelectorAll('#csvMappingGrid select[data-csv-col]').forEach(sel => {
+      if (sel.value) mapping[sel.dataset.csvCol] = sel.value;
+    });
+
+    const defaultCat = document.getElementById('csvDefaultCategory').value;
+    if (!defaultCat && !Object.values(mapping).includes('category')) {
+      toast('⚠️', 'Select a default category or map a category column', 'error'); return;
+    }
+
+    // Find category IDs by name
+    function findCatId(name) {
+      if (!name) return defaultCat;
+      const found = csvCats.find(c => c.name.toLowerCase() === name.toLowerCase() || c.slug === name.toLowerCase());
+      return found ? found._id : defaultCat;
+    }
+
+    // Map rows to product objects
+    const products = csvRows.map(row => {
+      const p = { category: defaultCat };
+      for (const [csvCol, field] of Object.entries(mapping)) {
+        const val = row[csvCol];
+        if (!val) continue;
+        if (field === 'price' || field === 'stock' || field === 'discount') {
+          p[field] = parseFloat(val.toString().replace(/[^0-9.]/g,'')) || 0;
+        } else if (field === 'category') {
+          p.category = findCatId(val);
+        } else {
+          p[field] = val;
+        }
+      }
+      return p;
+    }).filter(p => p.name && p.price);
+
+    if (!products.length) { toast('⚠️', 'No valid rows found (need name + price)', 'error'); return; }
+
+    const btn = document.getElementById('csvImportBtn');
+    btn.disabled = true;
+    btn.textContent = `⏳ Importing ${products.length} products…`;
+    document.getElementById('csvImportStatus').textContent = '';
+
+    try {
+      const res  = await fetch(API + '/products/bulk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({ products }),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        const msg = `✅ ${data.created} imported, ${data.skipped} skipped`;
+        document.getElementById('csvImportStatus').textContent = msg;
+        toast('✅', msg, 'success');
+        if (data.errors && data.errors.length) console.warn('CSV import errors:', data.errors);
+      } else {
+        toast('❌', data.message || 'Import failed', 'error');
+      }
+    } catch (err) {
+      toast('❌', 'Import failed: ' + err.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '⬆️ Import All Products';
+    }
+  };
+
+  window.downloadCsvTemplate = function() {
+    const header = 'name,price,description,brand,stock,discount,thumbnail,category';
+    const rows = [
+      'Samsung Galaxy A55,34999,A great Android phone,Samsung,50,10,📱,Electronics',
+      'Nike Air Max 270,8499,Premium running shoes,Nike,30,15,👟,Fashion',
+      'Dyson Airwrap,65000,Professional hair styler,Dyson,12,0,🪥,Beauty',
+    ];
+    const csv  = [header, ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = 'nexora_products_template.csv'; a.click();
+    URL.revokeObjectURL(url);
+    toast('⬇️', 'Template downloaded!', 'success');
+  };
+
+  window.switchCrawlTab = function(tab) {
+    const isUrl = tab === 'url';
+    document.getElementById('crawlUrlTab').style.display = isUrl ? 'block' : 'none';
+    document.getElementById('crawlCsvTab').style.display = isUrl ? 'none'  : 'block';
+    document.getElementById('tabUrl').style.background = isUrl ? 'var(--primary)' : 'var(--card-bg)';
+    document.getElementById('tabUrl').style.color      = isUrl ? '#fff' : 'var(--text)';
+    document.getElementById('tabCsv').style.background = isUrl ? 'var(--card-bg)' : 'var(--primary)';
+    document.getElementById('tabCsv').style.color      = isUrl ? 'var(--text)' : '#fff';
+    if (!isUrl) { loadCsvCategories(); }
+  };
+})();
+</script>
+
+<!-- ══ NEXORA API — Dashboard live data ══ -->
+<script>
+(function () {
+  const API = 'http://localhost:5000/api';
+  const token = localStorage.getItem('nx_token');
+
+  function fmt(n) {
+    if (n >= 10000000) return '৳' + (n / 10000000).toFixed(1) + 'Cr';
+    if (n >= 100000)   return '৳' + (n / 100000).toFixed(1) + 'L';
+    if (n >= 1000)     return '৳' + (n / 1000).toFixed(1) + 'K';
+    return '৳' + n.toLocaleString();
+  }
+
+  async function loadDashboard() {
+    if (!token) return;
+    try {
+      const res = await fetch(API + '/admin/dashboard', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res.ok) return;
+      const { stats } = await res.json();
+
+      const rev = document.getElementById('dashRevenue');
+      const ord = document.getElementById('dashOrders');
+      const usr = document.getElementById('dashUsers');
+      const prd = document.getElementById('dashProducts');
+      const rc  = document.getElementById('dashRevenueChange');
+      const oc  = document.getElementById('dashOrdersChange');
+
+      if (rev) rev.textContent = fmt(stats.totalRevenue);
+      if (ord) ord.textContent = stats.totalOrders.toLocaleString();
+      if (usr) usr.textContent = stats.totalUsers.toLocaleString();
+      if (prd) prd.textContent = stats.totalProducts.toLocaleString();
+      if (rc)  { rc.textContent = 'Live data'; rc.className = 'stat-change up'; }
+      if (oc)  { oc.textContent = 'Live data'; oc.className = 'stat-change up'; }
+    } catch (e) {
+      // Server offline — static values remain from HTML
+    }
+  }
+
+  // Run on page load when on dashboard
+  document.addEventListener('DOMContentLoaded', loadDashboard);
+
+  // Also re-load when navigating to dashboard via sidebar
+  const _showPage = window.showPage;
+  window.showPage = function (id, el) {
+    _showPage(id, el);
+    if (id === 'dashboard') loadDashboard();
+  };
+})();
 </script>
 </body>
 </html>
