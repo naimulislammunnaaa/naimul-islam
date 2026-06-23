@@ -986,25 +986,39 @@
     .hbd-emoji { font-size: 22px; }
     .hbd-name { font-size: 9px; color: #555; text-align: center; line-height: 1.2; }
     .hbd-price { font-size: 11px; font-weight: 800; color: var(--primary); }
+    /* ── Image Slideshow Banner ── */
+    .hero-banner { position: relative; overflow: hidden; border-radius: 16px; }
+    .banner-slider { position: relative; width: 100%; height: 200px; }
     .banner-slide {
-      background: linear-gradient(135deg, #ff3c5f 0%, #ff6b35 100%);
-      flex: 1;
-      min-height: unset;
-      position: relative;
-      display: flex;
-      align-items: center;
-      padding: 16px 20px;
+      position: absolute; inset: 0;
+      display: flex; align-items: center;
+      padding: 24px 28px;
       overflow: hidden;
+      opacity: 0;
+      transition: opacity .7s ease;
+      pointer-events: none;
+    }
+    .banner-slide.active { opacity: 1; pointer-events: auto; }
+    .banner-slide-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      background-color: #ff6b35;
+      transition: transform 8s linear;
+    }
+    .banner-slide.active .banner-slide-bg { transform: scale(1.06); }
+    .banner-slide-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(0,0,0,.58) 0%, rgba(0,0,0,.18) 60%, transparent 100%);
     }
     .banner-slide::before { display: none; }
-    .banner-content { position: relative; z-index: 1; max-width: 420px; }
+    .banner-content { position: relative; z-index: 1; max-width: 420px; color: #fff; }
     .banner-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255,60,95,.2);
-      border: 1px solid rgba(255,60,95,.4);
-      color: #ff6b85;
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.4);
+      color: #fff;
       font-size: 11px;
       font-weight: 600;
       padding: 4px 12px;
@@ -1057,6 +1071,19 @@
       transition: background .2s;
     }
     .btn-outline:hover { background: rgba(255,255,255,.1); }
+    .bpv-card {
+      width: 90px; height: 90px;
+      background: rgba(255,255,255,.18);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,.18);
+      backdrop-filter: blur(4px);
+      transition: transform .3s;
+      font-size: 36px;
+    }
+    .bpv-card img { width:100%;height:100%;object-fit:cover; }
+    .bpv-card:hover { transform: scale(1.07); }
     .banner-visual {
       position: absolute;
       right: -20px; bottom: -20px;
@@ -2767,24 +2794,107 @@
 
               <!-- Banner (left) -->
               <div class="hero-banner">
-                <div class="banner-slide">
-                  <div class="banner-visual">🛍️</div>
-                  <div class="banner-content">
-                    <div class="banner-badge" data-i18n="banner.badge">⚡ Mega Sale — Up to 90% Off</div>
-                    <h1 class="banner-title" data-i18n-html="banner.title">Shop <span>Smarter,</span><br/>Save Bigger.</h1>
-                    <p class="banner-sub" data-i18n="banner.sub">Join millions of shoppers getting the best deals through group buying, flash sales, and exclusive offers.</p>
-                    <div class="banner-btns">
-                      <button class="btn-primary" data-i18n="banner.shopnow" onclick="showToast('🛍️', 'Welcome to NEXORA deals!')">Shop Now</button>
-                      <button class="btn-outline" data-i18n="banner.groupbuy" onclick="showToast('👥', 'Join a group buy!')">Join Group Buy</button>
+                <div class="banner-slider" id="bannerSlider">
+
+                  <!-- Slide 1: Bright Office -->
+                  <div class="banner-slide active" id="bslide0">
+                    <div class="banner-slide-bg" style="background-image:url('https://tse1.mm.bing.net/th/id/OIP.sCqp_lEWxkfayrfSnPiA6wHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3');background-color:#3a7bd5;"></div>
+                    <div class="banner-slide-overlay"></div>
+                    <div class="banner-content">
+                      <div class="banner-badge">⚡ Mega Sale — Up to 90% Off</div>
+                      <h1 class="banner-title">Shop <span>Smarter,</span><br/>Save Bigger.</h1>
+                      <p class="banner-sub">Millions of products. Best prices. Group deals every day.</p>
+                      <div class="banner-btns">
+                        <button class="btn-primary" onclick="document.getElementById('productsGrid').scrollIntoView({behavior:'smooth'})">Shop Now</button>
+                        <button class="btn-outline" onclick="showToast('👥','Join a group buy!')">Join Group Buy</button>
+                      </div>
                     </div>
                   </div>
+
+                  <!-- Slide 2: Office -->
+                  <div class="banner-slide" id="bslide1">
+                    <div class="banner-slide-bg" style="background-image:url('https://static.startuptalky.com/2022/03/Kovai.co-office-StartupTalky.jpg');background-color:#5b7ea6;"></div>
+                    <div class="banner-slide-overlay"></div>
+                    <div class="banner-content">
+                      <div class="banner-badge">🏭 Verified Suppliers</div>
+                      <h1 class="banner-title">Trusted <span>Factories,</span><br/>Real Prices.</h1>
+                      <p class="banner-sub">Source directly from verified manufacturers across Asia.</p>
+                      <div class="banner-btns">
+                        <button class="btn-primary" onclick="document.getElementById('productsGrid').scrollIntoView({behavior:'smooth'})">Explore Now</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Slide 3: Warehouse -->
+                  <div class="banner-slide" id="bslide2">
+                    <div class="banner-slide-bg" style="background-image:url('https://cjdropship.com/wp-content/uploads/2020/08/timg-1.jpeg');background-color:#1a3a5c;"></div>
+                    <div class="banner-slide-overlay"></div>
+                    <div class="banner-content">
+                      <div class="banner-badge">📦 Massive Stock</div>
+                      <h1 class="banner-title">Millions of <span>Products</span><br/>Ready to Ship.</h1>
+                      <p class="banner-sub">Fast delivery from our warehouses straight to your door.</p>
+                      <div class="banner-btns">
+                        <button class="btn-primary" onclick="document.getElementById('productsGrid').scrollIntoView({behavior:'smooth'})">Browse All</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Slide 4: Electronics Store -->
+                  <div class="banner-slide" id="bslide3">
+                    <div class="banner-slide-bg" style="background-image:url('https://img.freepik.com/premium-photo/interior-electronics-store-with-various-appliances-arranged-sale_1168123-25518.jpg');background-color:#2c4a2e;"></div>
+                    <div class="banner-slide-overlay"></div>
+                    <div class="banner-content">
+                      <div class="banner-badge">⚙️ Quality Guaranteed</div>
+                      <h1 class="banner-title">Built with <span>Precision,</span><br/>Sold with Trust.</h1>
+                      <p class="banner-sub">Every product quality-checked before it reaches you.</p>
+                      <div class="banner-btns">
+                        <button class="btn-primary" onclick="document.getElementById('productsGrid').scrollIntoView({behavior:'smooth'})">Shop Quality</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Slide 5: Electronics Manufacturing -->
+                  <div class="banner-slide" id="bslide4">
+                    <div class="banner-slide-bg" style="background-image:url('https://www.avalontec.com/wp-content/uploads/2024/06/electronic_manufacturing_industry_is_growing_fast_573d84ad-679e-4e29-ad3a-497b7cc791b8-800x533.png');background-color:#1a0a00;"></div>
+                    <div class="banner-slide-overlay"></div>
+                    <div class="banner-content">
+                      <div class="banner-badge">📱 New Tech Arrivals</div>
+                      <h1 class="banner-title">Latest <span>Tech</span><br/>Gadgets.</h1>
+                      <p class="banner-sub">Phones, tablets, components — straight from the source.</p>
+                      <div class="banner-btns">
+                        <button class="btn-primary" onclick="document.getElementById('productsGrid').scrollIntoView({behavior:'smooth'})">View Tech</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Slide 6: Circuit Board -->
+                  <div class="banner-slide" id="bslide5">
+                    <div class="banner-slide-bg" style="background-image:url('https://thumbs.dreamstime.com/b/computer-circuit-board-blue-lights-generated-use-ai-311174531.jpg');background-color:#0a0a2e;"></div>
+                    <div class="banner-slide-overlay"></div>
+                    <div class="banner-content">
+                      <div class="banner-badge">💄 Beauty & Fashion</div>
+                      <h1 class="banner-title">Look <span>Amazing,</span><br/>Pay Less.</h1>
+                      <p class="banner-sub">Top beauty brands and fashion trends at unbeatable prices.</p>
+                      <div class="banner-btns">
+                        <button class="btn-primary" onclick="document.getElementById('productsGrid').scrollIntoView({behavior:'smooth'})">Shop Beauty</button>
+                      </div>
+                    </div>
+                  </div>
+
+                </div><!-- /banner-slider -->
+
+                <div class="banner-dots" id="bannerDots">
+                  <div class="dot active" onclick="goSlide(0)"></div>
+                  <div class="dot" onclick="goSlide(1)"></div>
+                  <div class="dot" onclick="goSlide(2)"></div>
+                  <div class="dot" onclick="goSlide(3)"></div>
+                  <div class="dot" onclick="goSlide(4)"></div>
+                  <div class="dot" onclick="goSlide(5)"></div>
                 </div>
-                <div class="banner-dots">
-                  <div class="dot active"></div>
-                  <div class="dot"></div>
-                  <div class="dot"></div>
-                  <div class="dot"></div>
-                </div>
+
+                <!-- Prev / Next arrows -->
+                <button onclick="prevSlide()" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.35);border:none;color:#fff;border-radius:50%;width:28px;height:28px;font-size:14px;cursor:pointer;z-index:10;">‹</button>
+                <button onclick="nextSlide()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.35);border:none;color:#fff;border-radius:50%;width:28px;height:28px;font-size:14px;cursor:pointer;z-index:10;">›</button>
               </div>
 
               <!-- Flash Picks (right) -->
@@ -2794,27 +2904,11 @@
                   <a href="#" class="hbd-link">See all →</a>
                 </div>
                 <div class="hbd-promo">🎟️ Stackable vouchers · Use at checkout for extra savings</div>
-                <div class="hbd-grid">
-                  <div class="hbd-item" onclick="showToast('💻','Xiaomi Pad 6 Pro')">
-                    <div class="hbd-emoji">💻</div>
-                    <div class="hbd-name">Xiaomi Pad 6 Pro</div>
-                    <div class="hbd-price">৳39,999</div>
-                  </div>
-                  <div class="hbd-item" onclick="showToast('📱','Samsung A55 5G')">
-                    <div class="hbd-emoji">📱</div>
-                    <div class="hbd-name">Samsung A55 5G</div>
-                    <div class="hbd-price">৳28,999</div>
-                  </div>
-                  <div class="hbd-item" onclick="showToast('🎧','Sony WH-1000XM5')">
-                    <div class="hbd-emoji">🎧</div>
-                    <div class="hbd-name">Sony WH-1000XM5</div>
-                    <div class="hbd-price">৳14,499</div>
-                  </div>
-                  <div class="hbd-item" onclick="showToast('👟','Nike Air Max 270')">
-                    <div class="hbd-emoji">👟</div>
-                    <div class="hbd-name">Nike Air Max 270</div>
-                    <div class="hbd-price">৳8,499</div>
-                  </div>
+                <div class="hbd-grid" id="flashPicksGrid">
+                  <div class="hbd-item"><div class="hbd-emoji">⏳</div><div class="hbd-name">Loading…</div></div>
+                  <div class="hbd-item"><div class="hbd-emoji">⏳</div><div class="hbd-name">Loading…</div></div>
+                  <div class="hbd-item"><div class="hbd-emoji">⏳</div><div class="hbd-name">Loading…</div></div>
+                  <div class="hbd-item"><div class="hbd-emoji">⏳</div><div class="hbd-name">Loading…</div></div>
                 </div>
               </div>
 
@@ -2825,57 +2919,33 @@
 
               <div class="ts-group">
                 <div class="ts-group-title"><span class="ts-dot" style="background:#00b96b"></span> National Subsidies</div>
-                <div class="ts-products">
-                  <div class="ts-item" onclick="showToast('📷','Sony A7 IV')">
-                    <div class="ts-img">📷</div>
-                    <div class="ts-price-tag">৳89,999</div>
-                  </div>
-                  <div class="ts-item" onclick="showToast('🪑','Wardrobe Set')">
-                    <div class="ts-img">🪑</div>
-                    <div class="ts-price-tag">৳45,999</div>
-                  </div>
+                <div class="ts-products" id="tsNational">
+                  <div class="ts-item"><div class="ts-img">⏳</div></div>
+                  <div class="ts-item"><div class="ts-img">⏳</div></div>
                 </div>
               </div>
 
               <div class="ts-group">
                 <div class="ts-group-title"><span class="ts-dot" style="background:#ff5252"></span> NEXORA Live <span class="ts-badge">HOT</span></div>
-                <div class="ts-products">
-                  <div class="ts-item ts-item-rec" onclick="showToast('👗','Fashion Deal')">
-                    <div class="ts-img">👗</div>
-                    <div class="ts-rec-label">Recommended</div>
-                  </div>
-                  <div class="ts-item ts-item-rec" onclick="showToast('⌚','Smart Watch')">
-                    <div class="ts-img">⌚</div>
-                    <div class="ts-rec-label">Recommended</div>
-                  </div>
+                <div class="ts-products" id="tsLive">
+                  <div class="ts-item ts-item-rec"><div class="ts-img">⏳</div></div>
+                  <div class="ts-item ts-item-rec"><div class="ts-img">⏳</div></div>
                 </div>
               </div>
 
               <div class="ts-group">
                 <div class="ts-group-title"><span class="ts-dot" style="background:#7b2ff7"></span> Mega Subsidies <span class="ts-badge" style="background:#7b2ff7">NEW</span></div>
-                <div class="ts-products">
-                  <div class="ts-item" onclick="showToast('💄','Beauty Set')">
-                    <div class="ts-img">💄</div>
-                    <div class="ts-price-tag">৳3,499</div>
-                  </div>
-                  <div class="ts-item" onclick="showToast('🛋️','Sofa Set')">
-                    <div class="ts-img">🛋️</div>
-                    <div class="ts-price-tag">৳74,999</div>
-                  </div>
+                <div class="ts-products" id="tsMega">
+                  <div class="ts-item"><div class="ts-img">⏳</div></div>
+                  <div class="ts-item"><div class="ts-img">⏳</div></div>
                 </div>
               </div>
 
               <div class="ts-group">
                 <div class="ts-group-title"><span class="ts-dot" style="background:#ff9f1c"></span> Flash Sale <span class="ts-badge" style="background:#ff9f1c">SUPER LOW</span></div>
-                <div class="ts-products">
-                  <div class="ts-item" onclick="showToast('🥤','Protein Whey')">
-                    <div class="ts-img">🥤</div>
-                    <div class="ts-price-tag">৳2,999</div>
-                  </div>
-                  <div class="ts-item" onclick="showToast('🌀','Ceiling Fan')">
-                    <div class="ts-img">🌀</div>
-                    <div class="ts-price-tag">৳5,499</div>
-                  </div>
+                <div class="ts-products" id="tsFlash">
+                  <div class="ts-item"><div class="ts-img">⏳</div></div>
+                  <div class="ts-item"><div class="ts-img">⏳</div></div>
                 </div>
               </div>
 
@@ -2899,43 +2969,13 @@
             </div>
 
             <!-- Product mini grid -->
-            <div class="hero-mini-products">
-              <div class="hmp-card" onclick="showToast('📱','Samsung Galaxy A55')">
-                <div class="hmp-img">📱</div>
-                <div class="hmp-name">Samsung Galaxy A55</div>
-                <div class="hmp-price">৳28,999</div>
-                <span class="hmp-badge">-72%</span>
-              </div>
-              <div class="hmp-card" onclick="showToast('🎧','Sony WH-1000XM5')">
-                <div class="hmp-img">🎧</div>
-                <div class="hmp-name">Sony WH-1000XM5</div>
-                <div class="hmp-price">৳14,499</div>
-                <span class="hmp-badge">-65%</span>
-              </div>
-              <div class="hmp-card" onclick="showToast('👟','Nike Air Max 270')">
-                <div class="hmp-img">👟</div>
-                <div class="hmp-name">Nike Air Max 270</div>
-                <div class="hmp-price">৳8,499</div>
-                <span class="hmp-badge">-80%</span>
-              </div>
-              <div class="hmp-card" onclick="showToast('💻','MacBook Air M3')">
-                <div class="hmp-img">💻</div>
-                <div class="hmp-name">MacBook Air M3</div>
-                <div class="hmp-price">৳1,19,999</div>
-                <span class="hmp-badge hmp-new">NEW</span>
-              </div>
-              <div class="hmp-card" onclick="showToast('⌚','Apple Watch Ultra 2')">
-                <div class="hmp-img">⌚</div>
-                <div class="hmp-name">Apple Watch Ultra 2</div>
-                <div class="hmp-price">৳89,999</div>
-                <span class="hmp-badge hmp-new">NEW</span>
-              </div>
-              <div class="hmp-card" onclick="showToast('🎮','PlayStation 5')">
-                <div class="hmp-img">🎮</div>
-                <div class="hmp-name">PlayStation 5 Slim</div>
-                <div class="hmp-price">৳54,999</div>
-                <span class="hmp-badge hmp-new">NEW</span>
-              </div>
+            <div class="hero-mini-products" id="heroMiniGrid">
+              <div class="hmp-card"><div class="hmp-img">⏳</div><div class="hmp-name">Loading…</div></div>
+              <div class="hmp-card"><div class="hmp-img">⏳</div><div class="hmp-name">Loading…</div></div>
+              <div class="hmp-card"><div class="hmp-img">⏳</div><div class="hmp-name">Loading…</div></div>
+              <div class="hmp-card"><div class="hmp-img">⏳</div><div class="hmp-name">Loading…</div></div>
+              <div class="hmp-card"><div class="hmp-img">⏳</div><div class="hmp-name">Loading…</div></div>
+              <div class="hmp-card"><div class="hmp-img">⏳</div><div class="hmp-name">Loading…</div></div>
             </div>
 
           </div>
@@ -2990,76 +3030,393 @@
       </div>
     </section>
 
-    <!-- ALL PRODUCTS -->
+    <!-- Static product data (fallback when server is offline) -->
+    <script src="products.js"></script>
+
+    <!-- ALL PRODUCTS — loaded dynamically from MongoDB -->
     <section class="section" style="padding-top:10px;">
       <div class="container">
-        <div class="products-grid">
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-72%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>📱</div><div class="product-body"><div class="product-name">Samsung Galaxy A55 5G 8GB RAM 256GB</div><div class="product-pricing"><span class="product-price">৳28,999</span><span class="product-price-old">৳99,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(4,821)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-65%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🎧</div><div class="product-body"><div class="product-name">Sony WH-1000XM5 Noise Cancelling Headphones</div><div class="product-pricing"><span class="product-price">৳14,499</span><span class="product-price-old">৳41,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(2,934)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge hot">-80%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>⌚</div><div class="product-body"><div class="product-name">Apple Watch SE 2nd Gen GPS 44mm Aluminium</div><div class="product-pricing"><span class="product-price">৳19,999</span><span class="product-price-old">৳99,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(7,102)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge new">NEW</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>💻</div><div class="product-body"><div class="product-name">Xiaomi Pad 6 Pro Tablet 11" 8GB+256GB WiFi</div><div class="product-pricing"><span class="product-price">৳39,999</span><span class="product-price-old">৳69,999</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(1,203)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-58%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🎮</div><div class="product-body"><div class="product-name">PlayStation 5 DualSense Wireless Controller</div><div class="product-pricing"><span class="product-price">৳6,499</span><span class="product-price-old">৳15,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(5,678)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-17%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>📷</div><div class="product-body"><div class="product-name">Sony A7 IV Full-Frame Mirrorless Camera</div><div class="product-pricing"><span class="product-price">৳2,49,999</span><span class="product-price-old">৳2,99,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(892)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge new">NEW</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>👟</div><div class="product-body"><div class="product-name">Nike Air Max 270 React Men's Running Shoe</div><div class="product-pricing"><span class="product-price">৳8,499</span><span class="product-price-old">৳14,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(3,241)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-50%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>👗</div><div class="product-body"><div class="product-name">Zara Summer Floral Dress Collection 2025</div><div class="product-pricing"><span class="product-price">৳3,999</span><span class="product-price-old">৳7,999</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(1,540)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-54%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>☕</div><div class="product-body"><div class="product-name">Nespresso Vertuo Plus Coffee Espresso Machine</div><div class="product-pricing"><span class="product-price">৳9,999</span><span class="product-price-old">৳22,000</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(1,890)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge hot">HOT</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🎒</div><div class="product-body"><div class="product-name">Samsonite Omni PC Hardside Luggage 28"</div><div class="product-pricing"><span class="product-price">৳12,999</span><span class="product-price-old">৳28,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(4,521)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-63%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🌸</div><div class="product-body"><div class="product-name">MAANGE 15-Piece Rose Gold Makeup Brush Set</div><div class="product-pricing"><span class="product-price">৳1,299</span><span class="product-price-old">৳3,500</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(8,102)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-70%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🪑</div><div class="product-body"><div class="product-name">Ergonomic Gaming Chair with Lumbar Support</div><div class="product-pricing"><span class="product-price">৳14,999</span><span class="product-price-old">৳49,999</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(2,345)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-56%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🏋️</div><div class="product-body"><div class="product-name">Adjustable Dumbbell Set 5–52.5 lbs Select Tech</div><div class="product-pricing"><span class="product-price">৳18,499</span><span class="product-price-old">৳42,000</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(6,789)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge new">NEW</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>📖</div><div class="product-body"><div class="product-name">Kindle Paperwhite 6.8" Signature Edition 32GB</div><div class="product-pricing"><span class="product-price">৳14,999</span><span class="product-price-old">৳24,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(11,234)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge hot">HOT</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🌡️</div><div class="product-body"><div class="product-name">Xiaomi Smart Air Purifier 4 Pro HEPA 500m³/h</div><div class="product-pricing"><span class="product-price">৳11,999</span><span class="product-price-old">৳28,999</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(3,102)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-54%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🎨</div><div class="product-body"><div class="product-name">Wacom Intuos Pro Medium Graphics Tablet</div><div class="product-pricing"><span class="product-price">৳22,999</span><span class="product-price-old">৳49,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(987)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-42%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🛋️</div><div class="product-body"><div class="product-name">Premium L-Shape Sofa Set with Ottoman</div><div class="product-pricing"><span class="product-price">৳74,999</span><span class="product-price-old">৳1,29,999</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(432)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-50%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>💄</div><div class="product-body"><div class="product-name">Beauty Essentials Skincare & Makeup Kit</div><div class="product-pricing"><span class="product-price">৳3,499</span><span class="product-price-old">৳6,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(2,109)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-57%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>📚</div><div class="product-body"><div class="product-name">Bestseller Book Bundle — 10 Books Pack</div><div class="product-pricing"><span class="product-price">৳1,299</span><span class="product-price-old">৳2,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(5,320)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-50%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🧸</div><div class="product-body"><div class="product-name">Kids STEM Learning Toy Set Ages 4–10</div><div class="product-pricing"><span class="product-price">৳2,499</span><span class="product-price-old">৳4,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(3,678)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-50%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>⚽</div><div class="product-body"><div class="product-name">Adidas Pro Match Football Size 5</div><div class="product-pricing"><span class="product-price">৳1,999</span><span class="product-price-old">৳3,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(1,234)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-22%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🖥️</div><div class="product-body"><div class="product-name">Samsung 4K UHD Monitor 32" 144Hz</div><div class="product-pricing"><span class="product-price">৳34,999</span><span class="product-price-old">৳44,999</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(876)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-40%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🌱</div><div class="product-body"><div class="product-name">Indoor Plant Bundle — 5 Low-Maintenance Plants</div><div class="product-pricing"><span class="product-price">৳899</span><span class="product-price-old">৳1,499</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(654)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-44%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🚗</div><div class="product-body"><div class="product-name">Car Dash Cam 4K Night Vision WiFi GPS</div><div class="product-pricing"><span class="product-price">৳4,999</span><span class="product-price-old">৳8,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(2,341)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-46%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🍳</div><div class="product-body"><div class="product-name">Instant Pot Duo 7-in-1 Electric Pressure Cooker 8qt</div><div class="product-pricing"><span class="product-price">৳7,499</span><span class="product-price-old">৳13,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(15,432)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-35%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🎸</div><div class="product-body"><div class="product-name">Yamaha F310 Acoustic Guitar Full Size</div><div class="product-pricing"><span class="product-price">৳9,999</span><span class="product-price-old">৳15,499</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(1,876)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge hot">HOT</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🧴</div><div class="product-body"><div class="product-name">Dyson Airwrap Complete Styler Multi-Tool</div><div class="product-pricing"><span class="product-price">৳29,999</span><span class="product-price-old">৳74,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(9,023)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-48%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>💊</div><div class="product-body"><div class="product-name">Vitamin C + Zinc Immune Support 180 Tablets</div><div class="product-pricing"><span class="product-price">৳799</span><span class="product-price-old">৳1,499</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(7,432)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-60%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🐾</div><div class="product-body"><div class="product-name">Smart Automatic Pet Feeder WiFi App Control</div><div class="product-pricing"><span class="product-price">৳3,999</span><span class="product-price-old">৳9,999</span></div><div class="product-rating"><span class="stars">★★★★☆</span><span>(1,203)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge new">NEW</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>✈️</div><div class="product-body"><div class="product-name">DJI Mini 4 Pro Drone 4K/60fps HDR Video</div><div class="product-pricing"><span class="product-price">৳69,999</span><span class="product-price-old">৳1,49,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(3,456)</span></div></div></div>
-
-          <div class="product-card"><div class="product-img"><span class="product-badge">-38%</span><button class="wishlist-btn" onclick="toggleWish(this)">♡</button>🎵</div><div class="product-body"><div class="product-name">JBL Charge 5 Portable Bluetooth Speaker</div><div class="product-pricing"><span class="product-price">৳9,499</span><span class="product-price-old">৳14,999</span></div><div class="product-rating"><span class="stars">★★★★★</span><span>(8,901)</span></div></div></div>
-
+        <!-- Filter bar -->
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px;">
+          <input id="productSearch" placeholder="🔍 Search products..." style="padding:9px 16px;border:1.5px solid var(--border);border-radius:10px;background:var(--card-bg);color:var(--text);font-size:13px;min-width:200px;outline:none;" oninput="loadProducts()" />
+          <select id="productSort" onchange="loadProducts()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:10px;background:var(--card-bg);color:var(--text);font-size:13px;outline:none;">
+            <option value="newest">Newest First</option>
+            <option value="popular">Most Popular</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating">Top Rated</option>
+          </select>
+          <select id="productCategory" onchange="loadProducts()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:10px;background:var(--card-bg);color:var(--text);font-size:13px;outline:none;">
+            <option value="">All Categories</option>
+          </select>
+          <span id="productCount" style="font-size:13px;color:var(--text-muted);margin-left:auto;"></span>
         </div>
+
+        <!-- Products grid -->
+        <div class="products-grid" id="productsGrid">
+          <!-- skeleton placeholders -->
+          <div class="product-card" style="animation:pulse 1.2s infinite alternate;" id="skelLoader">
+            <div class="product-img" style="background:var(--border);border-radius:12px;height:180px;"></div>
+            <div class="product-body">
+              <div style="height:14px;background:var(--border);border-radius:6px;margin-bottom:8px;"></div>
+              <div style="height:14px;background:var(--border);border-radius:6px;width:60%;"></div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
+
+    <script>
+    (function(){
+      const API = 'http://localhost:5000/api';
+      let isLoading = false;
+
+      // Load categories into filter dropdown
+      fetch(API + '/categories').then(r => r.json()).then(d => {
+        if (!d.success) return;
+        const sel = document.getElementById('productCategory');
+        d.categories.forEach(c => {
+          sel.innerHTML += `<option value="${c._id}">${c.icon} ${c.name}</option>`;
+        });
+      }).catch(() => {
+        // Fallback: build category list from static PRODUCTS
+        if (typeof PRODUCTS === 'undefined') return;
+        const sel = document.getElementById('productCategory');
+        const cats = [...new Set(PRODUCTS.map(p => p.category))];
+        const icons = { Electronics:'📱', Fashion:'👗', Home:'🏠', Beauty:'💄', Sports:'⚽', Grocery:'🛒', Automotive:'🚗', Kids:'🧸', Books:'📚', Gaming:'🎮' };
+        cats.forEach(c => {
+          const icon = icons[c] || '🏷️';
+          sel.innerHTML += `<option value="${c}">${icon} ${c}</option>`;
+        });
+      });
+
+      function stars(rating) {
+        const full = Math.round(rating || 0);
+        return '★'.repeat(full) + '☆'.repeat(5 - full);
+      }
+
+      function productCard(p) {
+        const discount = p.discount || (p.salePrice && p.price > p.salePrice ? Math.round((1 - p.salePrice / p.price) * 100) : 0);
+        const price    = p.salePrice || (discount ? Math.round(p.price * (1 - discount / 100)) : p.price);
+        const badge    = p.isFlashDeal ? '<span class="product-badge hot">⚡ FLASH</span>'
+                       : discount > 0  ? `<span class="product-badge">-${discount}%</span>`
+                       : p.isFeatured  ? '<span class="product-badge new">NEW</span>'
+                       : '';
+        const thumb = p.thumbnail && p.thumbnail.startsWith('http')
+          ? `<img src="${p.thumbnail}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" loading="lazy" onerror="this.style.display='none';this.nextSibling.style.display='block'" /><span style="display:none;font-size:60px;">📦</span>`
+          : `<span style="font-size:60px;">${p.thumbnail || '📦'}</span>`;
+
+        return `<div class="product-card" data-id="${p._id}" style="cursor:pointer;">
+          <div class="product-img">${badge}<button class="wishlist-btn" onclick="event.stopPropagation();toggleWish(this)">♡</button>${thumb}</div>
+          <div class="product-body">
+            <div class="product-name">${p.name}</div>
+            <div class="product-pricing">
+              <span class="product-price">৳${Number(price).toLocaleString()}</span>
+              ${discount > 0 ? `<span class="product-price-old">৳${Number(p.price).toLocaleString()}</span>` : ''}
+            </div>
+            <div class="product-rating">
+              <span class="stars" style="color:#f59e0b;">${stars(p.rating)}</span>
+              <span>(${p.reviewCount || 0})</span>
+            </div>
+          </div>
+        </div>`;
+      }
+
+      window.loadProducts = async function() {
+        if (isLoading) return;
+        isLoading = true;
+
+        const search   = (document.getElementById('productSearch')?.value || '').trim();
+        const sort     = document.getElementById('productSort')?.value || 'newest';
+        const category = document.getElementById('productCategory')?.value || '';
+        const grid     = document.getElementById('productsGrid');
+
+        grid.innerHTML = `<div style="text-align:center;padding:48px;grid-column:1/-1;color:var(--text-muted);">
+          <div style="font-size:32px;margin-bottom:10px;">⏳</div>Loading products…
+        </div>`;
+
+        try {
+          const params = new URLSearchParams({ sort, limit: 9999, page: 1 });
+          if (search)   params.set('search', search);
+          if (category) params.set('category', category);
+
+          const res  = await fetch(`${API}/products?${params}`);
+          const data = await res.json();
+          if (!data.success) throw new Error(data.message);
+
+          const count = document.getElementById('productCount');
+          if (count) count.textContent = `${data.total.toLocaleString()} products`;
+
+          grid.innerHTML = data.products.length
+            ? data.products.map(productCard).join('')
+            : `<div style="text-align:center;padding:60px;grid-column:1/-1;color:var(--text-muted);">
+                <div style="font-size:48px;margin-bottom:12px;">🔍</div>
+                No products found
+              </div>`;
+
+        } catch (err) {
+          if (typeof PRODUCTS !== 'undefined' && PRODUCTS.length) {
+            let list = PRODUCTS.map(p => ({
+              _id: 'static-' + p.id,
+              name: p.name,
+              thumbnail: p.emoji,
+              price: p.price,
+              salePrice: p.salePrice,
+              discount: p.salePrice ? Math.round((1 - p.salePrice / p.price) * 100) : 0,
+              isFlashDeal: !!(p.tags && p.tags.includes('flash')),
+              isFeatured: !!(p.tags && p.tags.includes('featured')),
+              rating: p.rating,
+              reviewCount: p.reviews,
+            }));
+            if (search) list = list.filter(p => p.name.toLowerCase().includes(search.toLowerCase()));
+            if (category) list = list.filter(p => p.name.toLowerCase().includes(category.toLowerCase()) || (p.category||'').toLowerCase().includes(category.toLowerCase()));
+            if (sort === 'price-asc')  list.sort((a, b) => (a.salePrice||a.price) - (b.salePrice||b.price));
+            else if (sort === 'price-desc') list.sort((a, b) => (b.salePrice||b.price) - (a.salePrice||a.price));
+            else if (sort === 'popular') list.sort((a, b) => (b.reviewCount||0) - (a.reviewCount||0));
+            else if (sort === 'rating')  list.sort((a, b) => (b.rating||0) - (a.rating||0));
+            const count = document.getElementById('productCount');
+            if (count) count.textContent = `${list.length.toLocaleString()} products`;
+            grid.innerHTML = list.length
+              ? list.map(productCard).join('')
+              : `<div style="text-align:center;padding:60px;grid-column:1/-1;color:var(--text-muted);">
+                  <div style="font-size:48px;margin-bottom:12px;">🔍</div>No products found
+                </div>`;
+          } else {
+            grid.innerHTML = `<div style="text-align:center;padding:60px;grid-column:1/-1;">
+              <div style="font-size:48px;margin-bottom:12px;">⚠️</div>
+              <div style="font-weight:700;margin-bottom:6px;">Could not load products</div>
+              <div style="font-size:13px;color:var(--text-muted);">Make sure the server is running: <code>node index.js</code> in the server folder</div>
+              <button onclick="loadProducts()" style="margin-top:16px;padding:10px 24px;background:var(--primary);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;">🔄 Retry</button>
+            </div>`;
+          }
+        } finally {
+          isLoading = false;
+        }
+      };
+
+      // Debounce search
+      let searchTimer;
+      document.getElementById('productSearch')?.addEventListener('input', function() {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => loadProducts(), 400);
+      });
+
+      // Initial load
+      loadProducts();
+    })();
+    </script>
+
+    <script>
+    /* ── Banner Slideshow ── */
+    (function(){
+      let cur = 0;
+      const total = 6;
+      let timer = null;
+
+      function goSlide(n) {
+        document.getElementById('bslide' + cur)?.classList.remove('active');
+        document.querySelectorAll('#bannerDots .dot')[cur]?.classList.remove('active');
+        cur = (n + total) % total;
+        document.getElementById('bslide' + cur)?.classList.add('active');
+        document.querySelectorAll('#bannerDots .dot')[cur]?.classList.add('active');
+      }
+
+      window.goSlide  = goSlide;
+      window.nextSlide = function() { clearInterval(timer); goSlide(cur + 1); startAuto(); };
+      window.prevSlide = function() { clearInterval(timer); goSlide(cur - 1); startAuto(); };
+
+      function startAuto() { timer = setInterval(() => goSlide(cur + 1), 4000); }
+      startAuto();
+    })();
+    </script>
+
+    <script>
+    /* ── Hero section dynamic products ── */
+    (function(){
+      const API = 'http://localhost:5000/api';
+
+      function thumb(p) {
+        return p.thumbnail && p.thumbnail.startsWith('http')
+          ? `<img src="${p.thumbnail}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" loading="lazy" onerror="this.style.display='none'" />`
+          : `<span style="font-size:40px;">${p.thumbnail || '📦'}</span>`;
+      }
+
+      function fmt(n) { return '৳' + Number(n).toLocaleString(); }
+
+      function discount(p) {
+        return p.discount || (p.salePrice && p.price > p.salePrice ? Math.round((1 - p.salePrice / p.price) * 100) : 0);
+      }
+
+      function price(p) {
+        const d = discount(p);
+        return p.salePrice || (d ? Math.round(p.price * (1 - d / 100)) : p.price);
+      }
+
+      async function loadHeroProducts() {
+        try {
+          /* one call: newest 20 products */
+          const res  = await fetch(`${API}/products?sort=newest&limit=20&page=1`);
+          const data = await res.json();
+          if (!data.success || !data.products.length) return;
+          const all = data.products;
+
+          /* Banner visual — 4 product thumbnails */
+          for (let i = 0; i < 4; i++) {
+            const el = document.getElementById('bpv' + i);
+            if (!el || !all[i]) continue;
+            const p = all[i];
+            if (p.thumbnail && p.thumbnail.startsWith('http')) {
+              el.innerHTML = `<img src="${p.thumbnail}" alt="${p.name}" onerror="this.parentNode.innerHTML='📦'" />`;
+            } else {
+              el.textContent = p.thumbnail || '📦';
+            }
+            el.title = p.name;
+            el.style.cursor = 'pointer';
+            el.onclick = () => location.href = 'product.html?id=' + p._id;
+          }
+
+          /* Flash Picks — first 4 */
+          const fpGrid = document.getElementById('flashPicksGrid');
+          if (fpGrid) {
+            fpGrid.innerHTML = all.slice(0, 4).map(p => `
+              <div class="hbd-item" style="cursor:pointer;" onclick="location.href='product.html?id=${p._id}'">
+                <div class="hbd-emoji" style="height:56px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:8px;">${thumb(p)}</div>
+                <div class="hbd-name">${p.name.slice(0,28)}${p.name.length>28?'…':''}</div>
+                <div class="hbd-price">${fmt(price(p))}</div>
+              </div>`).join('');
+          }
+
+          /* National Subsidies — items 4-5 */
+          const tsN = document.getElementById('tsNational');
+          if (tsN) {
+            tsN.innerHTML = all.slice(4, 6).map(p => `
+              <div class="ts-item" style="cursor:pointer;" onclick="location.href='product.html?id=${p._id}'">
+                <div class="ts-img" style="overflow:hidden;border-radius:8px;">${thumb(p)}</div>
+                <div class="ts-price-tag">${fmt(price(p))}</div>
+              </div>`).join('');
+          }
+
+          /* NEXORA Live — items 6-7 */
+          const tsL = document.getElementById('tsLive');
+          if (tsL) {
+            tsL.innerHTML = all.slice(6, 8).map(p => `
+              <div class="ts-item ts-item-rec" style="cursor:pointer;" onclick="location.href='product.html?id=${p._id}'">
+                <div class="ts-img" style="overflow:hidden;border-radius:8px;">${thumb(p)}</div>
+                <div class="ts-rec-label">Recommended</div>
+              </div>`).join('');
+          }
+
+          /* Mega Subsidies — items 8-9 */
+          const tsM = document.getElementById('tsMega');
+          if (tsM) {
+            tsM.innerHTML = all.slice(8, 10).map(p => `
+              <div class="ts-item" style="cursor:pointer;" onclick="location.href='product.html?id=${p._id}'">
+                <div class="ts-img" style="overflow:hidden;border-radius:8px;">${thumb(p)}</div>
+                <div class="ts-price-tag">${fmt(price(p))}</div>
+              </div>`).join('');
+          }
+
+          /* Flash Sale — items 10-11 */
+          const tsF = document.getElementById('tsFlash');
+          if (tsF) {
+            tsF.innerHTML = all.slice(10, 12).map(p => `
+              <div class="ts-item" style="cursor:pointer;" onclick="location.href='product.html?id=${p._id}'">
+                <div class="ts-img" style="overflow:hidden;border-radius:8px;">${thumb(p)}</div>
+                <div class="ts-price-tag">${fmt(price(p))}</div>
+              </div>`).join('');
+          }
+
+          /* Hero mini grid — items 12-17 (6 cards) */
+          const miniGrid = document.getElementById('heroMiniGrid');
+          if (miniGrid) {
+            miniGrid.innerHTML = all.slice(12, 18).map(p => {
+              const d  = discount(p);
+              const badge = d > 0
+                ? `<span class="hmp-badge">-${d}%</span>`
+                : `<span class="hmp-badge hmp-new">NEW</span>`;
+              return `
+                <div class="hmp-card" style="cursor:pointer;" onclick="location.href='product.html?id=${p._id}'">
+                  <div class="hmp-img" style="overflow:hidden;border-radius:8px;display:flex;align-items:center;justify-content:center;">${thumb(p)}</div>
+                  <div class="hmp-name">${p.name.slice(0,22)}${p.name.length>22?'…':''}</div>
+                  <div class="hmp-price">${fmt(price(p))}</div>
+                  ${badge}
+                </div>`;
+            }).join('');
+          }
+
+        } catch(e) {
+          if (typeof PRODUCTS === 'undefined' || !PRODUCTS.length) return;
+          const all = PRODUCTS.map(p => ({
+            _id: 'static-' + p.id,
+            name: p.name,
+            thumbnail: p.emoji,
+            price: p.price,
+            salePrice: p.salePrice,
+            discount: p.salePrice ? Math.round((1 - p.salePrice / p.price) * 100) : 0,
+          }));
+
+          for (let i = 0; i < 4; i++) {
+            const el = document.getElementById('bpv' + i);
+            if (!el || !all[i]) continue;
+            el.textContent = all[i].thumbnail || '📦';
+            el.title = all[i].name;
+          }
+
+          const fpGrid = document.getElementById('flashPicksGrid');
+          if (fpGrid) fpGrid.innerHTML = all.slice(0, 4).map(p => `
+            <div class="hbd-item" style="cursor:pointer;">
+              <div class="hbd-emoji" style="height:56px;display:flex;align-items:center;justify-content:center;">${thumb(p)}</div>
+              <div class="hbd-name">${p.name.slice(0,28)}${p.name.length>28?'…':''}</div>
+              <div class="hbd-price">${fmt(price(p))}</div>
+            </div>`).join('');
+
+          const tsN = document.getElementById('tsNational');
+          if (tsN) tsN.innerHTML = all.slice(4, 6).map(p => `
+            <div class="ts-item" style="cursor:pointer;">
+              <div class="ts-img" style="overflow:hidden;border-radius:8px;">${thumb(p)}</div>
+              <div class="ts-price-tag">${fmt(price(p))}</div>
+            </div>`).join('');
+
+          const tsL = document.getElementById('tsLive');
+          if (tsL) tsL.innerHTML = all.slice(6, 8).map(p => `
+            <div class="ts-item ts-item-rec" style="cursor:pointer;">
+              <div class="ts-img" style="overflow:hidden;border-radius:8px;">${thumb(p)}</div>
+              <div class="ts-rec-label">Recommended</div>
+            </div>`).join('');
+
+          const tsM = document.getElementById('tsMega');
+          if (tsM) tsM.innerHTML = all.slice(8, 10).map(p => `
+            <div class="ts-item" style="cursor:pointer;">
+              <div class="ts-img" style="overflow:hidden;border-radius:8px;">${thumb(p)}</div>
+              <div class="ts-price-tag">${fmt(price(p))}</div>
+            </div>`).join('');
+
+          const tsF = document.getElementById('tsFlash');
+          if (tsF) tsF.innerHTML = all.slice(10, 12).map(p => `
+            <div class="ts-item" style="cursor:pointer;">
+              <div class="ts-img" style="overflow:hidden;border-radius:8px;">${thumb(p)}</div>
+              <div class="ts-price-tag">${fmt(price(p))}</div>
+            </div>`).join('');
+
+          const miniGrid = document.getElementById('heroMiniGrid');
+          if (miniGrid) miniGrid.innerHTML = all.slice(12, 18).map(p => {
+            const d = p.discount;
+            const badge = d > 0 ? `<span class="hmp-badge">-${d}%</span>` : `<span class="hmp-badge hmp-new">NEW</span>`;
+            return `
+              <div class="hmp-card" style="cursor:pointer;">
+                <div class="hmp-img" style="overflow:hidden;border-radius:8px;display:flex;align-items:center;justify-content:center;">${thumb(p)}</div>
+                <div class="hmp-name">${p.name.slice(0,22)}${p.name.length>22?'…':''}</div>
+                <div class="hmp-price">${fmt(price(p))}</div>
+                ${badge}
+              </div>`;
+          }).join('');
+        }
+      }
+
+      loadHeroProducts();
+    })();
+    </script>
 
     <!-- FEATURES BAR -->
     <div class="features-bar" style="margin-top:16px;">
@@ -4063,6 +4420,26 @@
         var link = document.querySelector('[data-i18n="topbar.country"]');
         if (link) link.textContent = '📍 ' + savedDistrict;
       }
+    })();
+
+    // ── Session: update topbar for logged-in user ──
+    (function() {
+      var s = localStorage.getItem('nx_session');
+      if (!s) return;
+      try {
+        var sess = JSON.parse(s);
+        var loginLink = document.querySelector('.topbar-login-link');
+        if (!loginLink) return;
+        if (sess.role === 'admin') {
+          loginLink.textContent = '👑 ' + sess.name + ' (Admin)';
+          loginLink.href = 'admin.html';
+          loginLink.style.color = '#ff9f1c';
+        } else {
+          loginLink.textContent = '👋 Hi, ' + sess.name.split(' ')[0];
+          loginLink.href = '#';
+          loginLink.style.color = '#10b981';
+        }
+      } catch(e) {}
     })();
 
     // ── Auto-rotate banner dots ──
