@@ -529,12 +529,12 @@
         <div class="divider"><div class="divider-line"></div><div class="divider-text">or sign in with email</div><div class="divider-line"></div></div>
         <form onsubmit="handleEmailLogin(event)" novalidate>
           <div class="form-group">
-            <label class="form-label">Email Address</label>
+            <label class="form-label">Email or Username</label>
             <div class="input-wrap">
-              <span class="input-icon">✉</span>
-              <input class="form-input" type="email" id="loginEmail" placeholder="your@email.com" autocomplete="email" />
+              <span class="input-icon">👤</span>
+              <input class="form-input" type="text" id="loginEmail" placeholder="email or username" autocomplete="username" />
             </div>
-            <div class="err-msg" id="loginEmailErr">Please enter a valid email address.</div>
+            <div class="err-msg" id="loginEmailErr">Please enter your email or username.</div>
           </div>
           <div class="form-group">
             <label class="form-label">Password</label>
@@ -543,7 +543,7 @@
               <input class="form-input" type="password" id="loginPass" placeholder="Enter your password" autocomplete="current-password" />
               <button type="button" class="toggle-pass" onclick="togglePass('loginPass',this)">👁</button>
             </div>
-            <div class="err-msg" id="loginPassErr">Password must be at least 6 characters.</div>
+            <div class="err-msg" id="loginPassErr">Password must be at least 4 characters.</div>
           </div>
           <div class="form-row">
             <label class="chk-label"><input type="checkbox" /><span class="chk-box"></span> Keep me signed in</label>
@@ -823,45 +823,81 @@
     }
   }
 
+  // Backend API base URL — change to your deployed server URL in production
+  const API = 'http://localhost:5000/api';
+
   // ════════════════════════════════
   // EMAIL SIGN IN
   // ════════════════════════════════
-  function handleEmailLogin(e) {
+  async function handleEmailLogin(e) {
     e.preventDefault();
-    const email = document.getElementById('loginEmail').value.trim();
+    const input = document.getElementById('loginEmail').value.trim();
     const pass  = document.getElementById('loginPass').value;
     let ok = true;
 
-    if (!validEmail(email)) { setErr('loginEmail','loginEmailErr',true); ok=false; }
+    if (!input) { setErr('loginEmail','loginEmailErr',true); ok=false; }
     else setErr('loginEmail','loginEmailErr',false);
 
-    if (pass.length < 6) { setErr('loginPass','loginPassErr',true); ok=false; }
+    if (pass.length < 4) { setErr('loginPass','loginPassErr',true); ok=false; }
     else setErr('loginPass','loginPassErr',false);
 
     if (!ok) return;
 
     setLoading('loginBtn','loginSpinner',true);
-    pendingEmail  = email;
-    currentFlow   = 'email-login';
 
-    setTimeout(() => {
+    try {
+      const res = await fetch(API + '/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: input, password: pass }),
+      });
+      const data = await res.json();
       setLoading('loginBtn','loginSpinner',false);
-      setupOTPScreen('email');
-      gotoOTP();
-      toast('📧', `Verification code sent to ${email}`, 'success');
-      startExpire();
-      startResend();
-    }, 1400);
+
+      if (!data.success) {
+        toast('❌', data.message || 'Invalid credentials', 'error');
+        return;
+      }
+
+      // Store token + session
+      localStorage.setItem('nx_token', data.token);
+      localStorage.setItem('nx_session', JSON.stringify({
+        role: data.user.role,
+        name: data.user.name,
+        email: data.user.email,
+        avatar: data.user.avatar || (data.user.role === 'admin' ? '👑' : '👤'),
+        id: data.user._id,
+      }));
+
+      if (data.user.role === 'admin') {
+        toast('✅', 'Welcome back, Admin ' + data.user.name + '! 👑', 'success');
+        setTimeout(() => { window.location.href = 'admin.html'; }, 900);
+      } else {
+        toast('✅', 'Welcome back, ' + data.user.name + '!', 'success');
+        setTimeout(() => { window.location.href = 'index.html'; }, 900);
+      }
+    } catch (err) {
+      setLoading('loginBtn','loginSpinner',false);
+      // Server offline fallback — keep localStorage-only login for admin
+      if ((input.toLowerCase() === 'munna' || input.toLowerCase() === 'munna@nexora.com') && pass === 'munna') {
+        localStorage.setItem('nx_session', JSON.stringify({ role: 'admin', name: 'Munna', email: 'munna@nexora.com', avatar: '👑' }));
+        toast('✅', 'Welcome back, Admin Munna! 👑 (offline mode)', 'success');
+        setTimeout(() => { window.location.href = 'admin.html'; }, 900);
+      } else {
+        toast('⚠️', 'Cannot reach server. Check your connection.', 'error');
+      }
+    }
   }
 
   // ════════════════════════════════
   // SOCIAL LOGIN
   // ════════════════════════════════
   function socialLogin(provider) {
-    toast('🔄', `Connecting to ${provider}…`, '');
+    toast('🔄', 'Connecting to ' + provider + '…', '');
     setTimeout(() => {
-      toast('✅', `${provider} sign-in successful!`, 'success');
-      setTimeout(() => { window.location.href = 'admin.html'; }, 1200);
+      localStorage.setItem('nx_session', JSON.stringify({ role: 'customer', name: provider + ' User', email: '' }));
+      toast('✅', provider + ' sign-in successful!', 'success');
+      setTimeout(() => { window.location.href = 'index.html'; }, 1200);
     }, 1500);
   }
 
@@ -1066,8 +1102,10 @@
         if (p3) p3.classList.add('active');
       }
 
+      const name = (document.getElementById('regName') && document.getElementById('regName').value.trim()) || pendingEmail || 'Customer';
+      localStorage.setItem('nx_session', JSON.stringify({ role: 'customer', name: name, email: pendingEmail || '' }));
       toast('✅','Verified! Welcome to NEXORA 🎉','success');
-      setTimeout(() => { window.location.href = 'admin.html'; }, 1600);
+      setTimeout(() => { window.location.href = 'index.html'; }, 1600);
     }, 1200);
   }
 
